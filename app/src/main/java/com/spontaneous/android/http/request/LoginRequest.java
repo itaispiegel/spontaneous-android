@@ -12,7 +12,7 @@ import retrofit.http.POST;
  */
 public interface LoginRequest {
 
-    @POST("/users-api/login")
+    @POST("/API/users/login")
     void login(@Body FacebookLoginRequestModel loginRequestModel, Callback<BaseResponse<User>> cb);
 
 }

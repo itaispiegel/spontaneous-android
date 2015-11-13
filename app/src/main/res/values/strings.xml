@@ -12,19 +12,26 @@
     <string name="error_unknown">unknown error</string>
 
 <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="create_ride_title">Create Ride</string>
-    <string name="create_ride_origin">Origin</string>
-    <string name="create_ride_destination">Destination</string>
-    <string name="create_ride_date">Date</string>
-    <string name="create_ride_price">Price</string>
-    <string name="create_ride_passengers">Passengers</string>
-    <string name="create_ride_description">Description</string>
-    <string name="create_ride_done">Done</string>
-    <string name="list_row_fullname_placeholder">Username</string>
-    <string name="list_row_origin_placeholder">Origin</string>
-    <string name="list_row_destination_placeholder">Destination</string>
-    <string name="list_row_passengers_placeholder">0/4 Passengers</string>
-    <string name="list_row_cost_placeholder">20 NIS</string>
-    <string name="list_row_date_placeholder">2015.05.08 22:00</string>
+    <string name="app_name_caps">SPONTANEOUS</string>
+    <string name="app_slogan">MAKE EVERY EVENT EPIC</string>
+    <string name="who_is_coming">Who is coming?</string>
+    <string name="required_items">Required Items</string>
+    <string name="label_email">Email Address</string>
+    <string name="label_password">Password</string>
+    <string name="message_loading">Loading</string>
+    <string name="authentication_failed">Incorrect email and/or password</string>
+    <string name="logout">Logout</string>
+    <string name="loading_events">Loading events</string>
+    <string name="connection_error">Connection Error</string>
+    <string name="no_events">NO EVENTS</string>
+
+    <!--    Event Creation Wizard-->
+    <string name="create_event">Create Event</string>
+    <string name="prev">Previous</string>
+    <string name="next">Next</string>
+    <string name="event_confirmation">Are you sure you would like to create this event?</string>
+    <string name="create">Create</string>
+    <string name="finish">Finish</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
 </resources>

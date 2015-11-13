@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="#FFfdfdfd"
+              android:clipToPadding="false"
+              android:paddingLeft="20dp"
+              android:paddingTop="15dp"
+              android:paddingRight="20dp">
+
+    <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:textStyle="bold"
+            android:textColor="@color/text_color"
+            android:textSize="22sp"
+            android:text="Mall Hangout"/>
+
+    <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:textColor="@color/text_color"
+            android:textSize="13sp"
+            android:lineSpacingExtra="3dp"
+            android:text="Hey guys, We're hanging out today in the mall during the evening. We're probably gonna play some bowling and catch a movie. Come and have a great time with us!"/>
+
+    <TextView
+            android:id="@+id/when"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/text_color"
+            android:textSize="14sp"
+            android:text="When: Tuesday at 20:00, March 20th"/>
+
+    <LinearLayout
+            android:id="@+id/where"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="10dp"
+            android:orientation="vertical">
+
+        <TextView
+                android:id="@+id/where_textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:textStyle="bold"
+                android:textColor="@color/text_color"
+                android:textSize="14sp"
+                android:text="Where: Shiv'at Hakohavim Mall, Herzeliya"/>
+
+        <com.android.volley.toolbox.NetworkImageView
+                android:id="@+id/where_map"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:paddingBottom="10dp"
+                android:scaleType="centerCrop"
+                android:background="#FF38476b"/>
+
+    </LinearLayout>
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/who_is_coming"
+            android:textStyle="bold"
+            android:textColor="@color/text_color"
+            android:textSize="15sp"/>
+
+    <ListView
+            android:id="@+id/invited_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="-20dp"
+            android:layout_marginEnd="-20dp">
+    </ListView>
+
+<!--    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/required_items"
+            android:textStyle="bold"
+            android:textColor="@color/text_color"
+            android:textSize="15sp"/>
+
+    <ListView
+            android:id="@+id/items_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="-7dp"
+            android:layout_marginRight="-20dp">
+    </ListView>-->
+</LinearLayout>

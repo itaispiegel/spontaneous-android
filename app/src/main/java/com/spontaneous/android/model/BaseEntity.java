@@ -9,7 +9,6 @@ import java.io.Serializable;
  */
 
 public abstract class BaseEntity implements Serializable {
-    private static final long serialVersionUID = 1L;
 
     protected long id;
     protected DateTime creationTime;
@@ -43,12 +42,5 @@ public abstract class BaseEntity implements Serializable {
         BaseEntity that = (BaseEntity) o;
 
         return getId() == that.getId();
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (int) (getId() ^ (getId() >>> 32));
-        result = 31 * result;
-        return result;
     }
 }

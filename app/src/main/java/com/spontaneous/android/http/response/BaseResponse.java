@@ -1,21 +1,58 @@
 package com.spontaneous.android.http.response;
 
 /**
- * Created by eidan on 5/24/15.
+ * This class holds data returned from the REST API.
  */
 public class BaseResponse<T> {
+
+    /**
+     * Status code of the HTTP Request.
+     */
     private int statusCode;
+
+    /**
+     * Description of the error (optional).
+     */
     private String description;
+
+    /**
+     * The data itself.
+     */
     private T body;
 
-    public int getStatusCode() {
-        return statusCode;
+    // -----Response codes-----
+
+    /**
+     * Request was success.
+     */
+    public static final int SUCCESS = 0;
+
+    /**
+     * Request ended with error.
+     */
+    public static final int INTERNAL_ERROR = -1;
+    //----------
+
+    /**
+     * Create a response with a body. Default response code is ResponseCodes.SUCCESS.
+     */
+    public BaseResponse(int statusCode, T body) {
+        this.statusCode = SUCCESS;
+        this.body = body;
     }
 
-    public void setStatusCode(int statusCode) {
+    /**
+     * Create a response code with status code, description and body.
+     */
+    public BaseResponse(int statusCode, String description, T body) {
         this.statusCode = statusCode;
+        this.description = description;
+        this.body = body;
     }
 
+    /**
+     * @return Description of the error (optional).
+     */
     public String getDescription() {
         return description;
     }
@@ -24,6 +61,20 @@ public class BaseResponse<T> {
         this.description = description;
     }
 
+    /**
+     * @return Status code of the HTTP Request.
+     */
+    public int getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(int statusCode) {
+        this.statusCode = statusCode;
+    }
+
+    /**
+     * @return The data itself.
+     */
     public T getBody() {
         return body;
     }

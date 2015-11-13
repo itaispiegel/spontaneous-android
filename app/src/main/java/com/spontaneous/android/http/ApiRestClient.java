@@ -21,7 +21,6 @@ public final class ApiRestClient {
     private static RestAdapter sRestAdapter;
 
     private ApiRestClient() {
-
     }
 
     private static synchronized RestAdapter getRestAdapter(Context ctx) {
@@ -38,7 +37,7 @@ public final class ApiRestClient {
                 .setEndpoint(BASE_URL)
                 .setErrorHandler(new CustomErrorHandler(ctx))
                 .setRequestInterceptor(requestInterceptor)
-                .setConverter(new GsonConverter(GsonFactory.gson))
+                .setConverter(new GsonConverter(GsonFactory.getGson()))
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
         }
@@ -81,7 +80,7 @@ public final class ApiRestClient {
                         try {
                             errorDescription = ctx.getString(R.string.error_network_http_error, cause.getResponse().getStatus());
                         } catch(Exception ex2) {
-                            Logger.e("handleError: " + ex2.getLocalizedMessage());
+                            Logger.error("handleError: " + ex2.getLocalizedMessage());
                             errorDescription = ctx.getString(R.string.error_unknown);
                         }
                     }

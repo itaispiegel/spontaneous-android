@@ -12,28 +12,29 @@ import java.lang.reflect.Type;
 import java.util.Date;
 
 /**
- * Created by Eidan on 4/26/2015.
+ * This class creates a gson instance.
  */
 public final class GsonFactory {
 
-    public static final Gson gson;
+    private static Gson gson;
 
-    static {
-        // Creates the json object which will manage the information received
-        GsonBuilder builder = new GsonBuilder();
+    public static Gson getGson() {
 
-        // Register an adapter to manage the date types as long values
-        builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
-            public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-                return new Date(json.getAsJsonPrimitive().getAsLong());
-            }
-        });
+        if (gson == null) {
+            // Creates the json object which will manage the information received
+            GsonBuilder builder = new GsonBuilder();
 
-        gson = Converters.registerDateTime(builder.serializeNulls()).create();
-    }
+            // Register an adapter to manage the date types as long values
+            builder.registerTypeAdapter(Date.class, new JsonDeserializer<Date>() {
+                public Date deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+                    return new Date(json.getAsJsonPrimitive().getAsLong());
+                }
+            });
 
-    private GsonFactory() {
+            gson = Converters.registerDateTime(builder.serializeNulls()).create();
+        }
 
+        return gson;
     }
 
 }

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+    <TextView
+            android:id="@+id/when"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/grey_text"
+            android:text="20-3-2014"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"/>
+
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:paddingTop="20dp"
+            android:paddingLeft="10dp"
+            android:paddingBottom="15dp">
+
+        <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:textSize="20sp"
+                android:textColor="@color/text_color"
+                android:text="Mall Hangout"
+                android:textStyle="bold"
+                android:includeFontPadding="false"/>
+
+        <TextView
+                android:id="@+id/description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title"
+                android:textColor="@color/text_color"
+                android:textSize="15sp"
+                android:ellipsize="end"
+                android:text="Hey guys, We're hanging out today in the mall during the evening. We're probably gonna play some bowling and catch a movie. Come and have a great time with us!"
+                android:lines="1"
+                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
+                android:includeFontPadding="true"/>
+
+        <TextView
+                android:id="@+id/where"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/description"
+                android:textColor="@color/text_color"
+                android:layout_marginTop="10dp"
+                android:textStyle="italic"
+                android:textSize="13sp"
+                android:ellipsize="end"
+                android:text="Shivaat Hakhohavim Mall, Herzeliya"
+                android:lines="1"
+                android:includeFontPadding="true"/>
+
+        <ImageView
+                android:id="@+id/is_coming"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignBaseline="@+id/description"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"/>
+                <!--android:src="@drawable/abc_ic_clear_search_api_holo_light"/>-->
+    </RelativeLayout>
+</RelativeLayout>

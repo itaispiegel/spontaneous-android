@@ -1,0 +1,92 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="top|center_horizontal"
+              android:orientation="vertical"
+              android:background="#FFfdfdfd">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="149dp">
+
+        <com.android.volley.toolbox.NetworkImageView
+                android:id="@+id/user_profile_picture"
+                android:layout_width="149dp"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:background="#FF38476b"/>
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="14dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:layout_toRightOf="@+id/user_profile_picture"
+                android:layout_toEndOf="@+id/user_profile_picture">
+
+            <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="25sp"
+                    android:textColor="@color/text_color"
+                    android:textStyle="bold"
+                    android:text="Itai Spiegel"/>
+
+            <TextView
+                    android:id="@+id/user_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/user_name"
+                    android:textSize="13sp"
+                    android:textColor="@color/text_color"
+                    android:textStyle="italic"
+                    android:text="&quot;Being spontaneous is fun!&quot;"/>
+
+            <TextView
+                    android:id="@+id/user_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/user_status"
+                    android:textSize="13sp"
+                    android:textColor="@color/text_color"
+                    android:text="itai.spiegel@gmail.com"/>
+
+
+            <ImageView
+                    android:id="@+id/user_gender"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="7dp"
+                    android:layout_alignParentBottom="true"
+                    android:src="@drawable/ic_male"/>
+
+            <TextView
+                    android:id="@+id/user_age"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:textSize="50sp"
+                    android:textColor="@color/text_color"
+                    android:text="16"/>
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#FFc7c7c7"/>
+
+</LinearLayout>

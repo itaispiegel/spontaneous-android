@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#000000</color>
-    <color name="bg_actionbar_red">#b82342</color>
-    <color name="bg_actionbar_light_red_selected">#c93434</color>
-    <color name="bg_actionbar_light_red">#c32323</color>
-    <color name="text_color_white">#D3D3D3</color>
+
+    <color name="tab_background_selected">#FFADACAD</color>
+    <color name="tab_background_regular">#FFEBEBEB</color>
+    <color name="text_color">#FF312a4f</color>
+    <color name="light_blue">#FF0060ff</color>
+    <color name="grey_text">#98585858</color>
+
 </resources>

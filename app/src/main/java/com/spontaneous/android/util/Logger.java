@@ -14,17 +14,26 @@ public class Logger {
 
     }
 
-    public static void i(String s) {
+    /**
+     * Send an info log message.
+     */
+    public static void info(String s) {
         if(s != null) {
             Log.i(LOG_TAG, s);
         }
     }
 
-    public static void d(String s) {
+    /**
+     * Send a debug log message.
+     */
+    public static void debug(String s) {
         Log.d(LOG_TAG, s);
     }
 
-    public static void e(String s) {
+    /**
+     * Send an error log message.
+     */
+    public static void error(String s) {
         Log.e(LOG_TAG, s);
     }
 

@@ -1,85 +1,150 @@
 package com.spontaneous.android.model;
 
-import java.util.List;
+import org.joda.time.DateTime;
 
 /**
- * Created by Eidan on 4/26/2015.
+ * This class represents a user persisted in the database.
  */
-public class User extends BaseUpdatableEntity {
+public class User extends BaseEntity {
 
+    /**
+     * Facebook id of the user.
+     */
     private String facebookUserId;
+
+    /**
+     * Facebook token of the user.
+     */
     private String facebookToken;
-    private String pictureUrl;
+
+    /**
+     * The name of the user.
+     */
+    private String name;
+
+    /**
+     * The email of the user.
+     */
     private String email;
-    private String fullName;
-    private List<Ride> ownerRides;
-    private List<Ride> guestRides;
 
-    public String getFullName() {
-        return fullName;
+    /**
+     * Profile picture URL of the user.
+     */
+    private String profilePicture;
+
+    /**
+     * Birthday of the user.
+     */
+    private DateTime birthday;
+
+    /**
+     * Create an empty user object.
+     */
+    public User() {
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getPictureUrl() {
-        return pictureUrl;
-    }
-
-    public void setPictureUrl(String pictureUrl) {
-        this.pictureUrl = pictureUrl;
-    }
-
+    /**
+     * @return facebook user id.
+     */
     public String getFacebookUserId() {
         return facebookUserId;
     }
 
+    /**
+     * Sets the facebook user id.
+     */
     public void setFacebookUserId(String facebookUserId) {
         this.facebookUserId = facebookUserId;
     }
 
+    /**
+     * @return facebook token of the user.
+     */
     public String getFacebookToken() {
         return facebookToken;
     }
 
+    /**
+     * Sets the facebook token of the user.
+     */
     public void setFacebookToken(String facebookToken) {
         this.facebookToken = facebookToken;
     }
 
+    /**
+     * @return the name of the user.
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Sets the name of the user.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the email of the user.
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Sets the email of the user.
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public List<Ride> getOwnerRides() {
-        return ownerRides;
+    /**
+     * @return profile picture URL of the user.
+     */
+    public String getProfilePicture() {
+        return profilePicture;
     }
 
-    public void setOwnerRides(List<Ride> ownerRides) {
-        this.ownerRides = ownerRides;
+    /**
+     * Sets the profile picture of the user.
+     */
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 
-    public List<Ride> getGuestRides() {
-        return guestRides;
+    /**
+     * @return birthday of the user.
+     */
+    public DateTime getBirthday() {
+        return birthday;
     }
 
-    public void setGuestRides(List<Ride> guestRides) {
-        this.guestRides = guestRides;
+    /**
+     * Sets the birthday of the user.
+     */
+    public void setBirthday(DateTime birthday) {
+        this.birthday = birthday;
     }
 
+    /**
+     * Sets the birthday of the user.
+     */
+    public void setBirthday(String birthday) {
+        this.birthday = new DateTime(birthday);
+    }
+
+    /**
+     * Return a string representation of the user.
+     */
     @Override
     public String toString() {
         return "User{" +
-            "facebookUserId='" + facebookUserId + '\'' +
-            ", facebookToken='" + facebookToken + '\'' +
-            ", pictureUrl='" + pictureUrl + '\'' +
-            ", email='" + email + '\'' +
-            ", ownerRides=" + ownerRides +
-            ", guestRides=" + guestRides +
-            '}';
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", profilePicture=" + profilePicture +
+                ", birthday=" + birthday +
+                '}';
     }
 }
