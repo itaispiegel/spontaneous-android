@@ -1,0 +1,88 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ridefind.android.fragment.CreateRideFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="8dp"
+            android:text="@string/create_ride_title"
+            android:textSize="30sp" />
+
+        <EditText
+            android:id="@+id/create_ride_origin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="@string/create_ride_origin"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/create_ride_destination"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="@string/create_ride_destination"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/create_ride_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="@string/create_ride_date"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/create_ride_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="@string/create_ride_price"
+            android:imeOptions="actionNext"
+            android:inputType="numberDecimal"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/create_ride_passengers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="@string/create_ride_passengers"
+            android:imeOptions="actionNext"
+            android:inputType="numberSigned"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/create_ride_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="@string/create_ride_description"
+            android:imeOptions="actionDone"
+            android:inputType="textMultiLine"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/create_ride_done"
+            android:layout_width="140dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="@string/create_ride_done" />
+    </LinearLayout>
+</ScrollView>

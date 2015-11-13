@@ -1,0 +1,46 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <!--<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        &lt;!&ndash; Customize your theme here. &ndash;&gt;
+    </style>-->
+
+    <style name="RideFind" parent="Theme.AppCompat"/>
+
+    <style name="RideFind.ActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:background">@color/bg_actionbar_red</item>
+        <item name="android:icon">@android:color/transparent</item>
+        <item name="android:titleTextStyle">@style/RideFind.TextAppearance.Actionbar</item>
+    </style>
+
+    <style name="RideFind.Button">
+        <item name="android:background">@drawable/bg_btn</item>
+        <item name="android:textAppearance">@style/RideFind.TextAppearance.Button</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <!-- Text -->
+    <style name="RideFind.TextAppearance">
+        <item name="android:typeface">normal</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="RideFind.TextAppearance.Actionbar">
+        <item name="android:textSize">@dimen/text_size_actionbar</item>
+        <item name="android:textColor">@color/text_color_white</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="RideFind.TextAppearance.Button">
+        <item name="android:textColor">@color/text_color_white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_size_button</item>
+    </style>
+
+    <style name="RideFind.TextView">
+        <item name="android:textAppearance">@style/RideFind.TextAppearance</item>
+    </style>
+
+</resources>

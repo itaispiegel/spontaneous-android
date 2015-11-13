@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Spontaneous</string>
+
+    <string name="facebook_app_id">1643579359242605</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="login_title">Spontaneous</string>
+    <string name="error_network">network error</string>
+    <string name="error_no_response">no response error</string>
+    <string name="error_network_http_error">http error</string>
+    <string name="error_unknown">unknown error</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="create_ride_title">Create Ride</string>
+    <string name="create_ride_origin">Origin</string>
+    <string name="create_ride_destination">Destination</string>
+    <string name="create_ride_date">Date</string>
+    <string name="create_ride_price">Price</string>
+    <string name="create_ride_passengers">Passengers</string>
+    <string name="create_ride_description">Description</string>
+    <string name="create_ride_done">Done</string>
+    <string name="list_row_fullname_placeholder">Username</string>
+    <string name="list_row_origin_placeholder">Origin</string>
+    <string name="list_row_destination_placeholder">Destination</string>
+    <string name="list_row_passengers_placeholder">0/4 Passengers</string>
+    <string name="list_row_cost_placeholder">20 NIS</string>
+    <string name="list_row_date_placeholder">2015.05.08 22:00</string>
+</resources>
