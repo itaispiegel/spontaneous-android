@@ -1,4 +1,4 @@
-sudo:required
+sudo: required
 language: android
 jdk: oraclejdk7
 android:
@@ -8,4 +8,5 @@ android:
   - build-tools-22.0.1
   - android-22
 script:
+  - chmod +x gradlew
   - ./gradlew clean build
