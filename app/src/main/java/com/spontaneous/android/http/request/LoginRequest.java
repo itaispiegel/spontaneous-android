@@ -8,7 +8,7 @@ import retrofit.http.Body;
 import retrofit.http.POST;
 
 /**
- * Created by eidan on 5/23/15.
+ * Login request.
  */
 public interface LoginRequest {
 

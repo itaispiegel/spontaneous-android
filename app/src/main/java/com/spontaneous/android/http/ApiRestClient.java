@@ -13,7 +13,7 @@ import retrofit.RetrofitError;
 import retrofit.converter.GsonConverter;
 
 /**
- * Created by eidan on 5/23/15.
+ * This class is a configuration class for server requests.
  */
 public final class ApiRestClient {
 
@@ -44,6 +44,9 @@ public final class ApiRestClient {
         return sRestAdapter;
     }
 
+    /**
+     * @return an API request class.
+     */
     public static <T> T getRequest(Context ctx, Class<T> request) {
         return getRestAdapter(ctx).create(request);
     }

@@ -1,6 +1,7 @@
 package com.spontaneous.android.model;
 
 import org.joda.time.DateTime;
+import org.joda.time.Years;
 
 /**
  * This class represents a user persisted in the database.
@@ -118,6 +119,10 @@ public class User extends BaseEntity {
      */
     public DateTime getBirthday() {
         return birthday;
+    }
+
+    public int getAge() {
+        return Years.yearsBetween(getBirthday(), new DateTime()).getYears();
     }
 
     /**

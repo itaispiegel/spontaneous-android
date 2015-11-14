@@ -7,11 +7,9 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
-import com.google.gson.Gson;
 import com.spontaneous.android.Application;
 import com.spontaneous.android.activity.ActivityLogin;
 import com.spontaneous.android.activity.ActivityMain;
