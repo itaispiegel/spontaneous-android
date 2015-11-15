@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.android.volley.toolbox.NetworkImageView;
 import com.spontaneous.android.Application;
 import com.spontaneous.android.R;
@@ -28,7 +29,6 @@ public class UserProfileCard extends FrameLayout {
     private ImageView mGenderPhoto;
     private TextView mEmail;
 
-
     public UserProfileCard(Context context) {
         super(context);
         this.mContext = context;
@@ -49,7 +49,6 @@ public class UserProfileCard extends FrameLayout {
 
         mProfilePicture = (NetworkImageView) layout.findViewById(R.id.user_profile_picture);
         mUserName = (TextView) layout.findViewById(R.id.user_name);
-        mStatus = (TextView) layout.findViewById(R.id.user_status);
         mAge = (TextView) layout.findViewById(R.id.user_age);
         mGenderPhoto = (ImageView) layout.findViewById(R.id.user_gender);
         mEmail = (TextView) layout.findViewById(R.id.user_email);
@@ -61,15 +60,15 @@ public class UserProfileCard extends FrameLayout {
         mProfilePicture.setImageUrl(mUser.getProfilePicture(), Application.getInstance().getImageLoader());
         mUserName.setText(mUser.getName());
         //mStatus.setText("\"" + mUser.getStatus() + "\"");
-        mAge.setText(mUser.getAge() + "");
+        //mAge.setText(mUser.getAge() + "");
 
-/*        Drawable genderDrawable;
-        if (mUser.getGender() == User.Gender.FEMALE) {
+        Drawable genderDrawable;
+        if (mUser.getGender() == User.Gender.Female) {
             genderDrawable = mContext.getResources().getDrawable(R.drawable.ic_female);
         } else {
             genderDrawable = mContext.getResources().getDrawable(R.drawable.ic_male);
         }
-        mGenderPhoto.setImageDrawable(genderDrawable);*/
+        mGenderPhoto.setImageDrawable(genderDrawable);
 
         mEmail.setText(mUser.getEmail());
     }

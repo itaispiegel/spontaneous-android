@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -13,7 +14,6 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -42,8 +42,6 @@ public class ActivityLogin extends Activity {
     private EditText mPassword;
     private LoginButton loginButton;
 
-    private boolean mIsProcessing = false;
-
     private CallbackManager callbackManager;
 
     @Override
@@ -51,7 +49,6 @@ public class ActivityLogin extends Activity {
         //Animations, FacebookSDK and content view
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.animate_fade_in, R.anim.animate_fade_out);
-        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
 
         //Custom action bar configuration
@@ -70,6 +67,17 @@ public class ActivityLogin extends Activity {
         loginButton = (LoginButton) findViewById(R.id.login_button);
         loginButton.setReadPermissions("public_profile", "user_friends", "email");
         loginButton.registerCallback(callbackManager, getFacebookCallback());
+        loginButton.setOnClickListener(getLoginButtonOnClickListener());
+    }
+
+    private View.OnClickListener getLoginButtonOnClickListener() {
+        final Activity activity = this;
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mWaitDialog = UIUtils.showWaitDialog(activity);
+            }
+        };
     }
 
     private FacebookCallback<LoginResult> getFacebookCallback() {
@@ -112,6 +120,10 @@ public class ActivityLogin extends Activity {
         return new Callback<BaseResponse<User>>() {
             @Override
             public void success(BaseResponse<User> baseResponse, Response response) {
+                if (mWaitDialog != null && mWaitDialog.isShowing()) {
+                    mWaitDialog.dismiss();
+                }
+
                 User user = baseResponse.getBody();
                 Logger.info("LoginRequest: success, user = " + user);
 
@@ -124,6 +136,10 @@ public class ActivityLogin extends Activity {
 
             @Override
             public void failure(RetrofitError error) {
+                if (mWaitDialog != null && mWaitDialog.isShowing()) {
+                    mWaitDialog.dismiss();
+                }
+
                 Logger.error("LoginActivity onFailure, " + error.getKind());
 
                 //Sign out of Facebook if the app didn't manage to authenticate with Spontaneous server.
@@ -145,7 +161,6 @@ public class ActivityLogin extends Activity {
         if (mWaitDialog != null && mWaitDialog.isShowing()) {
             mWaitDialog.dismiss();
         }
-        mIsProcessing = false;
 
         AccountUtils.startMainFlow(this);
         finish();

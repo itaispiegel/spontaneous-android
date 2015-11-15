@@ -1,7 +1,6 @@
 package com.spontaneous.android.model;
 
 import org.joda.time.DateTime;
-import org.joda.time.Years;
 
 /**
  * This class represents a user persisted in the database.
@@ -37,6 +36,16 @@ public class User extends BaseEntity {
      * Birthday of the user.
      */
     private DateTime birthday;
+
+    /**
+     * Phone number of the user.
+     */
+    private String phoneNumber;
+
+    /**
+     * Is the user a male or a female.
+     */
+    private Gender gender;
 
     /**
      * Create an empty user object.
@@ -121,10 +130,6 @@ public class User extends BaseEntity {
         return birthday;
     }
 
-    public int getAge() {
-        return Years.yearsBetween(getBirthday(), new DateTime()).getYears();
-    }
-
     /**
      * Sets the birthday of the user.
      */
@@ -140,16 +145,51 @@ public class User extends BaseEntity {
     }
 
     /**
+     * @return the phone number of the user.
+     */
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    /**
+     * Set the phone number of the user.
+     */
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    /**
+     * @return whether the user is a male or female.
+     */
+    public Gender getGender() {
+        return gender;
+    }
+
+    /**
+     * Set whether the user is a male or a female.
+     */
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    /**
      * Return a string representation of the user.
      */
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "facebookUserId='" + facebookUserId + '\'' +
+                ", facebookToken='" + facebookToken + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", profilePicture=" + profilePicture +
+                ", profilePicture='" + profilePicture + '\'' +
                 ", birthday=" + birthday +
-                '}';
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", gender=" + gender +
+                "} " + super.toString();
+    }
+
+    public enum Gender {
+        Male, Female
     }
 }
