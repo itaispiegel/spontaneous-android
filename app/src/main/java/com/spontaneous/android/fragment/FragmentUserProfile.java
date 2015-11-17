@@ -24,7 +24,6 @@ public class FragmentUserProfile extends Fragment {
     private ScrollView mScroll;
     private View mUserProfileCard;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_user_profile, container, false);

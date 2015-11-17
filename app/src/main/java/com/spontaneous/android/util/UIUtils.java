@@ -20,6 +20,7 @@ import android.widget.ListView;
 import com.spontaneous.android.R;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * An assortment of UI Utils.
@@ -30,12 +31,14 @@ public class UIUtils {
      * Sets a ListView's height based on its number of children.
      * @param listView to apply the height
      */
-    public static void setListViewHeightBasedOnChildren(ListView listView) {
+    public static void setListviewHeightBasedOnChildren(ListView listView) {
+        //Get adapter and exit method if it is null
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {
             return;
         }
 
+        //Add current item height to the total height
         int totalHeight = 0;
         for (int i = 0; i < listAdapter.getCount(); i++) {
             View listItem = listAdapter.getView(i, null, listView);
@@ -43,6 +46,7 @@ public class UIUtils {
             totalHeight += listItem.getMeasuredHeight();
         }
 
+        //Set the new calculated required height
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
@@ -50,7 +54,7 @@ public class UIUtils {
     }
 
     /**
-     * Show a progress dialog in the inputted activity.
+     * Show a progress dialog with the text "Loading" in the given activity.
      * @return the progress dialog
      */
     public static ProgressDialog showWaitDialog(Activity activity) {
@@ -66,16 +70,16 @@ public class UIUtils {
     }
 
     /**
-     * Sets the application's custom ActionBar to the inputted context.
+     * Sets the application's custom ActionBar to the given context.
      */
-    public static void setCustomActionBar(Context context) {
-        ActionBar actionBar = ((Activity) context).getActionBar();
+    public static void setCustomActionBar(Context ctx) {
+        ActionBar actionBar = ((Activity) ctx).getActionBar();
 
-        LayoutInflater inflater = LayoutInflater.from(context);
+        LayoutInflater inflater = LayoutInflater.from(ctx);
 
         View mCustomActionBar = inflater.inflate(R.layout.action_bar, null);
 
-        //No reason that action bar should be null. But just in case :)
+        //No reason that action bar should be null. But just in case.
         if (actionBar != null) {
             actionBar.setCustomView(mCustomActionBar);
             actionBar.setDisplayShowCustomEnabled(true);
@@ -85,30 +89,39 @@ public class UIUtils {
     /**
      * Setup email auto complete to an AutoCompleteTextView.
      * Uses email from device data.
-     * @param view to set the AutoComplete to
+     * @param view to set the AutoComplete to.
      * @param context of the activity.
      */
     public static void setupEmailAutoComplete(AutoCompleteTextView view, Context context) {
         final Uri emailContentUri = ContactsContract.CommonDataKinds.Email.CONTENT_URI;
         ContentResolver cr = context.getContentResolver();
 
-        Cursor emailCur = cr.query(emailContentUri, null, null, null ,null);
+        Cursor emailCursor = cr.query(emailContentUri, null, null, null, null);
 
-        ArrayList<String> emailsCollection = new ArrayList<String>();
+        //Exit method if email cursor is null
+        if(emailCursor == null) {
+            return;
+        }
 
-        while(emailCur.moveToNext()) {
-            final int columnIndex = emailCur.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA);
-            String email = emailCur.getString(columnIndex);
+        //HashSet because we want the emails to be unique.
+        HashSet<String> emailsCollection = new HashSet<>(emailCursor.getCount());
+
+        while(emailCursor.moveToNext()) {
+            int columnIndex = emailCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA);
+            String email = emailCursor.getString(columnIndex);
+
             emailsCollection.add(email);
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, emailsCollection);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, new ArrayList<>(emailsCollection));
         view.setAdapter(adapter);
+
+        //Close the email cursor
+        emailCursor.close();
     }
 
     /**
      * Hide the keyboard on the give activity.
-     * @param activity
      */
     public static void hideKeyboard(Activity activity) {
         View currentFocus = activity.getCurrentFocus();

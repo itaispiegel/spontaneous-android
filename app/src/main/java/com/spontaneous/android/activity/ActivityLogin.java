@@ -46,7 +46,7 @@ public class ActivityLogin extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //Animations, FacebookSDK and content view
+        //Animations, and content view
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.animate_fade_in, R.anim.animate_fade_out);
         setContentView(R.layout.activity_login);
@@ -54,7 +54,7 @@ public class ActivityLogin extends Activity {
         //Custom action bar configuration
         UIUtils.setCustomActionBar(this);
 
-        //Email and password edittexts
+        //Initialize email and password edittexts
         mEmail = (AutoCompleteTextView) findViewById(R.id.email);
         mPassword = (EditText) findViewById(R.id.password);
 
@@ -64,7 +64,9 @@ public class ActivityLogin extends Activity {
         //Initialize FacebookSDK
         callbackManager = CallbackManager.Factory.create();
 
+        //Set login button image, permissions, callback and click listener
         loginButton = (LoginButton) findViewById(R.id.login_button);
+
         loginButton.setReadPermissions("public_profile", "user_friends", "email");
         loginButton.registerCallback(callbackManager, getFacebookCallback());
         loginButton.setOnClickListener(getLoginButtonOnClickListener());
@@ -140,7 +142,7 @@ public class ActivityLogin extends Activity {
                     mWaitDialog.dismiss();
                 }
 
-                Logger.error("LoginActivity onFailure, " + error.getKind());
+                Logger.error("LoginActivity onFailure, " + error.getMessage());
 
                 //Sign out of Facebook if the app didn't manage to authenticate with Spontaneous server.
                 if (AccountUtils.isAuthenticatedWithFacebook()) {

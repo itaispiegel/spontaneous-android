@@ -52,17 +52,34 @@
             android:textColor="#FFafb5bf"
             android:textSize="16sp" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#FFe1e2e6" />
+
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:onClick="onSignInClicked"
             android:src="@drawable/btn_login" />
 
-        <com.facebook.login.widget.LoginButton
-            android:id="@+id/login_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.facebook.login.widget.LoginButton xmlns:facebook="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/login_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_login_facebook"
+                android:drawableLeft="@null"
+                android:drawableStart="@null"
+                android:text="@null"
+                facebook:login_text=""
+                facebook:logout_text="" />
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/join_us"
@@ -72,6 +89,5 @@
             android:paddingTop="5dp"
             android:text="Join us now"
             android:textColor="@color/light_blue" />
-
     </LinearLayout>
 </RelativeLayout>
