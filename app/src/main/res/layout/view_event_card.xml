@@ -39,7 +39,7 @@
             android:text="When: Tuesday at 20:00, March 20th"/>
 
     <LinearLayout
-            android:id="@+id/where"
+            android:id="@+id/location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"

@@ -163,32 +163,16 @@ public class AccountUtils {
     }
 
     /**
-     * Start a flow by the specified class and context
-     *
-     * @param flowClass of the requested flow
-     * @param context   current context
-     */
-    private static void startFlow(final Context context, final Class flowClass) {
-        Intent intent = new Intent(context, flowClass);
-        if (Build.VERSION.SDK_INT >= 11) {
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        } else {
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        }
-        context.startActivity(intent);
-    }
-
-    /**
      * Starts the authentication activity
      */
     public static void startAuthenticationFlow(final Context context) {
-        startFlow(context, ActivityLogin.class);
+        ActivityUtils.startActivity(context, ActivityLogin.class);
     }
 
     /**
      * Start the main activity
      */
     public static void startMainFlow(final Context ctx) {
-        startFlow(ctx, ActivityMain.class);
+        ActivityUtils.startActivity(ctx, ActivityMain.class);
     }
 }

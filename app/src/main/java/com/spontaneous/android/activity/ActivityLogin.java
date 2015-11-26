@@ -25,7 +25,7 @@ import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.User;
 import com.spontaneous.android.util.AccountUtils;
 import com.spontaneous.android.util.Logger;
-import com.spontaneous.android.util.UIUtils;
+import com.spontaneous.android.util.ActivityUtils;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -48,18 +48,17 @@ public class ActivityLogin extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         //Animations, and content view
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.animate_fade_in, R.anim.animate_fade_out);
         setContentView(R.layout.activity_login);
 
         //Custom action bar configuration
-        UIUtils.setCustomActionBar(this);
+        ActivityUtils.setCustomActionBar(this);
 
         //Initialize email and password edittexts
         mEmail = (AutoCompleteTextView) findViewById(R.id.email);
         mPassword = (EditText) findViewById(R.id.password);
 
         //Setup email auto complete
-        UIUtils.setupEmailAutoComplete(mEmail, this);
+        ActivityUtils.setupEmailAutoComplete(mEmail, this);
 
         //Initialize FacebookSDK
         callbackManager = CallbackManager.Factory.create();
@@ -77,7 +76,7 @@ public class ActivityLogin extends Activity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mWaitDialog = UIUtils.showWaitDialog(activity);
+                mWaitDialog = ActivityUtils.showWaitDialog(activity);
             }
         };
     }

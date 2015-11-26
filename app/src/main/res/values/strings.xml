@@ -2,6 +2,7 @@
     <string name="app_name">Spontaneous</string>
 
     <string name="facebook_app_id">1643579359242605</string>
+    <string name="places_api_key">AIzaSyA3HLsaOVY6sa72JWS7RTnI1JsrIsx4Avc</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -34,4 +35,8 @@
     <string name="finish">Finish</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
+    <string name="event_title">Event title</string>
+    <string name="event_description">Tell us a little bit about the event</string>
+    <string name="create_event_title">Create an event</string>
+    <string name="event_location">Where the event is?</string>
 </resources>

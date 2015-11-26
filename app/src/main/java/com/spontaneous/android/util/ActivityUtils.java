@@ -5,8 +5,10 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +27,7 @@ import java.util.HashSet;
 /**
  * An assortment of UI Utils.
  */
-public class UIUtils {
+public class ActivityUtils {
 
     /**
      * Sets a ListView's height based on its number of children.
@@ -129,5 +131,23 @@ public class UIUtils {
             InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             inputManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
+    }
+
+
+
+    /**
+     * Start a flow by the specified class and context
+     *
+     * @param activityClass of the requested activity
+     * @param context   current context
+     */
+    public static void startActivity(final Context context, final Class activityClass) {
+        Intent intent = new Intent(context, activityClass);
+        if (Build.VERSION.SDK_INT >= 11) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        } else {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        }
+        context.startActivity(intent);
     }
 }

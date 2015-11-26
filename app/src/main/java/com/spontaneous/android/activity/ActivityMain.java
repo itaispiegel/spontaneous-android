@@ -2,6 +2,7 @@ package com.spontaneous.android.activity;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -9,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
@@ -17,7 +19,8 @@ import com.spontaneous.android.adapter.ViewPagerAdapter;
 import com.spontaneous.android.fragment.FragmentEvents;
 import com.spontaneous.android.fragment.FragmentUserProfile;
 import com.spontaneous.android.util.AccountUtils;
-import com.spontaneous.android.util.UIUtils;
+import com.spontaneous.android.util.ActivityUtils;
+import com.spontaneous.android.util.Logger;
 
 /**
  * Main activity of the app.
@@ -43,8 +46,7 @@ public class ActivityMain extends FragmentActivity implements ActionBar.TabListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UIUtils.setCustomActionBar(this);
-        overridePendingTransition(R.anim.animate_fade_in, R.anim.animate_fade_out);
+        ActivityUtils.setCustomActionBar(this);
         setContentView(R.layout.activity_main);
 
         mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), sEventsFragment, sUserProfileFragment);
@@ -68,10 +70,23 @@ public class ActivityMain extends FragmentActivity implements ActionBar.TabListe
                 @Override
                 public void onPageSelected(int position) {
                     actionBar.setSelectedNavigationItem(position);
-                    UIUtils.hideKeyboard(ActivityMain.this);
+                    ActivityUtils.hideKeyboard(ActivityMain.this);
                 }
             });
         }
+
+        mCreateEventButton = (FloatingActionButton) findViewById(R.id.create_event_button);
+        mCreateEventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Class activityCreateEvent = ActivityCreateEvent.class;
+                Intent intent = new Intent(getApplicationContext(), activityCreateEvent);
+
+                Logger.info("Navigating to " + activityCreateEvent.getName());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

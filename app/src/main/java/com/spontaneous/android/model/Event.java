@@ -1,7 +1,94 @@
 package com.spontaneous.android.model;
 
+import org.joda.time.DateTime;
+
+import java.util.Collection;
+
 /**
- * Created by Itai on 17-Nov-15.
+ * This class represents an event persisted in the database.
  */
-public class Event {
+public class Event extends BaseEntity {
+
+    /**
+     * The title of the event.
+     */
+    private String title;
+
+    /**
+     * The description of the event.
+     */
+    private String description;
+
+    /**
+     * Host user of the event.
+     * One event has one host.
+     */
+    private User host;
+
+    /**
+     * Users attending to the event.
+     * One event has many users attending.
+     */
+    private Collection<InvitedUser> invitedUsers;
+
+    /**
+     * When the event is.
+     */
+    private DateTime birthday;
+
+    /**
+     * Where the event is.
+     */
+    private String location;
+
+    public Event() {
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public User getHost() {
+        return host;
+    }
+
+    public void setHost(User host) {
+        this.host = host;
+    }
+
+    public Collection<InvitedUser> getInvitedUsers() {
+        return invitedUsers;
+    }
+
+    public void setInvitedUsers(Collection<InvitedUser> invitedUsers) {
+        this.invitedUsers = invitedUsers;
+    }
+
+    public DateTime getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(DateTime birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 }

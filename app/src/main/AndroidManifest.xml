@@ -38,6 +38,8 @@
 
         <activity android:name=".activity.ActivityMain" />
 
+        <activity android:name=".activity.ActivityCreateEvent" android:parentActivityName=".activity.ActivityMain" />
+
     </application>
 
 </manifest>

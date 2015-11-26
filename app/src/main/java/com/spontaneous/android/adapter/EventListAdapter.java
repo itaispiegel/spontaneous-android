@@ -75,14 +75,14 @@ public class EventListAdapter extends BaseAdapter {
         TextView eventDescription = (TextView) convertView.findViewById(R.id.description);
         ImageView userIsComing = (ImageView) convertView.findViewById(R.id.is_coming);
         TextView eventWhen = (TextView) convertView.findViewById(R.id.when);
-        TextView eventWhere = (TextView) convertView.findViewById(R.id.where);
+        TextView eventWhere = (TextView) convertView.findViewById(R.id.location);
 
 /*        //Set event details
         Event currEvent = mEvents.get(position);
         eventTitle.setText(currEvent.getTitle());
         eventDescription.setText(currEvent.getDescription());
         eventWhen.setText(currEvent.getWhen());
-        eventWhere.setText(currEvent.getWhere());
+        eventWhere.setText(currEvent.getLocation());
 
         //Set whether authenticated user is coming to the event.
 
