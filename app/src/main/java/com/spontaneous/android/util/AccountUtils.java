@@ -1,9 +1,7 @@
 package com.spontaneous.android.util;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -13,6 +11,7 @@ import com.facebook.login.LoginManager;
 import com.spontaneous.android.Application;
 import com.spontaneous.android.activity.ActivityLogin;
 import com.spontaneous.android.activity.ActivityMain;
+import com.spontaneous.android.activity.BaseActivity;
 import com.spontaneous.android.model.User;
 
 /**
@@ -32,7 +31,18 @@ public class AccountUtils {
      * @return whether a current user is authenticated.
      */
     public static boolean isAuthenticated() {
-        return !TextUtils.isEmpty(getFacebookToken()) && null != getAuthenticatedUser();
+
+        //Return true if the user is authenticated both on the server and on Facebook.
+        if(!TextUtils.isEmpty(getFacebookToken()) && getAuthenticatedUser() != null) {
+            return true;
+        }
+
+        //In case the user has authenticated with Facebook, but not with the server.
+        if(getFacebookToken() != null) {
+            setFacebookToken(null);
+        }
+
+        return false;
     }
 
     /**
@@ -74,7 +84,7 @@ public class AccountUtils {
     public static void logout(Context ctx) {
         AccountUtils.clearAuthenticationToken();
         AccountUtils.setAuthenticatedUser(null);
-        AccountUtils.startAuthenticationFlow(ctx);
+        AccountUtils.startAuthenticationFlow((BaseActivity) ctx);
 
         LoginManager.getInstance().logOut();
     }
@@ -165,14 +175,14 @@ public class AccountUtils {
     /**
      * Starts the authentication activity
      */
-    public static void startAuthenticationFlow(final Context context) {
-        ActivityUtils.startActivity(context, ActivityLogin.class);
+    public static void startAuthenticationFlow(final BaseActivity baseActivity) {
+        baseActivity.startActivity(ActivityLogin.class);
     }
 
     /**
      * Start the main activity
      */
-    public static void startMainFlow(final Context ctx) {
-        ActivityUtils.startActivity(ctx, ActivityMain.class);
+    public static void startMainFlow(final BaseActivity baseActivity) {
+        baseActivity.startActivity(ActivityMain.class);
     }
 }

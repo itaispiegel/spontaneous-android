@@ -1,14 +1,9 @@
 package com.spontaneous.android.activity;
 
-import android.app.ActionBar;
-import android.app.FragmentTransaction;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,18 +14,16 @@ import com.spontaneous.android.adapter.ViewPagerAdapter;
 import com.spontaneous.android.fragment.FragmentEvents;
 import com.spontaneous.android.fragment.FragmentUserProfile;
 import com.spontaneous.android.util.AccountUtils;
-import com.spontaneous.android.util.ActivityUtils;
 import com.spontaneous.android.util.Logger;
 
 /**
  * Main activity of the app.
  * Contains EventsFragment and UserProfileFragment.
  */
-public class ActivityMain extends FragmentActivity implements ActionBar.TabListener {
+public class ActivityMain extends BaseActivity {
 
     private ViewPager mViewPager;
     private ViewPagerAdapter mPagerAdapter;
-    private ActionBar actionBar;
 
     private ImageView mLoadingImage;
     private FloatingActionButton mCreateEventButton;
@@ -46,34 +39,11 @@ public class ActivityMain extends FragmentActivity implements ActionBar.TabListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityUtils.setCustomActionBar(this);
-        setContentView(R.layout.activity_main);
 
         mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), sEventsFragment, sUserProfileFragment);
 
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
         mViewPager.setAdapter(mPagerAdapter);
-
-        //Set action bar tabs
-        actionBar = getActionBar();
-
-        if (actionBar != null) {
-            ColorDrawable lightBlue = new ColorDrawable(getResources().getColor(R.color.light_blue));
-
-            actionBar.setStackedBackgroundDrawable(lightBlue);
-            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-            actionBar.addTab(actionBar.newTab().setIcon(R.drawable.tab_home_selector).setTabListener(this));
-            actionBar.addTab(actionBar.newTab().setIcon(R.drawable.tab_profile_selector).setTabListener(this));
-
-            // PageChange Listener
-            mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-                @Override
-                public void onPageSelected(int position) {
-                    actionBar.setSelectedNavigationItem(position);
-                    ActivityUtils.hideKeyboard(ActivityMain.this);
-                }
-            });
-        }
 
         mCreateEventButton = (FloatingActionButton) findViewById(R.id.create_event_button);
         mCreateEventButton.setOnClickListener(new View.OnClickListener() {
@@ -90,11 +60,19 @@ public class ActivityMain extends FragmentActivity implements ActionBar.TabListe
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
+    protected int getLayoutResourceId() {
+        return R.layout.activity_main;
+    }
 
-        return super.onCreateOptionsMenu(menu);
+    @Override
+    protected boolean showToolbar() {
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
     }
 
     // Handle options menu selection
@@ -110,19 +88,5 @@ public class ActivityMain extends FragmentActivity implements ActionBar.TabListe
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-        actionBar.setSelectedNavigationItem(tab.getPosition());
-        mViewPager.setCurrentItem(tab.getPosition());
-    }
-
-    @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-    }
-
-    @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
     }
 }

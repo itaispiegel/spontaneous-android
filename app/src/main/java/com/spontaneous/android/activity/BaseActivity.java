@@ -1,7 +1,5 @@
-package com.spontaneous.android.util;
+package com.spontaneous.android.activity;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -9,8 +7,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.view.LayoutInflater;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -25,15 +26,51 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
- * An assortment of UI Utils.
+ * Base activity template.
+ * Contains custom action bar integration.
  */
-public class ActivityUtils {
+public abstract class BaseActivity extends AppCompatActivity {
+
+    protected Toolbar toolbar;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(getLayoutResourceId());
+
+        if (showToolbar()) {
+            setCustomActionBar();
+        }
+    }
+
+    private void setCustomActionBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        toolbar.setClickable(true);
+
+        this.toolbar = toolbar;
+
+        setSupportActionBar(toolbar);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayShowCustomEnabled(true);
+        }
+    }
+
+    protected Toolbar getToolbar() {
+        return toolbar;
+    }
+
+    protected abstract int getLayoutResourceId();
+
+    protected abstract boolean showToolbar();
 
     /**
      * Sets a ListView's height based on its number of children.
+     *
      * @param listView to apply the height
      */
-    public static void setListviewHeightBasedOnChildren(ListView listView) {
+    public void setListviewHeightBasedOnChildren(ListView listView) {
         //Get adapter and exit method if it is null
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {
@@ -55,14 +92,16 @@ public class ActivityUtils {
         listView.requestLayout();
     }
 
+
     /**
      * Show a progress dialog with the text "Loading" in the given activity.
+     *
      * @return the progress dialog
      */
-    public static ProgressDialog showWaitDialog(Activity activity) {
-        final String message = activity.getString(R.string.message_loading);
+    public ProgressDialog showWaitDialog() {
+        final String message = getString(R.string.message_loading);
 
-        ProgressDialog waitDialog = new ProgressDialog(activity);
+        ProgressDialog waitDialog = new ProgressDialog(this);
         waitDialog.setMessage(message);
         waitDialog.setCancelable(true);
         waitDialog.setIndeterminate(true);
@@ -71,44 +110,29 @@ public class ActivityUtils {
         return waitDialog;
     }
 
-    /**
-     * Sets the application's custom ActionBar to the given context.
-     */
-    public static void setCustomActionBar(Context ctx) {
-        ActionBar actionBar = ((Activity) ctx).getActionBar();
-
-        LayoutInflater inflater = LayoutInflater.from(ctx);
-
-        View mCustomActionBar = inflater.inflate(R.layout.action_bar, null);
-
-        //No reason that action bar should be null. But just in case.
-        if (actionBar != null) {
-            actionBar.setCustomView(mCustomActionBar);
-            actionBar.setDisplayShowCustomEnabled(true);
-        }
-    }
 
     /**
      * Setup email auto complete to an AutoCompleteTextView.
      * Uses email from device data.
-     * @param view to set the AutoComplete to.
+     *
+     * @param view    to set the AutoComplete to.
      * @param context of the activity.
      */
-    public static void setupEmailAutoComplete(AutoCompleteTextView view, Context context) {
+    public void setupEmailAutoComplete(AutoCompleteTextView view, Context context) {
         final Uri emailContentUri = ContactsContract.CommonDataKinds.Email.CONTENT_URI;
         ContentResolver cr = context.getContentResolver();
 
         Cursor emailCursor = cr.query(emailContentUri, null, null, null, null);
 
         //Exit method if email cursor is null
-        if(emailCursor == null) {
+        if (emailCursor == null) {
             return;
         }
 
         //HashSet because we want the emails to be unique.
         HashSet<String> emailsCollection = new HashSet<>(emailCursor.getCount());
 
-        while(emailCursor.moveToNext()) {
+        while (emailCursor.moveToNext()) {
             int columnIndex = emailCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA);
             String email = emailCursor.getString(columnIndex);
 
@@ -125,29 +149,27 @@ public class ActivityUtils {
     /**
      * Hide the keyboard on the give activity.
      */
-    public static void hideKeyboard(Activity activity) {
-        View currentFocus = activity.getCurrentFocus();
+    public void hideKeyboard() {
+        View currentFocus = getCurrentFocus();
         if (currentFocus != null) {
-            InputMethodManager inputManager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             inputManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
-
-
 
     /**
      * Start a flow by the specified class and context
      *
      * @param activityClass of the requested activity
-     * @param context   current context
      */
-    public static void startActivity(final Context context, final Class activityClass) {
-        Intent intent = new Intent(context, activityClass);
+    public void startActivity(Class activityClass) {
+        Intent intent = new Intent(this, activityClass);
         if (Build.VERSION.SDK_INT >= 11) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         } else {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         }
-        context.startActivity(intent);
+
+        startActivity(intent);
     }
 }

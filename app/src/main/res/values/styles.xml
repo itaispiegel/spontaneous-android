@@ -1,11 +1,8 @@
 <resources>
 
-    <style name="AppTheme" parent="android:Theme.Holo.Light">
-        <item name="android:actionBarStyle">@style/AppTheme.ActionBar</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:colorPrimary">@color/light_blue</item>
+        <item name="android:colorPrimaryDark">@color/light_blue</item>
     </style>
 
-    <style name="AppTheme.ActionBar" parent="android:Widget.Holo.Light.ActionBar.Solid">
-        <item name="android:background">@color/light_blue</item>
-        <item name="android:icon">@android:color/transparent</item>
-    </style>
 </resources>

@@ -1,56 +1,82 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/action_bar" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="8dp"
+        android:text="@string/create_event_title"
+        android:textSize="30sp" />
+
+    <EditText
+        android:id="@+id/create_event_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:hint="@string/event_title"
+        android:imeOptions="actionNext"
+        android:inputType="textCapWords"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/create_event_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:hint="@string/event_description"
+        android:imeOptions="actionNext"
+        android:inputType="textMultiLine|textCapSentences"
+        android:textSize="18sp" />
+
+    <AutoCompleteTextView
+        android:id="@+id/create_event_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:hint="@string/event_location"
+        android:imeOptions="actionNext"
+        android:inputType="textCapWords|textPostalAddress"
+        android:textSize="18sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="8dp"
-            android:text="@string/create_event_title"
-            android:textSize="30sp" />
+        android:layout_margin="8dp"
+        android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/create_event_title"
-            android:layout_width="match_parent"
+            android:id="@+id/create_event_date"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:hint="@string/event_title"
+            android:layout_weight="1"
+            android:hint="@string/event_date"
             android:imeOptions="actionNext"
-            android:inputType="textCapWords"
-            android:textSize="18sp" />
+            android:editable="false"
+            android:textSize="18sp"/>
 
         <EditText
-            android:id="@+id/create_event_description"
-            android:layout_width="match_parent"
+            android:id="@+id/create_event_time"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:hint="@string/event_description"
+            android:layout_weight="1"
+            android:hint="@string/event_time"
             android:imeOptions="actionNext"
-            android:inputType="textMultiLine|textCapSentences"
-            android:textSize="18sp" />
+            android:inputType="datetime"
+            android:textSize="18sp"/>
 
-        <AutoCompleteTextView
-            android:id="@+id/create_event_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:hint="@string/event_location"
-            android:imeOptions="actionDone"
-            android:inputType="textCapWords|textPostalAddress"
-            android:textSize="18sp" />
-
-        <Button
-            android:id="@+id/create_ride_done"
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            android:text="Create" />
     </LinearLayout>
-</ScrollView>
+
+    <com.android.ex.chips.RecipientEditTextView
+        android:id="@+id/create_event_invited_users"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:hint="@string/event_invited_users"
+        android:inputType="textEmailAddress|textMultiLine"
+        android:textSize="18sp"/>
+</LinearLayout>

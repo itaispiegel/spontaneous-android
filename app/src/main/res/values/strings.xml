@@ -39,4 +39,8 @@
     <string name="event_description">Tell us a little bit about the event</string>
     <string name="create_event_title">Create an event</string>
     <string name="event_location">Where the event is?</string>
+    <string name="done">DONE</string>
+    <string name="event_invited_users">Who would you like to invite?</string>
+    <string name="event_date">Date</string>
+    <string name="event_time">Time</string>
 </resources>

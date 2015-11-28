@@ -1,6 +1,5 @@
 package com.spontaneous.android.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -10,14 +9,13 @@ import com.facebook.FacebookSdk;
 import com.spontaneous.android.R;
 import com.spontaneous.android.util.AccountUtils;
 
-public class ActivitySplash extends Activity {
+public class ActivitySplash extends BaseActivity {
 
-    private static final long SPLASH_DURATION = 1500;
+    private static final long SPLASH_DURATION = 1200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         if(AccountUtils.isAuthenticated()) {
@@ -27,21 +25,35 @@ public class ActivitySplash extends Activity {
         }
     }
 
+    @Override
+    protected int getLayoutResourceId() {
+        return R.layout.activity_splash;
+    }
+
+    @Override
+    protected boolean showToolbar() {
+        return false;
+    }
+
     private void startAuthenticationFlow() {
+        final BaseActivity baseActivity = this;
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                AccountUtils.startAuthenticationFlow(getApplicationContext());
+                AccountUtils.startAuthenticationFlow(baseActivity);
                 finish();
             }
         }, SPLASH_DURATION);
     }
 
     private void startMainFlow() {
+        final BaseActivity baseActivity = this;
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                AccountUtils.startMainFlow(getApplicationContext());
+                AccountUtils.startMainFlow(baseActivity);
                 finish();
             }
         }, SPLASH_DURATION);

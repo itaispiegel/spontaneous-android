@@ -25,7 +25,6 @@ import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.User;
 import com.spontaneous.android.util.AccountUtils;
 import com.spontaneous.android.util.Logger;
-import com.spontaneous.android.util.ActivityUtils;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -34,7 +33,7 @@ import retrofit.client.Response;
 /**
  * Created by Itai on 13-Nov-15.
  */
-public class ActivityLogin extends Activity {
+public class ActivityLogin extends BaseActivity {
 
     private Dialog mWaitDialog;
 
@@ -48,17 +47,13 @@ public class ActivityLogin extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         //Animations, and content view
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
-        //Custom action bar configuration
-        ActivityUtils.setCustomActionBar(this);
 
         //Initialize email and password edittexts
         mEmail = (AutoCompleteTextView) findViewById(R.id.email);
         mPassword = (EditText) findViewById(R.id.password);
 
         //Setup email auto complete
-        ActivityUtils.setupEmailAutoComplete(mEmail, this);
+        setupEmailAutoComplete(mEmail, this);
 
         //Initialize FacebookSDK
         callbackManager = CallbackManager.Factory.create();
@@ -71,12 +66,22 @@ public class ActivityLogin extends Activity {
         loginButton.setOnClickListener(getLoginButtonOnClickListener());
     }
 
+    @Override
+    protected int getLayoutResourceId() {
+        return R.layout.activity_login;
+    }
+
+    @Override
+    protected boolean showToolbar() {
+        return true;
+    }
+
     private View.OnClickListener getLoginButtonOnClickListener() {
         final Activity activity = this;
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mWaitDialog = ActivityUtils.showWaitDialog(activity);
+                mWaitDialog = showWaitDialog();
             }
         };
     }

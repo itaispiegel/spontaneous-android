@@ -3,30 +3,32 @@ package com.spontaneous.android.util;
 import android.util.Log;
 
 /**
- * Created by Eidan on 4/25/2015.
+ * This class contains method four logging output.
  */
 
-public class Logger {
+public abstract class Logger {
 
-    private static final String LOG_TAG = "RideFind";
-
-    private Logger() {
-
-    }
+    private static final String LOG_TAG = "Spontaneous";
 
     /**
      * Send an info log message.
      */
     public static void info(String s) {
-        if(s != null) {
-            Log.i(LOG_TAG, s);
+        if (s == null) {
+            s = "";
         }
+
+        Log.i(LOG_TAG, s);
     }
 
     /**
      * Send a debug log message.
      */
     public static void debug(String s) {
+        if (s == null) {
+            s = "";
+        }
+
         Log.d(LOG_TAG, s);
     }
 
@@ -34,9 +36,12 @@ public class Logger {
      * Send an error log message.
      */
     public static void error(String s) {
+        if (s == null) {
+            s = "";
+        }
+
         Log.e(LOG_TAG, s);
     }
-
 }
 
 
