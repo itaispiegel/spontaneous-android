@@ -1,6 +1,7 @@
 package com.spontaneous.android.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,11 @@ import android.widget.TextView;
 
 import com.spontaneous.android.R;
 import com.spontaneous.android.model.Event;
+import com.spontaneous.android.model.InvitedUser;
+import com.spontaneous.android.model.User;
+import com.spontaneous.android.util.AccountUtils;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -40,7 +45,7 @@ public class EventListAdapter extends BaseAdapter {
         this.mEvents = new LinkedList<>();
     }
 
-    public void addAll(List<Event> events) {
+    public void addAll(Collection<Event> events) {
         if (null != events) {
             mEvents.addAll(events);
         }
@@ -66,6 +71,7 @@ public class EventListAdapter extends BaseAdapter {
         if (mInflater == null) {
             mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
+
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.list_item_events, null);
         }
@@ -73,32 +79,33 @@ public class EventListAdapter extends BaseAdapter {
         //Declare event details
         TextView eventTitle = (TextView) convertView.findViewById(R.id.title);
         TextView eventDescription = (TextView) convertView.findViewById(R.id.description);
-        ImageView userIsComing = (ImageView) convertView.findViewById(R.id.is_coming);
+        ImageView userComingState = (ImageView) convertView.findViewById(R.id.is_coming);
         TextView eventWhen = (TextView) convertView.findViewById(R.id.when);
         TextView eventWhere = (TextView) convertView.findViewById(R.id.where);
 
-/*        //Set event details
+        //Set event details
         Event currEvent = mEvents.get(position);
         eventTitle.setText(currEvent.getTitle());
         eventDescription.setText(currEvent.getDescription());
-        eventWhen.setText(currEvent.getWhen());
+        eventWhen.setText("");
         eventWhere.setText(currEvent.getWhere());
 
-        //Set whether authenticated user is coming to the event.
-
-        User currUser = AccountUtils.getAuthenticatedUser();
+        //Set whether authenticated user is attending the event.
+        User authenticatedUser = AccountUtils.getAuthenticatedUser();
         for (InvitedUser invitedUser : currEvent.getInvitedUsers()) {
-            if (invitedUser.getUser().getUid() == currUser.getUid()) {
+            if (invitedUser.getUser().equals(authenticatedUser)) {
                 Drawable isComingDrawable;
 
-                if (invitedUser.isComing()) {
-                    isComingDrawable = mContext.getResources().getDrawable(R.drawable.ic_cab_done_holo_light);
+                if (invitedUser.isAttending()) {
+                    isComingDrawable = mContext.getDrawable(R.drawable.ic_cab_done_holo_light);
                 } else {
-                    isComingDrawable = mContext.getResources().getDrawable(R.drawable.abc_ic_clear_search_api_holo_light);
+                    //isComingDrawable = mContext.getDrawable(R.drawable.abc_ic_clear_search_api_holo_light);
+                    isComingDrawable = mContext.getDrawable(R.drawable.ic_like);
                 }
-                userIsComing.setImageDrawable(isComingDrawable);
+
+                userComingState.setImageDrawable(isComingDrawable);
             }
-        }*/
+        }
 
         return convertView;
     }

@@ -3,6 +3,7 @@ package com.spontaneous.android.model;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Created by Eidan on 12/27/2014.
@@ -41,6 +42,6 @@ public abstract class BaseEntity implements Serializable {
 
         BaseEntity that = (BaseEntity) o;
 
-        return getId() == that.getId();
+        return Objects.equals(getId(), that.getId());
     }
 }
