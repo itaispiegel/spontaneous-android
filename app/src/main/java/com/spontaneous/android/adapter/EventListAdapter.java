@@ -19,6 +19,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -82,12 +83,12 @@ public class EventListAdapter extends BaseAdapter {
             convertView = mInflater.inflate(R.layout.list_item_events, parent, false);
         }
 
-        //Declare event details
+        //Initialize views
         TextView eventTitle = (TextView) convertView.findViewById(R.id.title);
         TextView eventDescription = (TextView) convertView.findViewById(R.id.description);
-        ImageView isUserComing = (ImageView) convertView.findViewById(R.id.is_attending);
-        TextView eventWhen = (TextView) convertView.findViewById(R.id.when);
-        TextView eventWhere = (TextView) convertView.findViewById(R.id.location);
+        ImageView isUserAttending = (ImageView) convertView.findViewById(R.id.is_attending);
+        TextView eventDate = (TextView) convertView.findViewById(R.id.when);
+        TextView eventLocation = (TextView) convertView.findViewById(R.id.location);
 
         //Set event details
         Event currEvent = mEvents.get(position);
@@ -96,25 +97,12 @@ public class EventListAdapter extends BaseAdapter {
 
         eventTitle.setText(currEvent.getTitle());
         eventDescription.setText(currEvent.getDescription());
-        eventWhen.setText(dateFormat.print(
+        eventDate.setText(dateFormat.print(
                 currEvent.getDate()
         ));
-        eventWhere.setText(currEvent.getLocation());
+        eventLocation.setText(currEvent.getLocation());
 
-        //Set whether authenticated user is attending the event.
-        User currUser = AccountUtils.getAuthenticatedUser();
-        for (InvitedUser invitedUser : currEvent.getInvitedUsers()) {
-            if (invitedUser.getUser().getId() == currUser.getId()) {
-                Drawable isComingDrawable;
-
-                if (invitedUser.isAttending()) {
-                    isComingDrawable = mContext.getDrawable(R.drawable.ic_cab_done_holo_light);
-                } else {
-                    isComingDrawable = mContext.getDrawable(R.drawable.ic_cab_done_holo_light);
-                }
-                isUserComing.setImageDrawable(isComingDrawable);
-            }
-        }
+        //TODO: Set whether authenticated user is attending the event.
 
         return convertView;
     }

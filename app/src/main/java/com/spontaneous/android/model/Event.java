@@ -75,7 +75,6 @@ public class Event extends BaseEntity {
 
     public void setHost(User host) {
         this.host = host;
-        inviteUser(host);
     }
 
     public Collection<InvitedUser> getInvitedUsers() {

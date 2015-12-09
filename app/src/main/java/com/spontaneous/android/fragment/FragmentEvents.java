@@ -38,7 +38,6 @@ public class FragmentEvents extends Fragment {
         mListEmptyView = layout.findViewById(R.id.empty);
 
         mEventListAdapter = new EventListAdapter(getActivity());
-
         mEventsListView = (ListView) layout.findViewById(R.id.events_listview);
         mEventsListView.setAdapter(mEventListAdapter);
         mEventsListView.setEmptyView(mListEmptyView);

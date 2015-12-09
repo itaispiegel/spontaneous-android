@@ -5,6 +5,7 @@ import com.spontaneous.android.util.GsonFactory;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * This class is a superclass entity which defines the template for all entities.
@@ -42,7 +43,7 @@ public abstract class BaseEntity implements Serializable {
 
         BaseEntity that = (BaseEntity) o;
 
-        return getId() == that.getId();
+        return Objects.equals(getId(), that.getId());
     }
 
     public String toJson() {
