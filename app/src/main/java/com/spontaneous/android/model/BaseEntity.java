@@ -1,19 +1,20 @@
 package com.spontaneous.android.model;
 
+import com.spontaneous.android.util.GsonFactory;
+
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
 
 /**
- * Created by Eidan on 12/27/2014.
+ * This class is a superclass entity which defines the template for all entities.
  */
-
 public abstract class BaseEntity implements Serializable {
 
-    protected long id;
-    protected DateTime creationTime;
+    private long id;
+    private DateTime creationTime;
 
-    protected BaseEntity() {
+    BaseEntity() {
         this.creationTime = new DateTime();
     }
 
@@ -21,7 +22,7 @@ public abstract class BaseEntity implements Serializable {
         return id;
     }
 
-    public void setId(long id) {
+    protected void setId(long id) {
         this.id = id;
     }
 
@@ -29,7 +30,7 @@ public abstract class BaseEntity implements Serializable {
         return creationTime;
     }
 
-    public void setCreationTime(DateTime creationTime) {
+    protected void setCreationTime(DateTime creationTime) {
         this.creationTime = creationTime;
     }
 
@@ -42,5 +43,9 @@ public abstract class BaseEntity implements Serializable {
         BaseEntity that = (BaseEntity) o;
 
         return getId() == that.getId();
+    }
+
+    public String toJson() {
+        return GsonFactory.getGson().toJson(this);
     }
 }

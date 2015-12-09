@@ -1,7 +1,7 @@
 package com.spontaneous.android.http.request;
 
 /**
- * Created by eidan on 5/23/15.
+ * This is a Facebook login request sent to the server.
  */
 public class FacebookLoginRequestModel {
     private final String facebookUserId;

@@ -1,6 +1,7 @@
 package com.spontaneous.android.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,14 @@ import android.widget.TextView;
 
 import com.spontaneous.android.R;
 import com.spontaneous.android.model.Event;
+import com.spontaneous.android.model.InvitedUser;
+import com.spontaneous.android.model.User;
+import com.spontaneous.android.util.AccountUtils;
 
-import java.util.LinkedList;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,7 +29,7 @@ public class EventListAdapter extends BaseAdapter {
     /**
      * Context of the activity.
      */
-    private Context mContext;
+    private final Context mContext;
 
     /**
      * Connect between adapter logic and view.
@@ -37,13 +44,17 @@ public class EventListAdapter extends BaseAdapter {
 
     public EventListAdapter(Context mContext) {
         this.mContext = mContext;
-        this.mEvents = new LinkedList<>();
+        this.mEvents = new ArrayList<>();
+    }
+
+    public void add(Event event) {
+        mEvents.add(event);
+        notifyDataSetChanged();
     }
 
     public void addAll(List<Event> events) {
-        if (null != events) {
-            mEvents.addAll(events);
-        }
+        mEvents.addAll(events);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -66,39 +77,44 @@ public class EventListAdapter extends BaseAdapter {
         if (mInflater == null) {
             mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
+
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.list_item_events, null);
+            convertView = mInflater.inflate(R.layout.list_item_events, parent, false);
         }
 
         //Declare event details
         TextView eventTitle = (TextView) convertView.findViewById(R.id.title);
         TextView eventDescription = (TextView) convertView.findViewById(R.id.description);
-        ImageView userIsComing = (ImageView) convertView.findViewById(R.id.is_coming);
+        ImageView isUserComing = (ImageView) convertView.findViewById(R.id.is_attending);
         TextView eventWhen = (TextView) convertView.findViewById(R.id.when);
         TextView eventWhere = (TextView) convertView.findViewById(R.id.location);
 
-/*        //Set event details
+        //Set event details
         Event currEvent = mEvents.get(position);
+
+        DateTimeFormatter dateFormat = DateTimeFormat.forPattern("dd-MM-yyyy");
+
         eventTitle.setText(currEvent.getTitle());
         eventDescription.setText(currEvent.getDescription());
-        eventWhen.setText(currEvent.getWhen());
+        eventWhen.setText(dateFormat.print(
+                currEvent.getDate()
+        ));
         eventWhere.setText(currEvent.getLocation());
 
-        //Set whether authenticated user is coming to the event.
-
+        //Set whether authenticated user is attending the event.
         User currUser = AccountUtils.getAuthenticatedUser();
         for (InvitedUser invitedUser : currEvent.getInvitedUsers()) {
-            if (invitedUser.getUser().getUid() == currUser.getUid()) {
+            if (invitedUser.getUser().getId() == currUser.getId()) {
                 Drawable isComingDrawable;
 
-                if (invitedUser.isComing()) {
-                    isComingDrawable = mContext.getResources().getDrawable(R.drawable.ic_cab_done_holo_light);
+                if (invitedUser.isAttending()) {
+                    isComingDrawable = mContext.getDrawable(R.drawable.ic_cab_done_holo_light);
                 } else {
-                    isComingDrawable = mContext.getResources().getDrawable(R.drawable.abc_ic_clear_search_api_holo_light);
+                    isComingDrawable = mContext.getDrawable(R.drawable.ic_cab_done_holo_light);
                 }
-                userIsComing.setImageDrawable(isComingDrawable);
+                isUserComing.setImageDrawable(isComingDrawable);
             }
-        }*/
+        }
 
         return convertView;
     }

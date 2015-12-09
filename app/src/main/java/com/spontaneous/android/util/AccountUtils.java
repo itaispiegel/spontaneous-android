@@ -56,7 +56,7 @@ public class AccountUtils {
     /**
      * @return the Facebook token of the authenticated user.
      */
-    public static String getFacebookToken() {
+    private static String getFacebookToken() {
         if (sFacebookToken == null) {
             SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Application.getInstance());
             sFacebookToken = sp.getString(PREF_AUTH_TOKEN, null);
@@ -92,7 +92,7 @@ public class AccountUtils {
     /**
      * Clears the current Facebook token.
      */
-    public static void clearAuthenticationToken() {
+    private static void clearAuthenticationToken() {
         AccountUtils.sFacebookToken = null;
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Application.getInstance());
         sp.edit().putString(PREF_AUTH_TOKEN, null).apply();
@@ -166,7 +166,7 @@ public class AccountUtils {
     /**
      * sets the authenticated user's id
      */
-    public static void setId(final Long id) {
+    private static void setId(final Long id) {
         AccountUtils.sId = id;
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(Application.getInstance());
         sp.edit().putString(PREF_ID, String.valueOf(id)).apply();

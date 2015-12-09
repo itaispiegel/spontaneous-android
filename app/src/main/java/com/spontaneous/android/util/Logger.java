@@ -5,7 +5,6 @@ import android.util.Log;
 /**
  * This class contains method four logging output.
  */
-
 public abstract class Logger {
 
     private static final String LOG_TAG = "Spontaneous";
@@ -41,6 +40,13 @@ public abstract class Logger {
         }
 
         Log.e(LOG_TAG, s);
+    }
+
+    /**
+     * @return Log tag string
+     */
+    public static String getTag() {
+        return LOG_TAG;
     }
 }
 

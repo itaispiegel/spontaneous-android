@@ -13,6 +13,7 @@ import com.spontaneous.android.R;
 import com.spontaneous.android.adapter.ViewPagerAdapter;
 import com.spontaneous.android.fragment.FragmentEvents;
 import com.spontaneous.android.fragment.FragmentUserProfile;
+import com.spontaneous.android.model.Event;
 import com.spontaneous.android.util.AccountUtils;
 import com.spontaneous.android.util.Logger;
 
@@ -28,19 +29,21 @@ public class ActivityMain extends BaseActivity {
     private ImageView mLoadingImage;
     private FloatingActionButton mCreateEventButton;
 
-    private static FragmentUserProfile sUserProfileFragment;
-    private static FragmentEvents sEventsFragment;
+    private FragmentUserProfile mUserProfileFragment;
+    private FragmentEvents mEventsFragment;
 
-    static {
-        sUserProfileFragment = new FragmentUserProfile();
-        sEventsFragment = new FragmentEvents();
+    private void initFragments() {
+        mUserProfileFragment = new FragmentUserProfile();
+        mEventsFragment = new FragmentEvents();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), sEventsFragment, sUserProfileFragment);
+        initFragments();
+
+        mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), mEventsFragment, mUserProfileFragment);
 
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
         mViewPager.setAdapter(mPagerAdapter);
@@ -50,11 +53,11 @@ public class ActivityMain extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                Class activityCreateEvent = ActivityCreateEvent.class;
-                Intent intent = new Intent(getApplicationContext(), activityCreateEvent);
+                Class activity = ActivityCreateEvent.class;
+                Intent intent = new Intent(getApplicationContext(), ActivityCreateEvent.class);
 
-                Logger.info("Navigating to " + activityCreateEvent.getName());
-                startActivity(intent);
+                Logger.info("Navigating to " + activity.getName());
+                startActivityForResult(intent, 1);
             }
         });
     }
@@ -87,6 +90,20 @@ public class ActivityMain extends BaseActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        String extraName = getString(R.string.created_event_intent_extra);
+
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                Event event = (Event) data.getSerializableExtra(extraName);
+                mEventsFragment.addEvent(event);
+            }
         }
     }
 }

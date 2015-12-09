@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.spontaneous.android.R;
 
@@ -31,7 +32,7 @@ import java.util.HashSet;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-    protected Toolbar toolbar;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +45,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     private void setCustomActionBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.custom_toolbar);
         toolbar.setClickable(true);
 
-        this.toolbar = toolbar;
+        this.mToolbar = toolbar;
 
         setSupportActionBar(toolbar);
 
@@ -58,19 +59,24 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     protected Toolbar getToolbar() {
-        return toolbar;
+        return mToolbar;
     }
 
     protected abstract int getLayoutResourceId();
 
     protected abstract boolean showToolbar();
 
+    void setToolbarMessage(String message) {
+        TextView toolbarMessage = (TextView) findViewById(R.id.toolbar_message);
+        toolbarMessage.setText(message);
+    }
+
     /**
      * Sets a ListView's height based on its number of children.
      *
      * @param listView to apply the height
      */
-    public void setListviewHeightBasedOnChildren(ListView listView) {
+    void setListviewHeightBasedOnChildren(ListView listView) {
         //Get adapter and exit method if it is null
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {
@@ -98,7 +104,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      *
      * @return the progress dialog
      */
-    public ProgressDialog showWaitDialog() {
+    ProgressDialog showWaitDialog() {
         final String message = getString(R.string.message_loading);
 
         ProgressDialog waitDialog = new ProgressDialog(this);
@@ -118,7 +124,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param view    to set the AutoComplete to.
      * @param context of the activity.
      */
-    public void setupEmailAutoComplete(AutoCompleteTextView view, Context context) {
+    void setupEmailAutoComplete(AutoCompleteTextView view, Context context) {
         final Uri emailContentUri = ContactsContract.CommonDataKinds.Email.CONTENT_URI;
         ContentResolver cr = context.getContentResolver();
 
@@ -149,7 +155,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * Hide the keyboard on the give activity.
      */
-    public void hideKeyboard() {
+    void hideKeyboard() {
         View currentFocus = getCurrentFocus();
         if (currentFocus != null) {
             InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

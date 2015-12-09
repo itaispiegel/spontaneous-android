@@ -1,6 +1,5 @@
 package com.spontaneous.android.activity;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,7 +30,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 /**
- * Created by Itai on 13-Nov-15.
+ * Using this activity, the user can log in to the application using an email and password combination, or via Facebook.
  */
 public class ActivityLogin extends BaseActivity {
 
@@ -39,9 +38,9 @@ public class ActivityLogin extends BaseActivity {
 
     private AutoCompleteTextView mEmail;
     private EditText mPassword;
-    private LoginButton loginButton;
+    private LoginButton mLoginButton;
 
-    private CallbackManager callbackManager;
+    private CallbackManager mCallbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,14 +55,14 @@ public class ActivityLogin extends BaseActivity {
         setupEmailAutoComplete(mEmail, this);
 
         //Initialize FacebookSDK
-        callbackManager = CallbackManager.Factory.create();
+        mCallbackManager = CallbackManager.Factory.create();
 
         //Set login button image, permissions, callback and click listener
-        loginButton = (LoginButton) findViewById(R.id.login_button);
+        mLoginButton = (LoginButton) findViewById(R.id.login_button);
 
-        loginButton.setReadPermissions("public_profile", "user_friends", "email");
-        loginButton.registerCallback(callbackManager, getFacebookCallback());
-        loginButton.setOnClickListener(getLoginButtonOnClickListener());
+        mLoginButton.setReadPermissions("public_profile", "user_friends", "email");
+        mLoginButton.registerCallback(mCallbackManager, getFacebookCallback());
+        mLoginButton.setOnClickListener(getLoginButtonOnClickListener());
     }
 
     @Override
@@ -77,7 +76,6 @@ public class ActivityLogin extends BaseActivity {
     }
 
     private View.OnClickListener getLoginButtonOnClickListener() {
-        final Activity activity = this;
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +86,7 @@ public class ActivityLogin extends BaseActivity {
 
     private FacebookCallback<LoginResult> getFacebookCallback() {
         return new FacebookCallback<LoginResult>() {
+
             @Override
             public void onSuccess(LoginResult loginResult) {
                 AccessToken token = loginResult.getAccessToken();
@@ -175,7 +174,7 @@ public class ActivityLogin extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+        mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override

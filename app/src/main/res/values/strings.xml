@@ -1,20 +1,28 @@
 <resources>
+
+    <!--App configurations-->
     <string name="app_name">Spontaneous</string>
-
-    <string name="facebook_app_id">1643579359242605</string>
-    <string name="places_api_key">AIzaSyA3HLsaOVY6sa72JWS7RTnI1JsrIsx4Avc</string>
-
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="login_title">Spontaneous</string>
+    <string name="app_name_caps">SPONTANEOUS</string>
+    <string name="app_slogan">MAKE EVERY EVENT EPIC</string>
+
+    <!--Login Page-->
+    <string name="login_with_facebook">Login with Facebook</string>
+
+    <!--Dependencies-->
+    <string name="facebook_app_id">1643579359242605</string>
+    <string name="google_api_key">AIzaSyA3HLsaOVY6sa72JWS7RTnI1JsrIsx4Avc</string>
+
+    <!--Server Messages-->
     <string name="error_network">network error</string>
     <string name="error_no_response">no response error</string>
     <string name="error_network_http_error">http error</string>
     <string name="error_unknown">unknown error</string>
 
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="app_name_caps">SPONTANEOUS</string>
-    <string name="app_slogan">MAKE EVERY EVENT EPIC</string>
+    <!--Intent extras-->
+    <string name="created_event_intent_extra">com.spontaneous.android.CREATED_EVENT</string>
+    <string name="event_card_intent_extras">com.spontaneous.android.EVENT_CARD</string>
     <string name="who_is_coming">Who is coming?</string>
     <string name="required_items">Required Items</string>
     <string name="label_email">Email Address</string>
@@ -37,10 +45,16 @@
     <string name="description">Description</string>
     <string name="event_title">Event title</string>
     <string name="event_description">Tell us a little bit about the event</string>
-    <string name="create_event_title">Create an event</string>
     <string name="event_location">Where the event is?</string>
     <string name="done">DONE</string>
     <string name="event_invited_users">Who would you like to invite?</string>
     <string name="event_date">Date</string>
     <string name="event_time">Time</string>
+
+    <string name="is_attending_icon_description">This is an icon that shows whether the user attending the event.</string>
+    <string name="user_gender_icon_description">This is an icon that shows the gender of the user.</string>
+
+    <!--Event Page-->
+    <string name="event_page_date">Date: %1$s</string>
+    <string name="event_page_location">Location: %1$s</string>
 </resources>

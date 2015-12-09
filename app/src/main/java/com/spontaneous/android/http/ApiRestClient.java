@@ -13,7 +13,7 @@ import retrofit.RetrofitError;
 import retrofit.converter.GsonConverter;
 
 /**
- * This class is a configuration class for server requests.
+ * This is a configuration class for server requests.
  */
 public final class ApiRestClient {
 

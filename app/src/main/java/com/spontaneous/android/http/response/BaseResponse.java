@@ -36,7 +36,7 @@ public class BaseResponse<T> {
     /**
      * Create a response with a body. Default response code is ResponseCodes.SUCCESS.
      */
-    public BaseResponse(int statusCode, T body) {
+    public BaseResponse(T body) {
         this.statusCode = SUCCESS;
         this.body = body;
     }

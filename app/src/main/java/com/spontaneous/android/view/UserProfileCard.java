@@ -54,7 +54,7 @@ public class UserProfileCard extends FrameLayout {
         mEmail = (TextView) layout.findViewById(R.id.user_email);
     }
 
-    public void setUser(User mUser) {
+    private void setUser(User mUser) {
         this.mUser = mUser;
 
         mProfilePicture.setImageUrl(mUser.getProfilePicture(), Application.getInstance().getImageLoader());
@@ -64,9 +64,9 @@ public class UserProfileCard extends FrameLayout {
 
         Drawable genderDrawable;
         if (mUser.getGender() == User.Gender.Female) {
-            genderDrawable = mContext.getResources().getDrawable(R.drawable.ic_female);
+            genderDrawable = mContext.getDrawable(R.drawable.ic_female);
         } else {
-            genderDrawable = mContext.getResources().getDrawable(R.drawable.ic_male);
+            genderDrawable = mContext.getDrawable(R.drawable.ic_male);
         }
         mGenderPhoto.setImageDrawable(genderDrawable);
 

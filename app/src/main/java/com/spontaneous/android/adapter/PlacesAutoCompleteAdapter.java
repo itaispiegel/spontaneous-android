@@ -22,32 +22,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Itai on 26-Nov-15.
+ * This is adapter auto completes places from the Google Places API.
  */
 public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
 
-    private Context context;
+    private final Context context;
 
     private static final String BASE_PLACES_API_URL = "https://maps.googleapis.com/maps/api/place";
     private static final String TYPE_AUTO_COMPLETE = "/autocomplete";
     private static final String OUT_JSON = "/json";
 
-    private List<String> results;
+    private List<String> mResultList;
 
-    public PlacesAutoCompleteAdapter(Context context, int resource) {
-        super(context, resource);
-        results = new ArrayList<>();
+    public PlacesAutoCompleteAdapter(Context context) {
+        super(context, android.R.layout.simple_list_item_1);
+        mResultList = new ArrayList<>();
         this.context = context;
     }
 
     @Override
     public int getCount() {
-        return results.size();
+        return mResultList.size();
     }
 
     @Override
     public String getItem(int index) {
-        return results.get(index);
+        return mResultList.get(index);
     }
 
     @Override
@@ -58,12 +58,12 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
                 FilterResults filterResults = new FilterResults();
 
                 if (constraint != null) {
-                    // Retrieve the autocomplete results.
-                    results = autoComplete(constraint.toString());
+                    // Retrieve the autocomplete mResultList.
+                    mResultList = autoComplete(constraint.toString());
 
                     // Assign the data to the FilterResults
-                    filterResults.values = results;
-                    filterResults.count = results.size();
+                    filterResults.values = mResultList;
+                    filterResults.count = mResultList.size();
                 }
 
                 return filterResults;
@@ -88,13 +88,13 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
 
             input = URLEncoder.encode(input, "utf8");
 
-            final String API_KEY = context.getString(R.string.places_api_key);
+            final String API_KEY = context.getString(R.string.google_api_key);
 
             URL url = new URL(BASE_PLACES_API_URL + TYPE_AUTO_COMPLETE + OUT_JSON + "?key=" + API_KEY + "&input=" + input);
             conn = (HttpURLConnection) url.openConnection();
             InputStreamReader in = new InputStreamReader(conn.getInputStream());
 
-            // Load the results into a StringBuilder
+            // Load the mResultList into a StringBuilder
             int read;
             char[] buff = new char[1024];
             while ((read = in.read(buff)) != -1) {
@@ -112,20 +112,20 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
         }
 
         try {
-            // Create a JSON object hierarchy from the results
+            // Create a JSON object hierarchy from the mResultList
             JSONObject jsonObj = new JSONObject(jsonResults.toString());
             JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
 
-            // Extract the Place descriptions from the results
-            results = new ArrayList<>(predsJsonArray.length());
+            // Extract the Place descriptions from the mResultList
+            mResultList = new ArrayList<>(predsJsonArray.length());
 
             for (int i = 0; i < predsJsonArray.length(); i++) {
-                results.add(predsJsonArray.getJSONObject(i).getString("description"));
+                mResultList.add(predsJsonArray.getJSONObject(i).getString("description"));
             }
         } catch (JSONException e) {
-            Logger.error("Cannot process JSON results");
+            Logger.error("Cannot process JSON mResultList");
         }
 
-        return results;
+        return mResultList;
     }
 }

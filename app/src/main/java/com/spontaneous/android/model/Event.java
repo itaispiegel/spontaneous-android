@@ -2,6 +2,7 @@ package com.spontaneous.android.model;
 
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -34,7 +35,7 @@ public class Event extends BaseEntity {
     /**
      * When the event is.
      */
-    private DateTime birthday;
+    private DateTime date;
 
     /**
      * Where the event is.
@@ -42,6 +43,14 @@ public class Event extends BaseEntity {
     private String location;
 
     public Event() {
+        super();
+        invitedUsers = new ArrayList<>();
+    }
+
+    private void inviteUser(User user) {
+        invitedUsers.add(
+                new InvitedUser(user)
+        );
     }
 
     public String getTitle() {
@@ -66,6 +75,7 @@ public class Event extends BaseEntity {
 
     public void setHost(User host) {
         this.host = host;
+        inviteUser(host);
     }
 
     public Collection<InvitedUser> getInvitedUsers() {
@@ -76,12 +86,12 @@ public class Event extends BaseEntity {
         this.invitedUsers = invitedUsers;
     }
 
-    public DateTime getBirthday() {
-        return birthday;
+    public DateTime getDate() {
+        return date;
     }
 
-    public void setBirthday(DateTime birthday) {
-        this.birthday = birthday;
+    public void setDate(DateTime date) {
+        this.date = date;
     }
 
     public String getLocation() {

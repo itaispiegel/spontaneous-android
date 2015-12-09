@@ -16,11 +16,11 @@ import java.util.Date;
  */
 public final class GsonFactory {
 
-    private static Gson gson;
+    private static Gson sGson;
 
     public static Gson getGson() {
 
-        if (gson == null) {
+        if (sGson == null) {
             // Creates the json object which will manage the information received
             GsonBuilder builder = new GsonBuilder();
 
@@ -31,10 +31,10 @@ public final class GsonFactory {
                 }
             });
 
-            gson = Converters.registerDateTime(builder.serializeNulls()).create();
+            sGson = Converters.registerDateTime(builder.serializeNulls()).create();
         }
 
-        return gson;
+        return sGson;
     }
 
 }

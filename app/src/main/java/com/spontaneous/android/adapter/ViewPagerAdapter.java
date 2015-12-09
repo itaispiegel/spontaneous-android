@@ -12,21 +12,21 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     /**
      * List of fragments
      */
-    private Fragment[] mFragment;
+    private final Fragment[] mFragments;
 
     public ViewPagerAdapter(FragmentManager fm, Fragment... fragments) {
         super(fm);
-        this.mFragment = fragments;
+        this.mFragments = fragments;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return mFragment[position];
+        return mFragments[position];
     }
 
     @Override
     public int getCount() {
-        return mFragment.length;
+        return mFragments.length;
     }
 }
 

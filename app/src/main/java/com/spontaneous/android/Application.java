@@ -25,7 +25,7 @@ public class Application extends android.app.Application {
         mRequestQueue = Volley.newRequestQueue(this);
 
         mImageLoader = new ImageLoader(this.mRequestQueue, new ImageLoader.ImageCache() {
-            private final LruCache<String, Bitmap> mCache = new LruCache<String, Bitmap>(10000);
+            private final LruCache<String, Bitmap> mCache = new LruCache<>(10000);
 
             public void putBitmap(String url, Bitmap bitmap) {
                 mCache.put(url, bitmap);

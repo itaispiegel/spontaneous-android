@@ -77,11 +77,10 @@
             android:id="@+id/invited_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="-20dp"
             android:layout_marginEnd="-20dp">
     </ListView>
 
-<!--    <TextView
+    <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/required_items"
@@ -93,7 +92,7 @@
             android:id="@+id/items_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="-7dp"
-            android:layout_marginRight="-20dp">
-    </ListView>-->
+            android:layout_marginStart="-7dp"
+            android:layout_marginEnd="-20dp">
+    </ListView>
 </LinearLayout>
