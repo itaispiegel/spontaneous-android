@@ -76,7 +76,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      *
      * @param listView to apply the height
      */
-    void setListviewHeightBasedOnChildren(ListView listView) {
+    void setListViewHeightBasedOnChildren(ListView listView) {
         //Get adapter and exit method if it is null
         ListAdapter listAdapter = listView.getAdapter();
         if (listAdapter == null) {

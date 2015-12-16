@@ -1,7 +1,6 @@
 package com.spontaneous.android.adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +10,11 @@ import android.widget.TextView;
 
 import com.spontaneous.android.R;
 import com.spontaneous.android.model.Event;
-import com.spontaneous.android.model.InvitedUser;
-import com.spontaneous.android.model.User;
-import com.spontaneous.android.util.AccountUtils;
 
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -55,6 +50,11 @@ public class EventListAdapter extends BaseAdapter {
 
     public void addAll(List<Event> events) {
         mEvents.addAll(events);
+        notifyDataSetChanged();
+    }
+
+    public void remove(int index) {
+        mEvents.remove(index);
         notifyDataSetChanged();
     }
 

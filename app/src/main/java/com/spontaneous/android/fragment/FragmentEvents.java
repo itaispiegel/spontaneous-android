@@ -41,7 +41,10 @@ public class FragmentEvents extends Fragment {
         mEventsListView = (ListView) layout.findViewById(R.id.events_listview);
         mEventsListView.setAdapter(mEventListAdapter);
         mEventsListView.setEmptyView(mListEmptyView);
-        mEventsListView.setOnItemClickListener(getListViewClickListener());
+
+        //OnClickListener and OnLongClickListener
+        mEventsListView.setOnItemClickListener(itemClickListener());
+        mEventsListView.setOnItemLongClickListener(itemLongClickListener());
 
         return layout;
     }
@@ -49,13 +52,11 @@ public class FragmentEvents extends Fragment {
     /**
      * When the user clicks on an event in the listview, open the event page.
      */
-    private AdapterView.OnItemClickListener getListViewClickListener() {
+    private AdapterView.OnItemClickListener itemClickListener() {
         return new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
-                Logger.info(
-                        String.format("Event (%d) clicked", position)
-                );
+                Logger.info("Event at position (" + position + ") was clicked.");
 
                 Event event = mEventListAdapter.getItem(position);
 
@@ -63,6 +64,19 @@ public class FragmentEvents extends Fragment {
                 eventActivity.putExtra(getString(R.string.event_card_intent_extras), event);
 
                 startActivity(eventActivity);
+            }
+        };
+    }
+
+    private AdapterView.OnItemLongClickListener itemLongClickListener() {
+        return new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView parent, View view, int position, long id) {
+
+                Logger.info("Item at position (" + position + ") was long clicked.");
+                mEventListAdapter.remove(position);
+
+                return true;
             }
         };
     }

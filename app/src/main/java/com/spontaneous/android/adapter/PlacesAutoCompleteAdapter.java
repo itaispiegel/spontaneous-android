@@ -86,11 +86,13 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
 
         try {
 
+            //Set the encoding to utf8
             input = URLEncoder.encode(input, "utf8");
 
-            final String API_KEY = context.getString(R.string.google_api_key);
+            URL url = new URL(BASE_PLACES_API_URL + TYPE_AUTO_COMPLETE + OUT_JSON +
+                    "?key=" + context.getString(R.string.google_api_key) +
+                    "&input=" + input);
 
-            URL url = new URL(BASE_PLACES_API_URL + TYPE_AUTO_COMPLETE + OUT_JSON + "?key=" + API_KEY + "&input=" + input);
             conn = (HttpURLConnection) url.openConnection();
             InputStreamReader in = new InputStreamReader(conn.getInputStream());
 
@@ -112,6 +114,7 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
         }
 
         try {
+
             // Create a JSON object hierarchy from the mResultList
             JSONObject jsonObj = new JSONObject(jsonResults.toString());
             JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
@@ -122,6 +125,7 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
             for (int i = 0; i < predsJsonArray.length(); i++) {
                 mResultList.add(predsJsonArray.getJSONObject(i).getString("description"));
             }
+
         } catch (JSONException e) {
             Logger.error("Cannot process JSON mResultList");
         }

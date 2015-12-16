@@ -1,13 +1,13 @@
-package com.spontaneous.android.http.request;
+package com.spontaneous.android.http.request.model;
 
 /**
  * This is a Facebook login request sent to the server.
  */
-public class FacebookLoginRequestModel {
+public class FacebookLoginRequest {
     private final String facebookUserId;
     private final String facebookToken;
 
-    public FacebookLoginRequestModel(String facebookUserId, String facebookToken) {
+    public FacebookLoginRequest(String facebookUserId, String facebookToken) {
         this.facebookUserId = facebookUserId;
         this.facebookToken = facebookToken;
     }
@@ -22,7 +22,7 @@ public class FacebookLoginRequestModel {
 
     @Override
     public String toString() {
-        return "FacebookLoginRequestModel{" +
+        return "FacebookLoginRequest{" +
                 "facebookUserId='" + facebookUserId + '\'' +
                 ", facebookToken='" + facebookToken + '\'' +
                 '}';

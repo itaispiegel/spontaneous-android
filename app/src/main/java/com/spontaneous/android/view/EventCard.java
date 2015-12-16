@@ -13,9 +13,6 @@ import com.spontaneous.android.Application;
 import com.spontaneous.android.R;
 import com.spontaneous.android.model.Event;
 
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 

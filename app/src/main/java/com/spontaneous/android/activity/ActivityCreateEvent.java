@@ -10,11 +10,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.ex.chips.BaseRecipientAdapter;
 import com.android.ex.chips.RecipientEditTextView;
 import com.spontaneous.android.R;
 import com.spontaneous.android.adapter.PlacesAutoCompleteAdapter;
+import com.spontaneous.android.http.ApiRestClient;
+import com.spontaneous.android.http.request.EventService;
+import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.Event;
 import com.spontaneous.android.util.AccountUtils;
 import com.spontaneous.android.util.Logger;
@@ -27,6 +31,10 @@ import org.joda.time.DateTime;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Using this activity, the user can create a new event.
@@ -74,7 +82,10 @@ public class ActivityCreateEvent extends BaseActivity implements
 
         //Initialize contacts bubble autocompletion
         mInvitedUsers.setTokenizer(new Rfc822Tokenizer());
-        mInvitedUsers.setAdapter(new BaseRecipientAdapter(BaseRecipientAdapter.QUERY_TYPE_EMAIL, this));
+        mInvitedUsers.setAdapter(new BaseRecipientAdapter(
+                BaseRecipientAdapter.QUERY_TYPE_EMAIL,
+                this
+        ));
 
         //Initialize date dialog
         mCalendar = Calendar.getInstance();
@@ -210,14 +221,27 @@ public class ActivityCreateEvent extends BaseActivity implements
      * Submit the event.
      */
     private void submitEvent() {
-        Event event = generateEvent();
-        Intent intent = new Intent();
+        final Event event = generateEvent();
+        final Intent intent = new Intent();
 
         Logger.info("Creating new event: " + event);
 
-        intent.putExtra(getString(R.string.created_event_intent_extra), event);
-        setResult(RESULT_OK, intent);
+        //Submit event to server
+        ApiRestClient.getRequest(this, EventService.class).createEvent(event, new Callback<BaseResponse<Event>>() {
+            @Override
+            public void success(BaseResponse<Event> eventBaseResponse, Response response) {
+                Logger.info("Event created successful on server.");
+                intent.putExtra(getString(R.string.created_event_intent_extra), eventBaseResponse.getBody());
+                setResult(RESULT_OK, intent);
 
-        finish();
+                finish();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Logger.error("Event creation on server failed.");
+                Toast.makeText(getApplicationContext(), "Connection failed", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

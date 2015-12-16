@@ -3,13 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <include layout="@layout/custom_toolbar" />
+    <include
+        android:id="@+id/custom_toolbar"
+        layout="@layout/custom_toolbar" />
 
     <ScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/custom_toolbar"
+        android:layout_below="@id/custom_toolbar"
         android:fillViewport="true">
 
         <FrameLayout

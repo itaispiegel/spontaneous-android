@@ -18,8 +18,8 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.spontaneous.android.R;
 import com.spontaneous.android.http.ApiRestClient;
-import com.spontaneous.android.http.request.FacebookLoginRequestModel;
-import com.spontaneous.android.http.request.LoginRequest;
+import com.spontaneous.android.http.request.LoginService;
+import com.spontaneous.android.http.request.model.FacebookLoginRequest;
 import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.User;
 import com.spontaneous.android.util.AccountUtils;
@@ -103,10 +103,10 @@ public class ActivityLogin extends BaseActivity {
                 Logger.info("Success! token = " + token.getToken() + ", userId = " + token.getUserId() +
                         ", app id = " + token.getApplicationId() + ", permissions = " + permissions);
 
-                LoginRequest loginRequest = ApiRestClient.getRequest(getApplicationContext(), LoginRequest.class);
-                FacebookLoginRequestModel loginRequestModel = new FacebookLoginRequestModel(token.getUserId(), token.getToken());
+                LoginService loginService = ApiRestClient.getRequest(getApplicationContext(), LoginService.class);
+                FacebookLoginRequest loginRequestModel = new FacebookLoginRequest(token.getUserId(), token.getToken());
 
-                loginRequest.login(loginRequestModel, getLoginRequestCallback());
+                loginService.login(loginRequestModel, getLoginRequestCallback());
             }
 
             @Override
