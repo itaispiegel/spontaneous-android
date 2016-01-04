@@ -45,12 +45,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     private void setCustomActionBar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.custom_toolbar);
-        toolbar.setClickable(true);
+        mToolbar = (Toolbar) findViewById(R.id.custom_toolbar);
+        mToolbar.setClickable(true);
 
-        this.mToolbar = toolbar;
-
-        setSupportActionBar(toolbar);
+        setSupportActionBar(mToolbar);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -67,7 +65,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected abstract boolean showToolbar();
 
     void setToolbarMessage(String message) {
-        TextView toolbarMessage = (TextView) findViewById(R.id.toolbar_message);
+        TextView toolbarMessage = (TextView) mToolbar.findViewById(R.id.toolbar_message);
         toolbarMessage.setText(message);
     }
 

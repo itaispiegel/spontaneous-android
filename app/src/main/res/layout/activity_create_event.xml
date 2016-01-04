@@ -1,74 +1,90 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
-    <include layout="@layout/custom_toolbar" />
-
-    <EditText
-        android:id="@+id/create_event_title"
+    <include
+        android:id="@+id/custom_toolbar"
+        layout="@layout/custom_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:hint="@string/event_title"
-        android:imeOptions="actionNext"
-        android:inputType="textCapWords"
-        android:textSize="18sp" />
+        android:layout_alignParentTop="true" />
 
-    <EditText
-        android:id="@+id/create_event_description"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:hint="@string/event_description"
-        android:imeOptions="actionNext"
-        android:inputType="textMultiLine|textCapSentences"
-        android:textSize="18sp" />
+        android:layout_below="@+id/custom_toolbar">
 
-    <AutoCompleteTextView
-        android:id="@+id/create_event_location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:hint="@string/event_location"
-        android:imeOptions="actionNext"
-        android:inputType="textCapWords|textPostalAddress"
-        android:textSize="18sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/create_event_date"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="@string/event_date"
-            android:imeOptions="actionNext"
-            android:inputType="datetime"
-            android:textSize="18sp"/>
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/create_event_time"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="@string/event_time"
-            android:imeOptions="actionNext"
-            android:inputType="datetime"
-            android:textSize="18sp"/>
+            <EditText
+                android:id="@+id/create_event_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:hint="@string/event_title"
+                android:imeOptions="actionNext"
+                android:inputType="textCapWords"
+                android:textSize="18sp" />
 
-    </LinearLayout>
+            <EditText
+                android:id="@+id/create_event_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:hint="@string/event_description"
+                android:imeOptions="actionNext"
+                android:inputType="textMultiLine|textCapSentences"
+                android:textSize="18sp" />
 
-    <com.android.ex.chips.RecipientEditTextView
-        android:id="@+id/create_event_invited_users"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:hint="@string/event_invited_users"
-        android:inputType="textEmailAddress|textMultiLine"
-        android:textSize="18sp"/>
-</LinearLayout>
+            <AutoCompleteTextView
+                android:id="@+id/create_event_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:hint="@string/event_location"
+                android:imeOptions="actionNext"
+                android:inputType="textCapWords|textPostalAddress"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/create_event_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/event_date"
+                    android:imeOptions="actionNext"
+                    android:inputType="datetime"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/create_event_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/event_time"
+                    android:imeOptions="actionNext"
+                    android:inputType="datetime"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <com.android.ex.chips.RecipientEditTextView
+                android:id="@+id/create_event_invited_users"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:hint="@string/event_invited_users"
+                android:inputType="textEmailAddress|textMultiLine"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
