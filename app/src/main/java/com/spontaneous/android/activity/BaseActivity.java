@@ -79,6 +79,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     void setListViewHeightBasedOnChildren(ListView listView) {
         //Get adapter and exit method if it is null
         ListAdapter listAdapter = listView.getAdapter();
+
         if (listAdapter == null) {
             return;
         }
@@ -97,7 +98,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         listView.setLayoutParams(params);
         listView.requestLayout();
     }
-
 
     /**
      * Show a progress dialog with the text "Loading" in the given activity.
@@ -135,7 +135,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             return;
         }
 
-        //HashSet because we want the emails to be unique.
+        //In this case we are using a HashSet since we want the emails to be unique.
         HashSet<String> emailsCollection = new HashSet<>(emailCursor.getCount());
 
         while (emailCursor.moveToNext()) {
