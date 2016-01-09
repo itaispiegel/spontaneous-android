@@ -26,17 +26,30 @@ import java.util.List;
  */
 public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
 
+    /**
+     * Context of the activity.
+     */
     private final Context context;
 
+    // API constant fields.
     private static final String BASE_PLACES_API_URL = "https://maps.googleapis.com/maps/api/place";
     private static final String TYPE_AUTO_COMPLETE = "/autocomplete";
     private static final String OUT_JSON = "/json";
 
+    /**
+     * The results of the auto complete are stored in a list.
+     */
     private List<String> mResultList;
 
+    /**
+     * Initialize a new PlacesAutoCompleteAdapter.
+     *
+     * @param context Of the activity.
+     */
     public PlacesAutoCompleteAdapter(Context context) {
         super(context, android.R.layout.simple_list_item_1);
-        mResultList = new ArrayList<>();
+
+        this.mResultList = new ArrayList<>();
         this.context = context;
     }
 
@@ -80,6 +93,12 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements F
         };
     }
 
+    /**
+     * Autocomplete by the given input.
+     *
+     * @param input To autocomplete for.
+     * @return List of places to starting with the given string.
+     */
     private List<String> autoComplete(String input) {
         HttpURLConnection conn = null;
         StringBuilder jsonResults = new StringBuilder();

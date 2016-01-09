@@ -14,9 +14,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -32,7 +35,16 @@ import java.util.HashSet;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
+    /**
+     * The application toolbar.
+     * The toolbar has a light blue color and a textview with the text: "SPONTANEOUS".
+     */
     private Toolbar mToolbar;
+
+    /**
+     * A dialog with the text "Loading".
+     */
+    protected ProgressDialog mWaitDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +52,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(getLayoutResourceId());
 
         if (showToolbar()) {
-            setCustomActionBar();
+            setCustomToolbar();
         }
     }
 
-    private void setCustomActionBar() {
+    /**
+     * Initialize the toolbar.
+     */
+    private void setCustomToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.custom_toolbar);
         mToolbar.setClickable(true);
 
@@ -56,15 +71,24 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    protected Toolbar getToolbar() {
+    /**
+     * @return The application toolbar.
+     */
+    final Toolbar getToolbar() {
         return mToolbar;
     }
 
-    protected abstract int getLayoutResourceId();
+    /**
+     * @return Layout resource id of the activity.
+     */
+    abstract int getLayoutResourceId();
 
-    protected abstract boolean showToolbar();
+    /**
+     * @return A boolean deciding whether or not to show the toolbar in the sub activity.
+     */
+    abstract boolean showToolbar();
 
-    void setToolbarMessage(String message) {
+    final void setToolbarMessage(String message) {
         TextView toolbarMessage = (TextView) mToolbar.findViewById(R.id.toolbar_message);
         toolbarMessage.setText(message);
     }
@@ -74,7 +98,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      *
      * @param listView to apply the height
      */
-    void setListViewHeightBasedOnChildren(ListView listView) {
+    final void setListViewHeightBasedOnChildren(ListView listView) {
         //Get adapter and exit method if it is null
         ListAdapter listAdapter = listView.getAdapter();
 
@@ -102,16 +126,19 @@ public abstract class BaseActivity extends AppCompatActivity {
      *
      * @return the progress dialog
      */
-    ProgressDialog showWaitDialog() {
+    final ProgressDialog showWaitDialog() {
+
+        //Set the message in the dialog.
         final String message = getString(R.string.message_loading);
 
-        ProgressDialog waitDialog = new ProgressDialog(this);
-        waitDialog.setMessage(message);
-        waitDialog.setCancelable(true);
-        waitDialog.setIndeterminate(true);
-        waitDialog.show();
+        //Initialize the dialog itself.
+        mWaitDialog = new ProgressDialog(this);
+        mWaitDialog.setMessage(message);
+        mWaitDialog.setCancelable(true);
+        mWaitDialog.setIndeterminate(true);
+        mWaitDialog.show();
 
-        return waitDialog;
+        return mWaitDialog;
     }
 
 
@@ -122,7 +149,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * @param view    to set the AutoComplete to.
      * @param context of the activity.
      */
-    void setupEmailAutoComplete(AutoCompleteTextView view, Context context) {
+    final void setupEmailAutoComplete(AutoCompleteTextView view, Context context) {
         final Uri emailContentUri = ContactsContract.CommonDataKinds.Email.CONTENT_URI;
         ContentResolver cr = context.getContentResolver();
 
@@ -136,6 +163,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         //In this case we are using a HashSet since we want the emails to be unique.
         HashSet<String> emailsCollection = new HashSet<>(emailCursor.getCount());
 
+        //Iterate over the emails and add them to the collection.
         while (emailCursor.moveToNext()) {
             int columnIndex = emailCursor.getColumnIndex(ContactsContract.CommonDataKinds.Email.DATA);
             String email = emailCursor.getString(columnIndex);
@@ -143,7 +171,9 @@ public abstract class BaseActivity extends AppCompatActivity {
             emailsCollection.add(email);
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_dropdown_item_1line, new ArrayList<>(emailsCollection));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
+                android.R.layout.simple_dropdown_item_1line,
+                new ArrayList<>(emailsCollection));
         view.setAdapter(adapter);
 
         //Close the email cursor
@@ -153,8 +183,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * Hide the keyboard on the give activity.
      */
-    void hideKeyboard() {
+    final void hideKeyboard() {
         View currentFocus = getCurrentFocus();
+
         if (currentFocus != null) {
             InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             inputManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
@@ -162,11 +193,44 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
+     * Get finish animation for the loading image.
+     *
+     * @param loadingImage       The loading spinner image.
+     * @param viewsToMakeVisible Views to show after the animation is done.
+     * @return The finish animation.
+     */
+    final Animation getFinishAnimation(final ImageView loadingImage, final View... viewsToMakeVisible) {
+
+        final Animation finishAnimation = AnimationUtils.loadAnimation(this, R.anim.animate_exit_down);
+        finishAnimation.setAnimationListener(new Animation.AnimationListener() {
+
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                loadingImage.setVisibility(View.GONE);
+
+                for (View view : viewsToMakeVisible) {
+                    view.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        return finishAnimation;
+    }
+
+    /**
      * Start a flow by the specified class and context
      *
      * @param activityClass of the requested activity
      */
-    public void startActivity(Class activityClass) {
+    public final void startActivity(Class activityClass) {
         Intent intent = new Intent(this, activityClass);
         if (Build.VERSION.SDK_INT >= 11) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

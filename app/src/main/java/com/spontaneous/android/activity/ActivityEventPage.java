@@ -26,14 +26,20 @@ public class ActivityEventPage extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mEvent = (Event) getIntent().getExtras().getSerializable(getString(R.string.event_card_intent_extras));
+
         //Set back button on toolbar
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+            //Set toolbar of the activity to event title
+            if (mEvent != null) {
+                setToolbarMessage(mEvent.getTitle());
+            }
         }
 
         mScroll = (ScrollView) findViewById(R.id.scroll);
 
-        mEvent = (Event) getIntent().getExtras().getSerializable(getString(R.string.event_card_intent_extras));
         mCardContainer = (FrameLayout) findViewById(R.id.card);
         mEventCard = new EventCard(this, mEvent);
 
@@ -48,7 +54,7 @@ public class ActivityEventPage extends BaseActivity {
 
     @Override
     protected boolean showToolbar() {
-        return false;
+        return true;
     }
 
     @Override

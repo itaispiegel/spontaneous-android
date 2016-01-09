@@ -7,6 +7,9 @@ import android.util.Log;
  */
 public abstract class Logger {
 
+    /**
+     * Logcat tag name.
+     */
     private static final String LOG_TAG = "Spontaneous";
 
     /**

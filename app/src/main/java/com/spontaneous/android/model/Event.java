@@ -48,9 +48,8 @@ public class Event extends BaseEntity {
     }
 
     private void inviteUser(User user) {
-        invitedUsers.add(
-                new InvitedUser(user)
-        );
+        InvitedUser invitedUser = new InvitedUser(user);
+        invitedUsers.add(invitedUser);
     }
 
     public String getTitle() {
@@ -99,5 +98,15 @@ public class Event extends BaseEntity {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public boolean isUserAttending(User user) {
+        for (InvitedUser invitedUser : invitedUsers) {
+            if(invitedUser.getUser().equals(user)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

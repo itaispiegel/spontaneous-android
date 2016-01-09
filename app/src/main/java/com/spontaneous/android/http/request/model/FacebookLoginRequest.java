@@ -4,7 +4,15 @@ package com.spontaneous.android.http.request.model;
  * This is a Facebook login request sent to the server.
  */
 public class FacebookLoginRequest {
+
+    /**
+     * Facebook user id.
+     */
     private final String facebookUserId;
+
+    /**
+     * Facebook user token.
+     */
     private final String facebookToken;
 
     public FacebookLoginRequest(String facebookUserId, String facebookToken) {

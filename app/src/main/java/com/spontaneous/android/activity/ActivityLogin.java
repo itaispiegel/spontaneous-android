@@ -1,12 +1,10 @@
 package com.spontaneous.android.activity;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -14,6 +12,7 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.spontaneous.android.R;
@@ -34,30 +33,28 @@ import retrofit.client.Response;
  */
 public class ActivityLogin extends BaseActivity {
 
-    private Dialog mWaitDialog;
-
     private AutoCompleteTextView mEmail;
-    private EditText mPassword;
     private LoginButton mLoginButton;
 
     private CallbackManager mCallbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //Animations, and content view
         super.onCreate(savedInstanceState);
 
-        //Initialize email and password edittexts
+        //Initialize email and password EditTexts
         mEmail = (AutoCompleteTextView) findViewById(R.id.email);
-        mPassword = (EditText) findViewById(R.id.password);
 
         //Setup email auto complete
         setupEmailAutoComplete(mEmail, this);
 
+        //Just in case the user is accidentally authenticated
+        LoginManager.getInstance().logOut();
+
         //Initialize FacebookSDK
         mCallbackManager = CallbackManager.Factory.create();
 
-        //Set login button image, permissions, callback and click listener
+        //Initialize login button and set its permissions, callback and click listener
         mLoginButton = (LoginButton) findViewById(R.id.login_button);
 
         mLoginButton.setReadPermissions("public_profile", "user_friends", "email");
@@ -75,20 +72,31 @@ public class ActivityLogin extends BaseActivity {
         return true;
     }
 
+    /**
+     * @return OnclickListener that shows the wait dialog.
+     */
     private View.OnClickListener getLoginButtonOnClickListener() {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mWaitDialog = showWaitDialog();
+                Logger.info("Starting authentication process.");
+                showWaitDialog();
             }
         };
     }
 
+    /**
+     * @return A new Facebook callback method - the method that processes the data retrieved.
+     * In case of success, login.
+     * In case of failure, show an error.
+     */
     private FacebookCallback<LoginResult> getFacebookCallback() {
         return new FacebookCallback<LoginResult>() {
 
             @Override
             public void onSuccess(LoginResult loginResult) {
+
+                //Add the permissions.
                 AccessToken token = loginResult.getAccessToken();
                 String permissions = "";
 
@@ -100,12 +108,16 @@ public class ActivityLogin extends BaseActivity {
                     permissions = permissions.substring(0, permissions.length() - 1);
                 }
 
-                Logger.info("Success! token = " + token.getToken() + ", userId = " + token.getUserId() +
+                //Send a a log message
+                Logger.info("Facebook authentication succeeded, proceeding to authentication with Heroku Server.");
+                Logger.info("token = " + token.getToken() + ", userId = " + token.getUserId() +
                         ", app id = " + token.getApplicationId() + ", permissions = " + permissions);
 
+                //Create and send a FacebookLoginRequest to the Heroku Server.
                 LoginService loginService = ApiRestClient.getRequest(getApplicationContext(), LoginService.class);
                 FacebookLoginRequest loginRequestModel = new FacebookLoginRequest(token.getUserId(), token.getToken());
 
+                //Send the login request.
                 loginService.login(loginRequestModel, getLoginRequestCallback());
             }
 
@@ -116,31 +128,48 @@ public class ActivityLogin extends BaseActivity {
 
             @Override
             public void onError(FacebookException error) {
-                Logger.info("error! " + error.getMessage());
+
+                //If the Facebook authentication did not succeed, show an error.
+                Logger.error("Facebook authentication error: " + error.getMessage());
+
+                Toast.makeText(getApplicationContext(), "Facebook connection error.", Toast.LENGTH_SHORT)
+                        .show();
             }
         };
     }
 
+    /**
+     * @return The user request callback.
+     * In case of success, continue to the main activity.
+     * In case of failure, show an error.
+     */
     private Callback<BaseResponse<User>> getLoginRequestCallback() {
         return new Callback<BaseResponse<User>>() {
             @Override
             public void success(BaseResponse<User> baseResponse, Response response) {
+
+                //Dismiss the wait dialog.
                 if (mWaitDialog != null && mWaitDialog.isShowing()) {
                     mWaitDialog.dismiss();
                 }
 
+                //Get the user entity.
                 User user = baseResponse.getBody();
                 Logger.info("LoginRequest: success, user = " + user);
 
+                //Proceed to the Main Activity, or show an error if the status code is negative.
                 if (baseResponse.getStatusCode() == BaseResponse.SUCCESS) {
                     onAuthenticationFinished(user);
                 } else {
-                    Toast.makeText(getApplicationContext(), baseResponse.getDescription(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), baseResponse.getDescription(), Toast.LENGTH_SHORT)
+                            .show();
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
+
+                //Dismiss the wait dialog.
                 if (mWaitDialog != null && mWaitDialog.isShowing()) {
                     mWaitDialog.dismiss();
                 }
@@ -160,13 +189,17 @@ public class ActivityLogin extends BaseActivity {
      * Save authenticated user data in memory and start main flow.
      */
     private void onAuthenticationFinished(User user) {
-        AccountUtils.setFacebookToken(user.getFacebookToken());
-        AccountUtils.setAuthenticatedUser(user);
 
+        //Dismiss the wait dialog
         if (mWaitDialog != null && mWaitDialog.isShowing()) {
             mWaitDialog.dismiss();
         }
 
+        //Set user data in application memory
+        AccountUtils.setFacebookToken(user.getFacebookToken());
+        AccountUtils.setAuthenticatedUser(user);
+
+        //Start the main activity
         AccountUtils.startMainFlow(this);
         finish();
     }

@@ -18,9 +18,9 @@ import com.spontaneous.android.model.User;
  */
 public class UserProfileCard extends FrameLayout {
 
-    private User mUser;
+    private final Context mContext;
 
-    private Context mContext;
+    private User mUser;
 
     private NetworkImageView mProfilePicture;
     private TextView mUserName;
@@ -38,7 +38,6 @@ public class UserProfileCard extends FrameLayout {
         super(context);
         init();
 
-        this.mUser = mUser;
         this.mContext = context;
         setUser(mUser);
     }

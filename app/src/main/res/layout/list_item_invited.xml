@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -26,7 +27,8 @@
             android:paddingBottom="5dp"
             android:text="Itai Spiegel"
             android:textColor="@color/text_color"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/description"
@@ -38,16 +40,17 @@
             android:lines="1"
             android:text="It's gonna be LEGENDARY!"
             android:textColor="@color/text_color"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            tools:ignore="HardcodedText" />
 
         <ImageView
             android:id="@+id/is_attending"
             android:contentDescription="@string/is_attending_icon_description"
+            android:src="@drawable/ic_cab_done_holo_light"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_alignBaseline="@+id/description"
-            android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true" />
+            android:layout_alignBottom="@+id/description"
+            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
 </RelativeLayout>

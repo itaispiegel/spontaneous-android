@@ -10,11 +10,14 @@ import android.widget.TextView;
 
 import com.spontaneous.android.R;
 import com.spontaneous.android.model.Event;
+import com.spontaneous.android.model.User;
+import com.spontaneous.android.util.AccountUtils;
 
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -35,24 +38,43 @@ public class EventListAdapter extends BaseAdapter {
     /**
      * List of events to include.
      */
-    private List<Event> mEvents;
+    private final List<Event> mEvents;
 
-
+    /**
+     * Initialize a new EventListAdapter.
+     *
+     * @param mContext of the activity.
+     */
     public EventListAdapter(Context mContext) {
         this.mContext = mContext;
         this.mEvents = new ArrayList<>();
     }
 
+    /**
+     * Add a new event to the adapter.
+     *
+     * @param event The event to add.
+     */
     public void add(Event event) {
         mEvents.add(event);
         notifyDataSetChanged();
     }
 
-    public void addAll(List<Event> events) {
+    /**
+     * Add a collection of events to the adapter.
+     *
+     * @param events The collection to add.
+     */
+    public void addAll(Collection<Event> events) {
         mEvents.addAll(events);
         notifyDataSetChanged();
     }
 
+    /**
+     * Remove the event at the given index.
+     *
+     * @param index To remove at.
+     */
     public void remove(int index) {
         mEvents.remove(index);
         notifyDataSetChanged();
@@ -77,11 +99,11 @@ public class EventListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         if (mInflater == null) {
             mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        }
-
-        if (convertView == null) {
+        } if (convertView == null) {
             convertView = mInflater.inflate(R.layout.list_item_events, parent, false);
         }
+
+        User authenticatedUser = AccountUtils.getAuthenticatedUser();
 
         //Initialize views
         TextView eventTitle = (TextView) convertView.findViewById(R.id.title);
@@ -93,16 +115,17 @@ public class EventListAdapter extends BaseAdapter {
         //Set event details
         Event currEvent = mEvents.get(position);
 
-        DateTimeFormatter dateFormat = DateTimeFormat.forPattern("dd-MM-yyyy");
+        DateTimeFormatter dateFormat = DateTimeFormat.forPattern("dd-MM-yyyy, H:m");
 
         eventTitle.setText(currEvent.getTitle());
         eventDescription.setText(currEvent.getDescription());
-        eventDate.setText(dateFormat.print(
-                currEvent.getDate()
-        ));
+        eventDate.setText(dateFormat.print(currEvent.getDate()));
         eventLocation.setText(currEvent.getLocation());
 
-        //TODO: Set whether authenticated user is attending the event.
+        isUserAttending.setImageDrawable(currEvent.isUserAttending(authenticatedUser)
+                        ? mContext.getDrawable(R.drawable.ic_cab_done_holo_light)
+                        : mContext.getDrawable(R.drawable.ic_close_black)
+        );
 
         return convertView;
     }

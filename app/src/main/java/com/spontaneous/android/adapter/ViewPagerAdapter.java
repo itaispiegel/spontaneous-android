@@ -10,10 +10,15 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     /**
-     * List of fragments
+     * Array of fragments contained in ViewPager.
      */
     private final Fragment[] mFragments;
 
+    /**
+     * Initialize a new ViewPagerAdapter.
+     * @param fm FragmentManger object.
+     * @param fragments Array of fragments contained in adapter.
+     */
     public ViewPagerAdapter(FragmentManager fm, Fragment... fragments) {
         super(fm);
         this.mFragments = fragments;

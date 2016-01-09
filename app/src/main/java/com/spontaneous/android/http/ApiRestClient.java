@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.spontaneous.android.R;
 import com.spontaneous.android.util.GsonFactory;
-import com.spontaneous.android.util.Logger;
 
 import retrofit.ErrorHandler;
 import retrofit.RequestInterceptor;
@@ -24,7 +23,7 @@ public final class ApiRestClient {
     }
 
     private static synchronized RestAdapter getRestAdapter(Context ctx) {
-        if(sRestAdapter == null) {
+        if (sRestAdapter == null) {
             RequestInterceptor requestInterceptor = new RequestInterceptor() {
                 @Override
                 public void intercept(RequestFacade request) {
@@ -34,12 +33,12 @@ public final class ApiRestClient {
             };
 
             sRestAdapter = new RestAdapter.Builder()
-                .setEndpoint(BASE_URL)
-                .setErrorHandler(new CustomErrorHandler(ctx))
-                .setRequestInterceptor(requestInterceptor)
-                .setConverter(new GsonConverter(GsonFactory.getGson()))
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-                .build();
+                    .setEndpoint(BASE_URL)
+                    .setErrorHandler(new CustomErrorHandler(ctx))
+                    .setRequestInterceptor(requestInterceptor)
+                    .setConverter(new GsonConverter(GsonFactory.getGson()))
+                    .setLogLevel(RestAdapter.LogLevel.FULL)
+                    .build();
         }
         return sRestAdapter;
     }
@@ -65,45 +64,23 @@ public final class ApiRestClient {
         }
 
         @Override
-        public Throwable handleError(RetrofitError cause) {
+        public Throwable handleError(RetrofitError error) {
             String errorDescription;
 
-            if(cause.getKind() == RetrofitError.Kind.NETWORK) {
+            if (error.getResponse() == null) {
+                errorDescription = ctx.getString(R.string.error_no_response);
+            } else if (error.getKind() == RetrofitError.Kind.NETWORK) {
                 errorDescription = ctx.getString(R.string.error_network);
             } else {
-                if(cause.getResponse() == null) {
-                    errorDescription = ctx.getString(R.string.error_no_response);
-                } else {
-
-                    // Error message handling - return a simple error to Retrofit handlers..
-                    try {
-                        ErrorResponse errorResponse = (ErrorResponse) cause.getBodyAs(ErrorResponse.class);
-                        errorDescription = errorResponse.error.data.message;
-                    } catch(Exception ex) {
-                        try {
-                            errorDescription = ctx.getString(R.string.error_network_http_error, cause.getResponse().getStatus());
-                        } catch(Exception ex2) {
-                            Logger.error("handleError: " + ex2.getLocalizedMessage());
-                            errorDescription = ctx.getString(R.string.error_unknown);
-                        }
-                    }
+                // Error message handling - return a simple error to Retrofit handlers..
+                try {
+                    errorDescription = (String) error.getBodyAs(String.class);
+                } catch (RuntimeException ex) {
+                    errorDescription = ctx.getString(R.string.error_network_http_error, error.getResponse().getStatus());
                 }
             }
 
             return new Exception(errorDescription);
         }
     }
-
-    public static class ErrorResponse {
-        Error error;
-
-        public static class Error {
-            Data data;
-
-            public static class Data {
-                String message;
-            }
-        }
-    }
-
 }

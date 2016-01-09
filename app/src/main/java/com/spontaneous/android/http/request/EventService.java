@@ -16,10 +16,18 @@ import retrofit.http.Query;
  */
 public interface EventService {
 
+    /**
+     * Create a new event in the server.
+     * @param event To create.
+     */
     @POST("/API/events")
     void createEvent(@Body Event event, Callback<BaseResponse<Event>> cb);
 
-    @GET("/events/search/findByInvitedUser")
-    void findUserEvents(@Query("user_id") long id, Callback<List<Event>> cb);
+    /**
+     * Get all the events related to the given user.
+     * @param id Of the user.
+     */
+    @GET("/API/events/getUserEvents")
+    void getUserEvents(@Query("user_id") long id, Callback<BaseResponse<List<Event>>> cb);
 
 }

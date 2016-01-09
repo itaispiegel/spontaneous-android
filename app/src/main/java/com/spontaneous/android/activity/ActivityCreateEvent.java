@@ -146,8 +146,8 @@ public class ActivityCreateEvent extends BaseActivity implements
     }
 
     /**
-     * @param picker to show
-     * @return OnClick listener that shows date time picker dialog
+     * @param picker to show.
+     * @return OnClick listener that shows date time picker dialog.
      */
     private View.OnTouchListener showDateTimePickerDialog(final DialogFragment picker) {
         return new View.OnTouchListener() {
@@ -164,7 +164,7 @@ public class ActivityCreateEvent extends BaseActivity implements
     }
 
     /**
-     * Handle date set in dialog
+     * Handle date set in dialog.
      */
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
@@ -178,7 +178,7 @@ public class ActivityCreateEvent extends BaseActivity implements
     }
 
     /**
-     * Handle time set in dialog
+     * Handle time set in dialog.
      */
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
@@ -194,7 +194,7 @@ public class ActivityCreateEvent extends BaseActivity implements
     }
 
     /**
-     * @return datetime from mCalendar field
+     * @return datetime from mCalendar field.
      */
     private DateTime getDateTime() {
         return new DateTime(
@@ -203,7 +203,7 @@ public class ActivityCreateEvent extends BaseActivity implements
     }
 
     /**
-     * @return new event generated from the user input
+     * @return new event generated from the user input.
      */
     private Event generateEvent() {
         Event event = new Event();
@@ -226,7 +226,7 @@ public class ActivityCreateEvent extends BaseActivity implements
 
         Logger.info("Creating new event: " + event);
 
-        //Submit event to server
+        //Submit event to server.
         ApiRestClient.getRequest(this, EventService.class).createEvent(event, new Callback<BaseResponse<Event>>() {
             @Override
             public void success(BaseResponse<Event> eventBaseResponse, Response response) {
@@ -237,6 +237,7 @@ public class ActivityCreateEvent extends BaseActivity implements
                 finish();
             }
 
+            //In case of failure show an error.
             @Override
             public void failure(RetrofitError error) {
                 Logger.error("Event creation on server failed.");

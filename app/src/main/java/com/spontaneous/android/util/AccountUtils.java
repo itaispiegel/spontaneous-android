@@ -81,10 +81,10 @@ public class AccountUtils {
      * Clears the current Facebook token,
      * sets current user to null and starts the authentication flow.
      */
-    public static void logout(Context ctx) {
+    public static void logout(Context context) {
         AccountUtils.clearAuthenticationToken();
         AccountUtils.setAuthenticatedUser(null);
-        AccountUtils.startAuthenticationFlow((BaseActivity) ctx);
+        AccountUtils.startAuthenticationFlow((BaseActivity) context);
 
         LoginManager.getInstance().logOut();
     }
@@ -118,7 +118,7 @@ public class AccountUtils {
      * Gets the current authenticated user from device memory.
      * If no user details found, get them from the server.
      *
-     * @return the authenticated user
+     * @return the authenticated user.
      */
     public static User getAuthenticatedUser() {
         if (sUser != null) {
@@ -132,27 +132,13 @@ public class AccountUtils {
                 sUser = GsonFactory.getGson().fromJson(userJson, User.class);
                 return sUser;
             }
-
-            //If we do not have the current user in the memory. Retrieve it from the server.
-            //TODO: Implement
-/*            Application.getInstance().getUserService().getAuthenticatedUser(new Callback<Result<User>>() {
-                @Override
-                public void success(Result<User> user, Response response) {
-                    setAuthenticatedUser(user.getResult());
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-                }
-            });*/
         }
-        return sUser;
+
+        throw new NullPointerException("Tried to get the authenticated user, but there is no user in the application memory.");
     }
 
     /**
-     * Gets the authenticated user's id
-     *
-     * @return authenticated user's id
+     * @return authenticated user's id.
      */
     public static Long getId() {
         if (sId == null) {
@@ -164,7 +150,7 @@ public class AccountUtils {
     }
 
     /**
-     * sets the authenticated user's id
+     * Set the authenticated user's id.
      */
     private static void setId(final Long id) {
         AccountUtils.sId = id;
@@ -173,14 +159,14 @@ public class AccountUtils {
     }
 
     /**
-     * Starts the authentication activity
+     * Start the authentication activity.
      */
     public static void startAuthenticationFlow(final BaseActivity baseActivity) {
         baseActivity.startActivity(ActivityLogin.class);
     }
 
     /**
-     * Start the main activity
+     * Start the main activity.
      */
     public static void startMainFlow(final BaseActivity baseActivity) {
         baseActivity.startActivity(ActivityMain.class);

@@ -17,6 +17,8 @@ import com.spontaneous.android.adapter.EventListAdapter;
 import com.spontaneous.android.model.Event;
 import com.spontaneous.android.util.Logger;
 
+import java.util.Collection;
+
 /**
  * This fragment holds a listview showing past events relating to the user.
  */
@@ -25,7 +27,7 @@ public class FragmentEvents extends Fragment {
     private ListView mEventsListView;
     private View mListEmptyView;
 
-    private EventListAdapter mEventListAdapter;
+    private static EventListAdapter mEventListAdapter;
 
     private FrameLayout mCardContainer;
     private ScrollView mScroll;
@@ -81,7 +83,10 @@ public class FragmentEvents extends Fragment {
         };
     }
 
-    public void addEvent(Event event) {
-        mEventListAdapter.add(event);
+    /**
+     * @return The event list adapter.
+     */
+    public static synchronized EventListAdapter getEventListAdapter() {
+        return mEventListAdapter;
     }
 }

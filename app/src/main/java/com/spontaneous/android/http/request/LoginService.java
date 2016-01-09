@@ -9,10 +9,14 @@ import retrofit.http.Body;
 import retrofit.http.POST;
 
 /**
- * Login request.
+ * REST API for login requests.
  */
 public interface LoginService {
 
+    /**
+     * Login a user.
+     * @param loginRequestModel A model representing login data - Facebook user id and token.
+     */
     @POST("/API/users/login")
     void login(@Body FacebookLoginRequest loginRequestModel, Callback<BaseResponse<User>> cb);
 
