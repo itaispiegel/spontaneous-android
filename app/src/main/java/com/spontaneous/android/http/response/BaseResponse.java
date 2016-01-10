@@ -11,11 +11,6 @@ public class BaseResponse<T> {
     private int statusCode;
 
     /**
-     * Description of the error (optional).
-     */
-    private String description;
-
-    /**
      * The data itself.
      */
     private T body;
@@ -42,23 +37,11 @@ public class BaseResponse<T> {
     }
 
     /**
-     * Create a response code with status code, description and body.
+     * Create a response code with status code and body.
      */
-    public BaseResponse(int statusCode, String description, T body) {
+    public BaseResponse(int statusCode, T body) {
         this.statusCode = statusCode;
-        this.description = description;
         this.body = body;
-    }
-
-    /**
-     * @return Description of the error (optional).
-     */
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     /**

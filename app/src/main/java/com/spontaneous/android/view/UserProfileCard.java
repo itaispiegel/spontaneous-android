@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
-import com.spontaneous.android.Application;
+import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.R;
 import com.spontaneous.android.model.User;
 
@@ -56,7 +56,7 @@ public class UserProfileCard extends FrameLayout {
     private void setUser(User mUser) {
         this.mUser = mUser;
 
-        mProfilePicture.setImageUrl(mUser.getProfilePicture(), Application.getInstance().getImageLoader());
+        mProfilePicture.setImageUrl(mUser.getProfilePicture(), SpontaneousApplication.getInstance().getImageLoader());
         mUserName.setText(mUser.getName());
         //mStatus.setText("\"" + mUser.getStatus() + "\"");
         //mAge.setText(mUser.getAge() + "");

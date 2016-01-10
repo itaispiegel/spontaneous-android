@@ -1,12 +1,14 @@
 package com.spontaneous.android.http;
 
-import com.spontaneous.android.Application;
+import com.spontaneous.android.R;
+import com.spontaneous.android.SpontaneousApplication;
 
 import retrofit.ErrorHandler;
 import retrofit.RetrofitError;
 
 /**
- * Created by USER1 on 10/01/2016.
+ * This class implements the {@link ErrorHandler} interface, and is used to specify custom actions in case the HTTP requests fail with an error.
+ * In this case, the custom error handler will print the errors, with relevant text.
  */
 public class CustomErrorHandler implements ErrorHandler {
 
@@ -18,15 +20,15 @@ public class CustomErrorHandler implements ErrorHandler {
         String errorDescription;
 
         if (error.getResponse() == null) {
-            errorDescription = Application.getInstance().getString(R.string.error_no_response);
+            errorDescription = SpontaneousApplication.getInstance().getString(R.string.error_no_response);
         } else if (error.getKind() == RetrofitError.Kind.NETWORK) {
-            errorDescription = Application.getInstance().getString(R.string.error_network);
+            errorDescription = SpontaneousApplication.getInstance().getString(R.string.error_network);
         } else {
             // Error message handling - return a simple error to Retrofit handlers..
             try {
                 errorDescription = (String) error.getBodyAs(String.class);
             } catch (RuntimeException ex) {
-                errorDescription = Application.getInstance().getString(R.string.error_network_http_error, error.getResponse().getStatus());
+                errorDescription = SpontaneousApplication.getInstance().getString(R.string.error_network_http_error, error.getResponse().getStatus());
             }
         }
 

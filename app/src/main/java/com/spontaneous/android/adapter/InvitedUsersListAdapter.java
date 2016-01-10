@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
-import com.spontaneous.android.Application;
+import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.R;
 import com.spontaneous.android.model.InvitedUser;
 
@@ -91,7 +91,7 @@ public class InvitedUsersListAdapter extends BaseAdapter {
         //Set views data
         userProfilePicture.setImageUrl(
                 currUser.getUser().getProfilePicture(),
-                Application.getInstance().getImageLoader()
+                SpontaneousApplication.getInstance().getImageLoader()
         );
 
         userNameTextView.setText(currUser.getUser().getName());

@@ -10,7 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
-import com.spontaneous.android.Application;
+import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.R;
 import com.spontaneous.android.adapter.InvitedUsersListAdapter;
 import com.spontaneous.android.model.Event;
@@ -122,7 +122,7 @@ public class EventCard extends FrameLayout {
 
         //Set map image url and click listener.
         //On click open a navigation app.
-        eventMapImage.setImageUrl(getMapURL(event), Application.getInstance().getImageLoader());
+        eventMapImage.setImageUrl(getMapURL(event), SpontaneousApplication.getInstance().getImageLoader());
         eventMapImage.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

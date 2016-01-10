@@ -17,8 +17,6 @@ import com.spontaneous.android.adapter.EventListAdapter;
 import com.spontaneous.android.model.Event;
 import com.spontaneous.android.util.Logger;
 
-import java.util.Collection;
-
 /**
  * This fragment holds a listview showing past events relating to the user.
  */

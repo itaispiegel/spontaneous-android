@@ -13,12 +13,12 @@ import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 
-public class Application extends android.app.Application {
-    private static Application sInstance;
+public class SpontaneousApplication extends android.app.Application {
 
-    //ImageLoader
-    private RequestQueue mRequestQueue;
-    private ImageLoader mImageLoader;
+    /**
+     * The instance of the application.
+     */
+    private static SpontaneousApplication sInstance;
 
     /**
      * Base URL of the server.
@@ -30,7 +30,20 @@ public class Application extends android.app.Application {
      */
     private RestAdapter restAdapter;
 
-    public static Application getInstance() {
+    /**
+     * A queue of all image loading requests.
+     */
+    private RequestQueue mRequestQueue;
+
+    /**
+     * The image loader object.
+     */
+    private ImageLoader mImageLoader;
+
+    /**
+     * @return Instance of the application.
+     */
+    public static SpontaneousApplication getInstance() {
         return sInstance;
     }
 
@@ -41,12 +54,15 @@ public class Application extends android.app.Application {
         mRequestQueue = Volley.newRequestQueue(this);
 
         mImageLoader = new ImageLoader(this.mRequestQueue, new ImageLoader.ImageCache() {
-            private final LruCache<String, Bitmap> mCache = new LruCache<>(10000);
+            private final int maxCacheSize = 10000;
+            private final LruCache<String, Bitmap> mCache = new LruCache<>(maxCacheSize);
 
+            @Override
             public void putBitmap(String url, Bitmap bitmap) {
                 mCache.put(url, bitmap);
             }
 
+            @Override
             public Bitmap getBitmap(String url) {
                 return mCache.get(url);
             }
@@ -69,14 +85,25 @@ public class Application extends android.app.Application {
                 .build();
     }
 
+    /**
+     * @return {@link #mRequestQueue}
+     */
     public RequestQueue getRequestQueue() {
         return mRequestQueue;
     }
 
+    /**
+     * @return {@link #mImageLoader}
+     */
     public ImageLoader getImageLoader() {
         return mImageLoader;
     }
 
+    /**
+     * @param serviceClass The class of the request service.
+     * @param <T>          The type of service.
+     * @return An HTTP request service class.
+     */
     public <T> T getService(Class<T> serviceClass) {
         return restAdapter.create(serviceClass);
     }

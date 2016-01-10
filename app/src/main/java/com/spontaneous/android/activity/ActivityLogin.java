@@ -15,7 +15,7 @@ import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.spontaneous.android.Application;
+import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.R;
 import com.spontaneous.android.http.request.LoginService;
 import com.spontaneous.android.http.request.model.FacebookLoginRequest;
@@ -114,7 +114,7 @@ public class ActivityLogin extends BaseActivity {
                         ", app id = " + token.getApplicationId() + ", permissions = " + permissions);
 
                 //Create and send a FacebookLoginRequest to the Heroku Server.
-                LoginService loginService = Application.getInstance().getService(getApplicationContext(), LoginService.class);
+                LoginService loginService = SpontaneousApplication.getInstance().getService(LoginService.class);
                 FacebookLoginRequest loginRequestModel = new FacebookLoginRequest(token.getUserId(), token.getToken());
 
                 //Send the login request.
