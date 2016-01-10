@@ -14,9 +14,9 @@ import android.widget.Toast;
 
 import com.android.ex.chips.BaseRecipientAdapter;
 import com.android.ex.chips.RecipientEditTextView;
+import com.spontaneous.android.Application;
 import com.spontaneous.android.R;
 import com.spontaneous.android.adapter.PlacesAutoCompleteAdapter;
-import com.spontaneous.android.http.ApiRestClient;
 import com.spontaneous.android.http.request.EventService;
 import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.Event;
@@ -227,7 +227,7 @@ public class ActivityCreateEvent extends BaseActivity implements
         Logger.info("Creating new event: " + event);
 
         //Submit event to server.
-        ApiRestClient.getRequest(this, EventService.class).createEvent(event, new Callback<BaseResponse<Event>>() {
+        Application.getInstance().getService(EventService.class).createEvent(event, new Callback<BaseResponse<Event>>() {
             @Override
             public void success(BaseResponse<Event> eventBaseResponse, Response response) {
                 Logger.info("Event created successful on server.");

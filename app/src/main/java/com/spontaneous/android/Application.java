@@ -6,6 +6,12 @@ import android.support.v4.util.LruCache;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.spontaneous.android.http.CustomErrorHandler;
+import com.spontaneous.android.util.GsonFactory;
+
+import retrofit.RequestInterceptor;
+import retrofit.RestAdapter;
+import retrofit.converter.GsonConverter;
 
 public class Application extends android.app.Application {
     private static Application sInstance;
@@ -13,6 +19,16 @@ public class Application extends android.app.Application {
     //ImageLoader
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
+
+    /**
+     * Base URL of the server.
+     */
+    private static final String BASE_URL = "https://spontaneous-server.herokuapp.com";
+
+    /**
+     * Rest adapter for HTTP requests.
+     */
+    private RestAdapter restAdapter;
 
     public static Application getInstance() {
         return sInstance;
@@ -35,13 +51,33 @@ public class Application extends android.app.Application {
                 return mCache.get(url);
             }
         });
+
+        RequestInterceptor requestInterceptor = new RequestInterceptor() {
+            @Override
+            public void intercept(RequestFacade request) {
+                request.addHeader("Content-Type", "application/json");
+                request.addHeader("Accept", "application/json");
+            }
+        };
+
+        restAdapter = new RestAdapter.Builder()
+                .setEndpoint(BASE_URL)
+                .setErrorHandler(new CustomErrorHandler())
+                .setRequestInterceptor(requestInterceptor)
+                .setConverter(new GsonConverter(GsonFactory.getGson()))
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .build();
     }
 
     public RequestQueue getRequestQueue() {
         return mRequestQueue;
     }
 
-    public ImageLoader getImageLoader(){
+    public ImageLoader getImageLoader() {
         return mImageLoader;
+    }
+
+    public <T> T getService(Class<T> serviceClass) {
+        return restAdapter.create(serviceClass);
     }
 }

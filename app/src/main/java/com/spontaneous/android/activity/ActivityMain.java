@@ -11,11 +11,11 @@ import android.view.animation.Animation;
 import android.widget.ImageView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.spontaneous.android.Application;
 import com.spontaneous.android.R;
 import com.spontaneous.android.adapter.ViewPagerAdapter;
 import com.spontaneous.android.fragment.FragmentEvents;
 import com.spontaneous.android.fragment.FragmentUserProfile;
-import com.spontaneous.android.http.ApiRestClient;
 import com.spontaneous.android.http.request.EventService;
 import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.Event;
@@ -151,7 +151,7 @@ public class ActivityMain extends BaseActivity {
         //Get the finish animation
         final Animation finishAnimation = getFinishAnimation(mLoadingImage, mCreateEventButton, mViewPager);
 
-        ApiRestClient.getRequest(this, EventService.class)
+        Application.getInstance().getService(EventService.class)
                 .getUserEvents(AccountUtils.getId(), new Callback<BaseResponse<List<Event>>>() {
                     @Override
                     public void success(BaseResponse<List<Event>> events, Response response) {
