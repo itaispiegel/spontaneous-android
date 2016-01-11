@@ -17,7 +17,7 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.R;
-import com.spontaneous.android.http.request.LoginService;
+import com.spontaneous.android.http.request.service.LoginService;
 import com.spontaneous.android.http.request.model.FacebookLoginRequest;
 import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.User;
@@ -153,15 +153,16 @@ public class ActivityLogin extends BaseActivity {
                     mWaitDialog.dismiss();
                 }
 
-                //Get the user entity.
-                User user = baseResponse.getBody();
-                Logger.info("LoginRequest: success, user = " + user);
-
                 //Proceed to the Main Activity, or show an error if the status code is negative.
                 if (baseResponse.getStatusCode() == BaseResponse.SUCCESS) {
+
+                    //Get the user entity.
+                    User user = baseResponse.getBody();
+                    Logger.info("LoginRequest: success, user = " + user);
+
                     onAuthenticationFinished(user);
                 } else {
-                    Toast.makeText(getApplicationContext(), baseResponse.getDescription(), Toast.LENGTH_SHORT)
+                    Toast.makeText(getApplicationContext(), "Connection Error", Toast.LENGTH_SHORT)
                             .show();
                 }
             }

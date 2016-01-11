@@ -17,7 +17,7 @@ import com.android.ex.chips.RecipientEditTextView;
 import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.R;
 import com.spontaneous.android.adapter.PlacesAutoCompleteAdapter;
-import com.spontaneous.android.http.request.EventService;
+import com.spontaneous.android.http.request.service.EventService;
 import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.Event;
 import com.spontaneous.android.util.AccountUtils;
@@ -172,9 +172,7 @@ public class ActivityCreateEvent extends BaseActivity implements
 
         mCalendar.set(year, monthOfYear, dayOfMonth);
 
-        mEventDate.setText(dateFormat.format(
-                mCalendar.getTime()
-        ));
+        mEventDate.setText(dateFormat.format(mCalendar.getTime()));
     }
 
     /**
@@ -188,18 +186,14 @@ public class ActivityCreateEvent extends BaseActivity implements
         mCalendar.set(Calendar.MINUTE, minute);
         mCalendar.set(Calendar.SECOND, second);
 
-        mEventTime.setText(dateFormat.format(
-                mCalendar.getTime()
-        ));
+        mEventTime.setText(dateFormat.format(mCalendar.getTime()));
     }
 
     /**
      * @return datetime from mCalendar field.
      */
     private DateTime getDateTime() {
-        return new DateTime(
-                mCalendar.getTime()
-        );
+        return new DateTime(mCalendar.getTime());
     }
 
     /**

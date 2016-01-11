@@ -1,4 +1,4 @@
-package com.spontaneous.android.http.request;
+package com.spontaneous.android.http.request.service;
 
 import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.Event;
