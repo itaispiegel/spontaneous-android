@@ -71,6 +71,16 @@ public class EventListAdapter extends BaseAdapter {
     }
 
     /**
+     * Add a new event to the adapter.
+     * @param location Index to add at.
+     * @param event Event entity to add.
+     */
+    public void add(int location, Event event) {
+        mEvents.add(location, event);
+        notifyDataSetChanged();
+    }
+
+    /**
      * Remove the event at the given index.
      *
      * @param index To remove at.

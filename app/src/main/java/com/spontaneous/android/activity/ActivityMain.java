@@ -11,8 +11,8 @@ import android.view.animation.Animation;
 import android.widget.ImageView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.R;
+import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.adapter.ViewPagerAdapter;
 import com.spontaneous.android.fragment.FragmentEvents;
 import com.spontaneous.android.fragment.FragmentUserProfile;
@@ -186,7 +186,7 @@ public class ActivityMain extends BaseActivity {
                 Event event = (Event) data.getSerializableExtra(extraName);
 
                 FragmentEvents.getEventListAdapter()
-                        .add(event);
+                        .add(0, event);
             }
         }
     }

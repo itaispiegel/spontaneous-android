@@ -12,8 +12,10 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 
 import com.spontaneous.android.R;
+import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.activity.ActivityEventPage;
 import com.spontaneous.android.adapter.EventListAdapter;
+import com.spontaneous.android.http.request.service.EventService;
 import com.spontaneous.android.model.Event;
 import com.spontaneous.android.util.Logger;
 
@@ -72,6 +74,11 @@ public class FragmentEvents extends Fragment {
         return new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView parent, View view, int position, long id) {
+
+                Event event = mEventListAdapter.getItem(position);
+
+                SpontaneousApplication.getInstance().getService(EventService.class)
+                        .deleteEvent(event.getId());
 
                 Logger.info("Item at position (" + position + ") was long clicked.");
                 mEventListAdapter.remove(position);

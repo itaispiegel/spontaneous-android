@@ -14,9 +14,11 @@ import android.widget.Toast;
 
 import com.android.ex.chips.BaseRecipientAdapter;
 import com.android.ex.chips.RecipientEditTextView;
-import com.spontaneous.android.SpontaneousApplication;
+import com.android.ex.chips.recipientchip.DrawableRecipientChip;
 import com.spontaneous.android.R;
+import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.adapter.PlacesAutoCompleteAdapter;
+import com.spontaneous.android.http.request.model.CreateEventRequest;
 import com.spontaneous.android.http.request.service.EventService;
 import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.Event;
@@ -30,7 +32,9 @@ import org.joda.time.DateTime;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -146,7 +150,7 @@ public class ActivityCreateEvent extends BaseActivity implements
     }
 
     /**
-     * @param picker to show.
+     * @param picker To show.
      * @return OnClick listener that shows date time picker dialog.
      */
     private View.OnTouchListener showDateTimePickerDialog(final DialogFragment picker) {
@@ -164,7 +168,7 @@ public class ActivityCreateEvent extends BaseActivity implements
     }
 
     /**
-     * Handle date set in dialog.
+     * Handle date set in picker dialog.
      */
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
@@ -176,7 +180,7 @@ public class ActivityCreateEvent extends BaseActivity implements
     }
 
     /**
-     * Handle time set in dialog.
+     * Handle time set in picker dialog.
      */
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
@@ -190,32 +194,50 @@ public class ActivityCreateEvent extends BaseActivity implements
     }
 
     /**
-     * @return datetime from mCalendar field.
+     * @return Datetime from {@link #mCalendar} field.
      */
     private DateTime getDateTime() {
         return new DateTime(mCalendar.getTime());
     }
 
     /**
-     * @return new event generated from the user input.
+     * @return List of emails of invited users - from {@link #mInvitedUsers}.
      */
-    private Event generateEvent() {
-        Event event = new Event();
+    private List<String> getInvitedUsersList() {
 
-        event.setTitle(mEventTitle.getText().toString());
-        event.setDescription(mEventDescription.getText().toString());
-        event.setHost(AccountUtils.getAuthenticatedUser());
-        event.setLocation(mEventLocation.getText().toString());
-        event.setDate(getDateTime());
+        //Get the array of invited users.
+        DrawableRecipientChip[] recipientChips = mInvitedUsers.getRecipients();
 
-        return event;
+        //Create a new ArrayList and preallocate its size.
+        ArrayList<String> emails = new ArrayList<>(recipientChips.length);
+
+        //Iterate over the emails in the array, and add them to the list.
+        for (DrawableRecipientChip chip : recipientChips) {
+            emails.add(chip.getEntry().getDestination());
+        }
+
+        return emails;
+    }
+
+    /**
+     * @return New event generated from the user input.
+     */
+    private CreateEventRequest generateEvent() {
+        return new CreateEventRequest(
+                mEventTitle.getText().toString(),
+                mEventDescription.getText().toString(),
+                AccountUtils.getAuthenticatedUser().getId(),
+                getInvitedUsersList(),
+                getDateTime(),
+                mEventLocation.getText().toString()
+        );
     }
 
     /**
      * Submit the event.
      */
     private void submitEvent() {
-        final Event event = generateEvent();
+        final CreateEventRequest event = generateEvent();
         final Intent intent = new Intent();
 
         Logger.info("Creating new event: " + event);
@@ -224,7 +246,7 @@ public class ActivityCreateEvent extends BaseActivity implements
         SpontaneousApplication.getInstance().getService(EventService.class).createEvent(event, new Callback<BaseResponse<Event>>() {
             @Override
             public void success(BaseResponse<Event> eventBaseResponse, Response response) {
-                Logger.info("Event created successful on server.");
+                Logger.info("Event created successfully on server.");
                 intent.putExtra(getString(R.string.created_event_intent_extra), eventBaseResponse.getBody());
                 setResult(RESULT_OK, intent);
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.R;
 import com.spontaneous.android.adapter.InvitedUsersListAdapter;
 import com.spontaneous.android.model.Event;
+import com.spontaneous.android.util.Logger;
 
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -24,7 +26,7 @@ import java.net.URLEncoder;
 /**
  * This is a representational view for an event.
  */
-public class EventCard extends FrameLayout {
+public class EventCard extends FrameLayout implements AdapterView.OnItemClickListener {
 
     /**
      * The event representing in the card.
@@ -109,6 +111,7 @@ public class EventCard extends FrameLayout {
 
         invitedUserListView = (ListView) layout.findViewById(R.id.invited_list);
         invitedUserListView.setAdapter(invitedUsersListAdapter);
+        invitedUserListView.setOnItemClickListener(this);
     }
 
     private void setEvent(final Event event) {
@@ -122,7 +125,7 @@ public class EventCard extends FrameLayout {
 
         //Set map image url and click listener.
         //On click open a navigation app.
-        eventMapImage.setImageUrl(getMapURL(event), SpontaneousApplication.getInstance().getImageLoader());
+        eventMapImage.setImageUrl(getMapUrl(event), SpontaneousApplication.getInstance().getImageLoader());
         eventMapImage.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,7 +146,12 @@ public class EventCard extends FrameLayout {
         ));
     }
 
-    private String getMapURL(final Event event) {
+    /**
+     * Get URL of of map image.
+     * @param event Event to get map to.
+     * @return The URL of the map.
+     */
+    private String getMapUrl(final Event event) {
         final String defaultEncoding = "UTF-8";
 
         //Encode the address so the API will retrieve a valid image
@@ -159,5 +167,10 @@ public class EventCard extends FrameLayout {
                 "&size=800x500&zoom=17&" +
                 "markers=" + addressEncoded + "&" +
                 "key=" + mContext.getString(R.string.google_api_key);
+    }
+
+    @Override
+    public void onItemClick(AdapterView parent, View view, int position, long id) {
+        Logger.info("Invited user was clicked: " + invitedUsersListAdapter.getItem(position));
     }
 }
