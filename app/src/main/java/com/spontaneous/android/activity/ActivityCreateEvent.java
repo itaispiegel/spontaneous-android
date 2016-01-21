@@ -240,12 +240,15 @@ public class ActivityCreateEvent extends BaseActivity implements
         final CreateEventRequest event = generateEvent();
         final Intent intent = new Intent();
 
+        showWaitDialog();
         Logger.info("Creating new event: " + event);
 
         //Submit event to server.
         SpontaneousApplication.getInstance().getService(EventService.class).createEvent(event, new Callback<BaseResponse<Event>>() {
             @Override
             public void success(BaseResponse<Event> eventBaseResponse, Response response) {
+                dismissDialog();
+
                 Logger.info("Event created successfully on server.");
                 intent.putExtra(getString(R.string.created_event_intent_extra), eventBaseResponse.getBody());
                 setResult(RESULT_OK, intent);
@@ -256,6 +259,8 @@ public class ActivityCreateEvent extends BaseActivity implements
             //In case of failure show an error.
             @Override
             public void failure(RetrofitError error) {
+                dismissDialog();
+
                 Logger.error("Event creation on server failed.");
                 Toast.makeText(getApplicationContext(), "Connection failed", Toast.LENGTH_SHORT).show();
             }

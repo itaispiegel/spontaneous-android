@@ -10,14 +10,21 @@ import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.spontaneous.android.R;
 import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.activity.ActivityEventPage;
+import com.spontaneous.android.activity.BaseActivity;
 import com.spontaneous.android.adapter.EventListAdapter;
 import com.spontaneous.android.http.request.service.EventService;
+import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.Event;
 import com.spontaneous.android.util.Logger;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * This fragment holds a listview showing past events relating to the user.
@@ -73,15 +80,31 @@ public class FragmentEvents extends Fragment {
     private AdapterView.OnItemLongClickListener itemLongClickListener() {
         return new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView parent, View view, int position, long id) {
+            public boolean onItemLongClick(AdapterView parent, View view, final int position, long id) {
 
+                ((BaseActivity) getActivity()).showWaitDialog();
+
+                Logger.info(String.format("Deleting item at position #%d.", position));
                 Event event = mEventListAdapter.getItem(position);
 
                 SpontaneousApplication.getInstance().getService(EventService.class)
-                        .deleteEvent(event.getId());
+                        .deleteEvent(event.getId(), new Callback<BaseResponse>() {
+                            @Override
+                            public void success(BaseResponse baseResponse, Response response) {
+                                ((BaseActivity) getActivity()).dismissDialog();
 
-                Logger.info("Item at position (" + position + ") was long clicked.");
-                mEventListAdapter.remove(position);
+                                Logger.info("Event deleted successfully.");
+                                mEventListAdapter.remove(position);
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                ((BaseActivity) getActivity()).dismissDialog();
+
+                                Toast.makeText(getActivity(), "Error while trying to delete event.", Toast.LENGTH_SHORT)
+                                        .show();
+                            }
+                        });
 
                 return true;
             }

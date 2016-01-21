@@ -93,6 +93,9 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
         setEvent(event);
     }
 
+    /**
+     * Initialize the views in the EventCard.
+     */
     private void init() {
 
         //Inflate the card.
@@ -114,6 +117,10 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
         invitedUserListView.setOnItemClickListener(this);
     }
 
+    /**
+     * Set the view's content according to the given event.
+     * @param event Event to display on card.
+     */
     private void setEvent(final Event event) {
 
         //Set views text

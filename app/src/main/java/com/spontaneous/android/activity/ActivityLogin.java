@@ -147,11 +147,7 @@ public class ActivityLogin extends BaseActivity {
         return new Callback<BaseResponse<User>>() {
             @Override
             public void success(BaseResponse<User> baseResponse, Response response) {
-
-                //Dismiss the wait dialog.
-                if (mWaitDialog != null && mWaitDialog.isShowing()) {
-                    mWaitDialog.dismiss();
-                }
+                dismissDialog();
 
                 //Proceed to the Main Activity, or show an error if the status code is negative.
                 if (baseResponse.getStatusCode() == BaseResponse.SUCCESS) {
@@ -169,11 +165,7 @@ public class ActivityLogin extends BaseActivity {
 
             @Override
             public void failure(RetrofitError error) {
-
-                //Dismiss the wait dialog.
-                if (mWaitDialog != null && mWaitDialog.isShowing()) {
-                    mWaitDialog.dismiss();
-                }
+                dismissDialog();
 
                 Logger.error("LoginActivity onFailure, " + error.getMessage());
 

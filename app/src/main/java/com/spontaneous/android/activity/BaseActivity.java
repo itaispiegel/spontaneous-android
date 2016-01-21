@@ -126,7 +126,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      *
      * @return the progress dialog
      */
-    final ProgressDialog showWaitDialog() {
+    final public ProgressDialog showWaitDialog() {
 
         //Set the message in the dialog.
         final String message = getString(R.string.message_loading);
@@ -139,6 +139,16 @@ public abstract class BaseActivity extends AppCompatActivity {
         mWaitDialog.show();
 
         return mWaitDialog;
+    }
+
+    /**
+     * Dismiss the progress dialog if it is showing.
+     */
+    final public void dismissDialog() {
+        //Dismiss the wait dialog.
+        if (mWaitDialog != null && mWaitDialog.isShowing()) {
+            mWaitDialog.dismiss();
+        }
     }
 
 

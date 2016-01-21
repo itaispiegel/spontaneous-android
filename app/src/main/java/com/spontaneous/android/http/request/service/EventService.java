@@ -31,13 +31,13 @@ public interface EventService {
      * @param id Of the user.
      */
     @GET("/API/events/getUserEvents")
-    void getUserEvents(@Query("user_id") long id, Callback<BaseResponse<List<Event>>> cb);
+    void getUserEvents(@Query("id") long id, Callback<BaseResponse<List<Event>>> cb);
 
     /**
      * Delete an event by it's id.
      * @param id Of the event.
      */
-    @DELETE("/events/{id}")
-    void deleteEvent(@Path("id") long id);
+    @DELETE("/API/events/delete")
+    void deleteEvent(@Query("id") long id, Callback<BaseResponse> cb);
 
 }
