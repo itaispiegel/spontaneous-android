@@ -46,10 +46,12 @@ import retrofit.client.Response;
 public class ActivityCreateEvent extends BaseActivity implements
         DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
+    public static final String DATE_FORMAT = "dd/MM/yyyy, E";
+    public static final String TIME_FORMAT = "HH:mm";
+
     @SuppressWarnings("FieldCanBeLocal")
     private final String ACTIVITY_TITLE = "Create Event";
 
-    private PlacesAutoCompleteAdapter mPlacesAutoCompleteAdapter;
     private Calendar mCalendar;
 
     //Views
@@ -60,27 +62,22 @@ public class ActivityCreateEvent extends BaseActivity implements
     private EditText mEventDate;
     private EditText mEventTime;
 
-    /**
-     * Create the activity.
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //Set toolbar
         setToolbarMessage(ACTIVITY_TITLE);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        showBackButtonOnToolbar();
 
         // Initialize views
         mEventTitle = (EditText) findViewById(R.id.create_event_title);
         mEventDescription = (EditText) findViewById(R.id.create_event_description);
-        mPlacesAutoCompleteAdapter = new PlacesAutoCompleteAdapter(this);
         mInvitedUsers = (RecipientEditTextView) findViewById(R.id.create_event_invited_users);
         mEventDate = (EditText) findViewById(R.id.create_event_date);
 
         //Initialize places autocompletion
+        PlacesAutoCompleteAdapter mPlacesAutoCompleteAdapter = new PlacesAutoCompleteAdapter(this);
         mEventLocation = (AutoCompleteTextView) findViewById(R.id.create_event_location);
         mEventLocation.setAdapter(mPlacesAutoCompleteAdapter);
 
@@ -172,7 +169,7 @@ public class ActivityCreateEvent extends BaseActivity implements
      */
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy, E");
+        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 
         mCalendar.set(year, monthOfYear, dayOfMonth);
 
@@ -184,7 +181,7 @@ public class ActivityCreateEvent extends BaseActivity implements
      */
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
-        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        DateFormat dateFormat = new SimpleDateFormat(TIME_FORMAT);
 
         mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
         mCalendar.set(Calendar.MINUTE, minute);
@@ -234,7 +231,9 @@ public class ActivityCreateEvent extends BaseActivity implements
     }
 
     /**
-     * Submit the event.
+     * Submit the created event to the server.
+     * Show a wait dialog, and when succeeded return to {@link ActivityMain}.
+     * If failed, show an error to the user.
      */
     private void submitEvent() {
         final CreateEventRequest event = generateEvent();

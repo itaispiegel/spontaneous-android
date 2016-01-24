@@ -15,34 +15,45 @@ public abstract class Logger {
     /**
      * Send an info log message.
      */
-    public static void info(String s) {
-        if (s == null) {
-            s = "";
+    public static void info(String message) {
+        if (message == null) {
+            message = "";
         }
 
-        Log.i(LOG_TAG, s);
+        Log.i(LOG_TAG, message);
     }
 
     /**
      * Send a debug log message.
      */
-    public static void debug(String s) {
-        if (s == null) {
-            s = "";
+    public static void debug(String message) {
+        if (message == null) {
+            message = "";
         }
 
-        Log.d(LOG_TAG, s);
+        Log.d(LOG_TAG, message);
     }
 
     /**
      * Send an error log message.
      */
-    public static void error(String s) {
-        if (s == null) {
-            s = "";
+    public static void error(String message) {
+        if (message == null) {
+            message = "";
         }
 
-        Log.e(LOG_TAG, s);
+        Log.e(LOG_TAG, message);
+    }
+
+    /**
+     * Send an error log message.
+     */
+    public static void error(String message, Throwable throwable) {
+        if (message == null) {
+            message = "";
+        }
+
+        Log.e(LOG_TAG, message, throwable);
     }
 
     /**

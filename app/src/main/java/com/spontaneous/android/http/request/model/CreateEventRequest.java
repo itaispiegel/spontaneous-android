@@ -14,37 +14,37 @@ public class CreateEventRequest {
      * The title of the event.
      */
     @Expose
-    private String title;
+    private final String title;
 
     /**
      * A short description about the event.
      */
     @Expose
-    private String description;
+    private final String description;
 
     /**
      * Id number of the host user.
      */
     @Expose
-    private long hostUserId;
+    private final long hostUserId;
 
     /**
      * Emails of the users to invite.
      */
     @Expose
-    private List<String> invitedUsersEmails;
+    private final List<String> invitedUsersEmails;
 
     /**
      * When the event is.
      */
     @Expose
-    private DateTime date;
+    private final DateTime date;
 
     /**
      * Where the event is.
      */
     @Expose
-    private String location;
+    private final String location;
 
     public CreateEventRequest(String title, String description, long hostUserId, List<String> invitedUsersEmails, DateTime date, String location) {
         this.title = title;

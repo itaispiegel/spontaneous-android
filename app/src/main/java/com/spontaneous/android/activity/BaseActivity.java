@@ -88,6 +88,23 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     abstract boolean showToolbar();
 
+    /**
+     * Show a back button on the action bar.
+     * The button will show up only if the {@link ActionBar} is displayed, in the current activity, and only if it isn't null.
+     */
+    void showBackButtonOnToolbar() {
+        ActionBar actionBar = getSupportActionBar();
+
+        if (showToolbar() && actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    /**
+     * Show a given message in the toolbar.
+     *
+     * @param message The message to display.
+     */
     final void setToolbarMessage(String message) {
         TextView toolbarMessage = (TextView) mToolbar.findViewById(R.id.toolbar_message);
         toolbarMessage.setText(message);
@@ -123,10 +140,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * Show a progress dialog with the text "Loading" in the given activity.
-     *
-     * @return the progress dialog
      */
-    final public ProgressDialog showWaitDialog() {
+    final public void showWaitDialog() {
 
         //Set the message in the dialog.
         final String message = getString(R.string.message_loading);
@@ -137,8 +152,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         mWaitDialog.setCancelable(true);
         mWaitDialog.setIndeterminate(true);
         mWaitDialog.show();
-
-        return mWaitDialog;
     }
 
     /**

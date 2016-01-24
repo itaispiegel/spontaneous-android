@@ -20,23 +20,19 @@ public class FragmentUserProfile extends Fragment {
 
     private User mUser;
 
-    private FrameLayout mCardContainer;
-    private ScrollView mScroll;
-    private View mUserProfileCard;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_user_profile, container, false);
 
-        mScroll = (ScrollView) layout.findViewById(R.id.scroll);
+        ScrollView mScroll = (ScrollView) layout.findViewById(R.id.scroll);
 
         //In case we already have a user in memory
-        if(null == mUser) {
+        if(mUser == null) {
             mUser = AccountUtils.getAuthenticatedUser();
         }
 
-        mCardContainer = (FrameLayout) layout.findViewById(R.id.card);
-        mUserProfileCard = new UserProfileCard(getActivity(), mUser);
+        FrameLayout mCardContainer = (FrameLayout) layout.findViewById(R.id.card);
+        View mUserProfileCard = new UserProfileCard(getActivity(), mUser);
 
         mCardContainer.addView(mUserProfileCard);
         mScroll.smoothScrollTo(0, 0); //For some reason the card starts on the bottom of the activity

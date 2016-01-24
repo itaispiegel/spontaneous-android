@@ -12,7 +12,7 @@ import java.lang.reflect.Type;
 import java.util.Date;
 
 /**
- * This class creates a gson instance.
+ * This class creates a {@link Gson} instance.
  */
 public final class GsonFactory {
 

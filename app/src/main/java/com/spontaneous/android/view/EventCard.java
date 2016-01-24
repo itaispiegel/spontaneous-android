@@ -11,8 +11,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
-import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.R;
+import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.adapter.InvitedUsersListAdapter;
 import com.spontaneous.android.model.Event;
 import com.spontaneous.android.util.Logger;
@@ -27,11 +27,6 @@ import java.net.URLEncoder;
  * This is a representational view for an event.
  */
 public class EventCard extends FrameLayout implements AdapterView.OnItemClickListener {
-
-    /**
-     * The event representing in the card.
-     */
-    private Event mEvent;
 
     /**
      * Context of the application.
@@ -68,12 +63,7 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
     private NetworkImageView eventMapImage;
 
     /**
-     * Event invited users ListView.
-     */
-    private ListView invitedUserListView;
-
-    /**
-     * ListViewAdapter for the {@link EventCard#invitedUserListView}
+     * ListViewAdapter for the invited users.
      */
     private InvitedUsersListAdapter invitedUsersListAdapter;
 
@@ -88,8 +78,6 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
         this(context);
 
         this.mContext = context;
-        this.mEvent = event;
-
         setEvent(event);
     }
 
@@ -112,7 +100,7 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
 
         invitedUsersListAdapter = new InvitedUsersListAdapter(mContext);
 
-        invitedUserListView = (ListView) layout.findViewById(R.id.invited_list);
+        ListView invitedUserListView = (ListView) layout.findViewById(R.id.invited_list);
         invitedUserListView.setAdapter(invitedUsersListAdapter);
         invitedUserListView.setOnItemClickListener(this);
     }

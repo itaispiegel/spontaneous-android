@@ -1,5 +1,6 @@
 package com.spontaneous.android;
 
+import android.app.Application;
 import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
 
@@ -13,7 +14,7 @@ import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 
-public class SpontaneousApplication extends android.app.Application {
+public class SpontaneousApplication extends Application {
 
     /**
      * The instance of the application.
@@ -51,8 +52,8 @@ public class SpontaneousApplication extends android.app.Application {
         super.onCreate();
         sInstance = this;
 
+        //Initialize Volley
         mRequestQueue = Volley.newRequestQueue(this);
-
         mImageLoader = new ImageLoader(this.mRequestQueue, new ImageLoader.ImageCache() {
             private final int maxCacheSize = 10000;
             private final LruCache<String, Bitmap> mCache = new LruCache<>(maxCacheSize);
@@ -68,6 +69,7 @@ public class SpontaneousApplication extends android.app.Application {
             }
         });
 
+        //Initialize Retrofit
         RequestInterceptor requestInterceptor = new RequestInterceptor() {
             @Override
             public void intercept(RequestFacade request) {

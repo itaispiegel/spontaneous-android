@@ -16,6 +16,7 @@ import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.adapter.ViewPagerAdapter;
 import com.spontaneous.android.fragment.FragmentEvents;
 import com.spontaneous.android.fragment.FragmentUserProfile;
+import com.spontaneous.android.gcm.RegistrationIntentService;
 import com.spontaneous.android.http.request.service.EventService;
 import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.Event;
@@ -38,11 +39,6 @@ public class ActivityMain extends BaseActivity {
      * The view pager contains the fragments embedded in the main activity.
      */
     private ViewPager mViewPager;
-
-    /**
-     * The adapter for the view pager.
-     */
-    private ViewPagerAdapter mPagerAdapter;
 
     /**
      * The loading spinner image.
@@ -80,7 +76,7 @@ public class ActivityMain extends BaseActivity {
 
         initFragments();
 
-        mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), mEventsFragment, mUserProfileFragment);
+        ViewPagerAdapter mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), mEventsFragment, mUserProfileFragment);
 
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
         mViewPager.setAdapter(mPagerAdapter);
@@ -102,6 +98,10 @@ public class ActivityMain extends BaseActivity {
         });
 
         loadUserEvents();
+
+        // Start IntentService to register this application with GCM.
+        Intent intent = new Intent(this, RegistrationIntentService.class);
+        startService(intent);
     }
 
     @Override
@@ -157,7 +157,7 @@ public class ActivityMain extends BaseActivity {
                     public void success(BaseResponse<List<Event>> events, Response response) {
                         Logger.debug("User events retrieved");
 
-                        FragmentEvents.getEventListAdapter()
+                        mEventsFragment.getEventListAdapter()
                                 .addAll(events.getBody());
 
                         mLoadingImage.startAnimation(finishAnimation);
@@ -185,7 +185,7 @@ public class ActivityMain extends BaseActivity {
             if (resultCode == RESULT_OK) {
                 Event event = (Event) data.getSerializableExtra(extraName);
 
-                FragmentEvents.getEventListAdapter()
+                mEventsFragment.getEventListAdapter()
                         .add(0, event);
             }
         }

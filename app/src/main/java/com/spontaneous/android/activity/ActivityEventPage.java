@@ -16,32 +16,21 @@ import com.spontaneous.android.view.EventCard;
  */
 public class ActivityEventPage extends BaseActivity {
 
-    private Event mEvent;
-
-    private FrameLayout mCardContainer;
-    private ScrollView mScroll;
-    private View mEventCard;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mEvent = (Event) getIntent().getExtras().getSerializable(getString(R.string.event_card_intent_extras));
+        //Get the details of the event displaying.
+        Event mEvent = (Event) getIntent().getExtras()
+                .getSerializable(getString(R.string.event_card_intent_extras));
 
-        //Set back button on toolbar
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //Show back button
+        showBackButtonOnToolbar();
 
-            //Set toolbar of the activity to event title
-            if (mEvent != null) {
-                setToolbarMessage(mEvent.getTitle());
-            }
-        }
+        ScrollView mScroll = (ScrollView) findViewById(R.id.scroll);
 
-        mScroll = (ScrollView) findViewById(R.id.scroll);
-
-        mCardContainer = (FrameLayout) findViewById(R.id.card);
-        mEventCard = new EventCard(this, mEvent);
+        FrameLayout mCardContainer = (FrameLayout) findViewById(R.id.card);
+        View mEventCard = new EventCard(this, mEvent);
 
         mCardContainer.addView(mEventCard);
         mScroll.smoothScrollTo(0, 0); //For some reason the card starts on the bottom of the activity

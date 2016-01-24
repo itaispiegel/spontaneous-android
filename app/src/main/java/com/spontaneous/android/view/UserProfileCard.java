@@ -20,8 +20,6 @@ public class UserProfileCard extends FrameLayout {
 
     private final Context mContext;
 
-    private User mUser;
-
     private NetworkImageView mProfilePicture;
     private TextView mUserName;
     private TextView mStatus;
@@ -54,7 +52,6 @@ public class UserProfileCard extends FrameLayout {
     }
 
     private void setUser(User mUser) {
-        this.mUser = mUser;
 
         mProfilePicture.setImageUrl(mUser.getProfilePicture(), SpontaneousApplication.getInstance().getImageLoader());
         mUserName.setText(mUser.getName());

@@ -31,23 +31,16 @@ import retrofit.client.Response;
  */
 public class FragmentEvents extends Fragment {
 
-    private ListView mEventsListView;
-    private View mListEmptyView;
-
-    private static EventListAdapter mEventListAdapter;
-
-    private FrameLayout mCardContainer;
-    private ScrollView mScroll;
-    private View mEventCard;
+    private EventListAdapter mEventListAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_events, container, false);
 
-        mListEmptyView = layout.findViewById(R.id.empty);
+        View mListEmptyView = layout.findViewById(R.id.empty);
 
         mEventListAdapter = new EventListAdapter(getActivity());
-        mEventsListView = (ListView) layout.findViewById(R.id.events_listview);
+        ListView mEventsListView = (ListView) layout.findViewById(R.id.events_listview);
         mEventsListView.setAdapter(mEventListAdapter);
         mEventsListView.setEmptyView(mListEmptyView);
 
@@ -114,7 +107,7 @@ public class FragmentEvents extends Fragment {
     /**
      * @return The event list adapter.
      */
-    public static synchronized EventListAdapter getEventListAdapter() {
+    public EventListAdapter getEventListAdapter() {
         return mEventListAdapter;
     }
 }

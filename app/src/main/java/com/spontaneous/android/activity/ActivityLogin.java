@@ -2,7 +2,6 @@ package com.spontaneous.android.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
@@ -15,14 +14,16 @@ import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.R;
-import com.spontaneous.android.http.request.service.LoginService;
+import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.http.request.model.FacebookLoginRequest;
+import com.spontaneous.android.http.request.service.LoginService;
 import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.User;
 import com.spontaneous.android.util.AccountUtils;
 import com.spontaneous.android.util.Logger;
+
+import java.util.Iterator;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -33,9 +34,6 @@ import retrofit.client.Response;
  */
 public class ActivityLogin extends BaseActivity {
 
-    private AutoCompleteTextView mEmail;
-    private LoginButton mLoginButton;
-
     private CallbackManager mCallbackManager;
 
     @Override
@@ -43,7 +41,7 @@ public class ActivityLogin extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         //Initialize email and password EditTexts
-        mEmail = (AutoCompleteTextView) findViewById(R.id.email);
+        AutoCompleteTextView mEmail = (AutoCompleteTextView) findViewById(R.id.email);
 
         //Setup email auto complete
         setupEmailAutoComplete(mEmail, this);
@@ -55,7 +53,7 @@ public class ActivityLogin extends BaseActivity {
         mCallbackManager = CallbackManager.Factory.create();
 
         //Initialize login button and set its permissions, callback and click listener
-        mLoginButton = (LoginButton) findViewById(R.id.login_button);
+        LoginButton mLoginButton = (LoginButton) findViewById(R.id.login_button);
 
         mLoginButton.setReadPermissions("public_profile", "user_friends", "email");
         mLoginButton.registerCallback(mCallbackManager, getFacebookCallback());
@@ -98,14 +96,17 @@ public class ActivityLogin extends BaseActivity {
 
                 //Add the permissions.
                 AccessToken token = loginResult.getAccessToken();
-                String permissions = "";
 
-                for (String s : token.getPermissions()) {
-                    permissions += s + ",";
+                //Add the first permission.
+                String permissions = "";
+                Iterator<String> permissionIterator = token.getPermissions().iterator();
+                if(permissionIterator.hasNext()) {
+                    permissions += permissionIterator.next();
                 }
 
-                if (!TextUtils.isEmpty(permissions)) {
-                    permissions = permissions.substring(0, permissions.length() - 1);
+                //Separate the next permissions with a comma.
+                while(permissionIterator.hasNext()) {
+                    permissions += "," + permissionIterator.next();
                 }
 
                 //Send a a log message
