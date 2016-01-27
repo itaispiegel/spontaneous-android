@@ -35,25 +35,25 @@ public class InvitedUsersListAdapter extends BaseAdapter {
     /**
      * List of users to include.
      */
-    private final List<InvitedUser> mInvited;
+    private final List<InvitedUser> mInvitedUsers;
 
     /**
-     * Intialize a new InvitedUsersListAdapter.
+     * Initialize a new InvitedUsersListAdapter.
      * @param mContext of the activity.
      */
     public InvitedUsersListAdapter(Context mContext) {
         this.mContext = mContext;
-        this.mInvited = new ArrayList<>();
+        this.mInvitedUsers = new ArrayList<>();
     }
 
     @Override
     public int getCount() {
-        return mInvited.size();
+        return mInvitedUsers.size();
     }
 
     @Override
     public InvitedUser getItem(int position) {
-        return mInvited.get(position);
+        return mInvitedUsers.get(position);
     }
 
     @Override
@@ -62,11 +62,30 @@ public class InvitedUsersListAdapter extends BaseAdapter {
     }
 
     /**
+     * Find the {@link InvitedUser} with the given email address.
+     * @param email The given email address.
+     * @return The invited user with the given email address.
+     * @throws NullPointerException In case that there is no such invited user.
+     */
+    public InvitedUser getInvitedUserByEmail(String email) throws NullPointerException {
+        for(InvitedUser invitedUser : mInvitedUsers) {
+
+            //Iterate every each invited user in the collection, and check if it's email equals the given email.
+            if(invitedUser.getUser().getEmail()
+                    .equals(email)) {
+                return invitedUser;
+            }
+        }
+
+        throw new NullPointerException(String.format("No such invited user with the email '%s'", email));
+    }
+
+    /**
      * Add a collection of invited users to the adapter.
      * @param invitedUsers To add to the adapter.
      */
     public void addAll(Collection<InvitedUser> invitedUsers) {
-        mInvited.addAll(invitedUsers);
+        mInvitedUsers.addAll(invitedUsers);
         notifyDataSetChanged();
     }
 
@@ -86,7 +105,7 @@ public class InvitedUsersListAdapter extends BaseAdapter {
         ImageView isUserComingImage = (ImageView) convertView.findViewById(R.id.is_attending);
 
         //Get invited user entity
-        InvitedUser currUser = mInvited.get(position);
+        InvitedUser currUser = mInvitedUsers.get(position);
 
         //Set views data
         userProfilePicture.setImageUrl(

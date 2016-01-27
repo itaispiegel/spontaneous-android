@@ -168,4 +168,8 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
     public void onItemClick(AdapterView parent, View view, int position, long id) {
         Logger.info("Invited user was clicked: " + invitedUsersListAdapter.getItem(position));
     }
+
+    public InvitedUsersListAdapter getInvitedUsersListAdapter() {
+        return invitedUsersListAdapter;
+    }
 }

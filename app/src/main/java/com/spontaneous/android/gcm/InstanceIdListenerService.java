@@ -7,7 +7,7 @@ import com.google.android.gms.iid.InstanceIDListenerService;
 /**
  * This is called when the instance ID changes, and is used to handle the change.
  */
-public class MyInstanceIdListenerService extends InstanceIDListenerService {
+public class InstanceIdListenerService extends InstanceIDListenerService {
 
     /**
      * Called if InstanceID token is updated. This may occur if the security of
