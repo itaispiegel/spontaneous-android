@@ -39,6 +39,7 @@ public class InvitedUsersListAdapter extends BaseAdapter {
 
     /**
      * Initialize a new InvitedUsersListAdapter.
+     *
      * @param mContext of the activity.
      */
     public InvitedUsersListAdapter(Context mContext) {
@@ -63,15 +64,16 @@ public class InvitedUsersListAdapter extends BaseAdapter {
 
     /**
      * Find the {@link InvitedUser} with the given email address.
+     *
      * @param email The given email address.
      * @return The invited user with the given email address.
      * @throws NullPointerException In case that there is no such invited user.
      */
     public InvitedUser getInvitedUserByEmail(String email) throws NullPointerException {
-        for(InvitedUser invitedUser : mInvitedUsers) {
+        for (InvitedUser invitedUser : mInvitedUsers) {
 
             //Iterate every each invited user in the collection, and check if it's email equals the given email.
-            if(invitedUser.getUser().getEmail()
+            if (invitedUser.getUser().getEmail()
                     .equals(email)) {
                 return invitedUser;
             }
@@ -82,6 +84,7 @@ public class InvitedUsersListAdapter extends BaseAdapter {
 
     /**
      * Add a collection of invited users to the adapter.
+     *
      * @param invitedUsers To add to the adapter.
      */
     public void addAll(Collection<InvitedUser> invitedUsers) {
@@ -94,6 +97,7 @@ public class InvitedUsersListAdapter extends BaseAdapter {
         if (mInflater == null) {
             mInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
+
         if (convertView == null) {
             convertView = mInflater.inflate(R.layout.list_item_invited, parent, false);
         }
@@ -108,10 +112,8 @@ public class InvitedUsersListAdapter extends BaseAdapter {
         InvitedUser currUser = mInvitedUsers.get(position);
 
         //Set views data
-        userProfilePicture.setImageUrl(
-                currUser.getUser().getProfilePicture(),
-                SpontaneousApplication.getInstance().getImageLoader()
-        );
+        userProfilePicture.setImageUrl(currUser.getUser().getProfilePicture(),
+                SpontaneousApplication.getInstance().getImageLoader());
 
         userNameTextView.setText(currUser.getUser().getName());
         userStatusTextView.setText(currUser.getStatus());

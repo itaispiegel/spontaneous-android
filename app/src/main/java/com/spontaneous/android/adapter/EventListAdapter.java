@@ -90,6 +90,14 @@ public class EventListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    /**
+     * Clears the collection.
+     */
+    public void clear() {
+        mEvents.clear();
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return mEvents.size();

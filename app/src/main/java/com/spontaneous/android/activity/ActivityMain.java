@@ -8,7 +8,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.spontaneous.android.R;
@@ -35,34 +37,18 @@ import retrofit.client.Response;
  */
 public class ActivityMain extends BaseActivity {
 
-    /**
-     * The view pager contains the fragments embedded in the main activity.
-     */
+    private LinearLayout mButtonsBar;
+    private ImageButton mEventsButton;
+    private ImageButton mUserProfileButton;
+
     private ViewPager mViewPager;
 
-    /**
-     * The loading spinner image.
-     */
     private ImageView mLoadingImage;
-
-    /**
-     * Loading spinner animation.
-     */
     private AnimationDrawable mLoadingAnimation;
 
-    /**
-     * The floating button for creating a new event.
-     */
     private FloatingActionButton mCreateEventButton;
 
-    /**
-     * A fragment holding representational data of the user.
-     */
     private FragmentUserProfile mUserProfileFragment;
-
-    /**
-     * Event history fragment.
-     */
     private FragmentEvents mEventsFragment;
 
     private void initFragments() {
@@ -97,11 +83,39 @@ public class ActivityMain extends BaseActivity {
             }
         });
 
-        loadUserEvents();
+        //Initialize the buttons in the toolbar.
+        mButtonsBar = (LinearLayout) findViewById(R.id.buttons_bar);
+        mEventsButton = (ImageButton) findViewById(R.id.events_button);
+        mUserProfileButton = (ImageButton) findViewById(R.id.user_profile_button);
+
+        //On click listener for the tab buttons.
+        View.OnClickListener tabBarClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectTab(v.getId());
+            }
+        };
+
+        mUserProfileButton.setOnClickListener(tabBarClickListener);
+        mEventsButton.setOnClickListener(tabBarClickListener);
+
+        final ImageButton[] tabButtons = {mEventsButton, mUserProfileButton};
+        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                tabButtons[position].performClick();
+                hideKeyboard();
+            }
+        });
+
+        //Select the events page
+        mEventsButton.setSelected(true);
 
         // Start IntentService to register this application with GCM.
         Intent intent = new Intent(this, RegistrationIntentService.class);
         startService(intent);
+
+        loadUserEvents();
     }
 
     @Override
@@ -136,6 +150,22 @@ public class ActivityMain extends BaseActivity {
     }
 
     /**
+     * Select a tab - change view pager to the tab's page, and change the image to be selected.
+     *
+     * @param tabId Resource id of the tab.
+     */
+    private void selectTab(int tabId) {
+        if (tabId == R.id.events_button) {
+            mViewPager.setCurrentItem(0);
+        } else if (tabId == R.id.user_profile_button) {
+            mViewPager.setCurrentItem(1);
+        }
+
+        mEventsButton.setSelected(tabId == R.id.events_button);
+        mUserProfileButton.setSelected(tabId == R.id.user_profile_button);
+    }
+
+    /**
      * Load user events, and show the loading image meanwhile.
      */
     private void loadUserEvents() {
@@ -144,18 +174,23 @@ public class ActivityMain extends BaseActivity {
         mLoadingImage.setVisibility(View.VISIBLE);
         mCreateEventButton.setVisibility(View.GONE);
         mViewPager.setVisibility(View.INVISIBLE);
+        mButtonsBar.setVisibility(View.GONE);
 
         //Start the loading animation
         mLoadingAnimation.start();
 
         //Get the finish animation
-        final Animation finishAnimation = getFinishAnimation(mLoadingImage, mCreateEventButton, mViewPager);
+        final Animation finishAnimation = getFinishAnimation(mLoadingImage, mCreateEventButton, mViewPager, mButtonsBar);
 
         SpontaneousApplication.getInstance().getService(EventService.class)
                 .getUserEvents(AccountUtils.getAuthenticatedUser().getId(), new Callback<BaseResponse<List<Event>>>() {
                     @Override
                     public void success(BaseResponse<List<Event>> events, Response response) {
                         Logger.debug("User events retrieved");
+
+                        //Clear the adapter just in case.
+                        mEventsFragment.getEventListAdapter()
+                                .clear();
 
                         mEventsFragment.getEventListAdapter()
                                 .addAll(events.getBody());

@@ -2,14 +2,23 @@ package com.spontaneous.android.gcm;
 
 import android.app.IntentService;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.support.v4.content.LocalBroadcastManager;
+import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
 import com.spontaneous.android.R;
+import com.spontaneous.android.SpontaneousApplication;
+import com.spontaneous.android.http.request.service.UserService;
+import com.spontaneous.android.http.response.BaseResponse;
+import com.spontaneous.android.model.User;
+import com.spontaneous.android.util.AccountUtils;
 import com.spontaneous.android.util.Logger;
+
+import java.io.IOException;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * This class is responsible for registering the device with the GCM server.
@@ -46,8 +55,6 @@ public class RegistrationIntentService extends IntentService {
      */
     @Override
     protected void onHandleIntent(Intent intent) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
         try {
             InstanceID instanceId = InstanceID.getInstance(this);
             String token = instanceId.getToken(getString(R.string.gcm_defaultSenderId),
@@ -55,36 +62,56 @@ public class RegistrationIntentService extends IntentService {
 
             Logger.info("GCM Registration Token: " + token);
 
-            // TODO: Implement this method to send any registration id to your app's servers.
-            sendRegistrationToServer(token);
-
-            // You should store a boolean that indicates whether the generated token has been
-            // sent to your server. If the boolean is false, send the token to your server,
-            // otherwise your server should have already received the token.
-            sharedPreferences.edit().putBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, true).apply();
-        } catch (Exception e) {
+            updateRegistrationToken(token);
+        } catch (IOException e) {
 
             // If an exception happens while fetching the new token or updating our registration data
             // on a third-party server, this ensures that we'll attempt the update at a later time.
             Logger.error("Failed to complete token refresh", e);
-            sharedPreferences.edit().putBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false).apply();
         }
+    }
 
-        // Notify UI that registration has completed, so the progress indicator can be hidden.
-        Intent registrationComplete = new Intent(QuickstartPreferences.REGISTRATION_COMPLETE);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
+    /**
+     * This method updates the registration token at the server and at the application memory.
+     *
+     * @param newToken The updated token.
+     */
+    private void updateRegistrationToken(String newToken) {
+        User authenticatedUser = AccountUtils.getAuthenticatedUser();
+
+        if (authenticatedUser.getGcmToken() != null && authenticatedUser.getGcmToken().equals(newToken)) {
+            Logger.info("The GCM token didn't change, so there is no need to update it.");
+        } else {
+            Logger.info("The GCM token has changed, updating it at server.");
+
+            sendRegistrationToServer(authenticatedUser.getId(), newToken);
+            authenticatedUser.setGcmToken(newToken);
+            AccountUtils.setAuthenticatedUser(authenticatedUser);
+        }
     }
 
     /**
      * Persist registration to third-party servers.
-     * <p>
+     * <p/>
      * Modify this method to associate the user's GCM registration token with any server-side account
      * maintained by your application.
      *
      * @param token The new token.
      */
-    private void sendRegistrationToServer(String token) {
-        //TODO: Add custom implementation, as needed.
-    }
+    private void sendRegistrationToServer(long userId, String token) {
+        SpontaneousApplication.getInstance()
+                .getService(UserService.class)
+                .updateGcmToken(userId, token, new Callback<BaseResponse>() {
+                    @Override
+                    public void success(BaseResponse baseResponse, Response response) {
+                        Logger.info("GCM token was successfully sent to server.");
+                    }
 
+                    @Override
+                    public void failure(RetrofitError error) {
+                        Toast.makeText(RegistrationIntentService.this, "There was a problem with Google Cloud Messaging.", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                });
+    }
 }

@@ -47,6 +47,8 @@ public class User extends BaseEntity {
      */
     private Gender gender;
 
+    private String gcmToken;
+
     /**
      * Create an empty user object.
      */
@@ -170,6 +172,14 @@ public class User extends BaseEntity {
      */
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+
+    public String getGcmToken() {
+        return gcmToken;
+    }
+
+    public void setGcmToken(String gcmToken) {
+        this.gcmToken = gcmToken;
     }
 
     /**

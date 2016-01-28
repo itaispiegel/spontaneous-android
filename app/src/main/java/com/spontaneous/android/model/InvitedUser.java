@@ -19,7 +19,7 @@ public class InvitedUser extends BaseEntity {
     /**
      * Is the user attending?
      */
-    private Boolean isAttending;
+    private boolean isAttending;
 
     /**
      * Create an empty invited user.
@@ -69,14 +69,14 @@ public class InvitedUser extends BaseEntity {
     /**
      * @return whether the user is attending the event.
      */
-    public Boolean isAttending() {
+    public boolean isAttending() {
         return isAttending;
     }
 
     /**
      * Sets whether the user is attending the event.
      */
-    public void setIsAttending(Boolean isAttending) {
+    public void setIsAttending(boolean isAttending) {
         this.isAttending = isAttending;
     }
 

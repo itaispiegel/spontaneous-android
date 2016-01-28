@@ -1,5 +1,6 @@
 package com.spontaneous.android.view;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -167,6 +168,9 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
     @Override
     public void onItemClick(AdapterView parent, View view, int position, long id) {
         Logger.info("Invited user was clicked: " + invitedUsersListAdapter.getItem(position));
+
+        UpdateInvitedUserDialog dialog = new UpdateInvitedUserDialog();
+        dialog.show(((Activity) mContext).getFragmentManager(), "");
     }
 
     public InvitedUsersListAdapter getInvitedUsersListAdapter() {

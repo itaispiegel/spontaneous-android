@@ -65,4 +65,12 @@ public class BaseResponse<T> {
     public void setBody(T body) {
         this.body = body;
     }
+
+    @Override
+    public String toString() {
+        return "BaseResponse{" +
+                "statusCode=" + statusCode +
+                ", body=" + body +
+                '}';
+    }
 }

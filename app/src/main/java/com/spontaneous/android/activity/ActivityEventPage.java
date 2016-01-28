@@ -95,11 +95,13 @@ public class ActivityEventPage extends BaseActivity {
 
         final Animation swipeAnimation;
 
+        final boolean userConfirmedArrival = viewId == R.id.event_confirmation;
+
         //Set the swipe animation according to the clicked button.
-        if (viewId == R.id.event_decline) {
-            swipeAnimation = AnimationUtils.loadAnimation(this, R.anim.animate_exit_left);
-        } else {
+        if (userConfirmedArrival) {
             swipeAnimation = AnimationUtils.loadAnimation(this, R.anim.animate_exit_right);
+        } else {
+            swipeAnimation = AnimationUtils.loadAnimation(this, R.anim.animate_exit_left);
         }
 
         swipeAnimation.setAnimationListener(new Animation.AnimationListener() {
@@ -134,7 +136,7 @@ public class ActivityEventPage extends BaseActivity {
                                 .getInvitedUserByEmail(AccountUtils.getAuthenticatedUser().getEmail());
 
                         //Create a new update request.
-                        UpdateInvitedUserRequest updateRequest = new UpdateInvitedUserRequest(status, false);
+                        UpdateInvitedUserRequest updateRequest = new UpdateInvitedUserRequest(status, userConfirmedArrival);
 
                         //Update the invited user in the database.
                         SpontaneousApplication.getInstance().getService(EventService.class)
@@ -144,8 +146,11 @@ public class ActivityEventPage extends BaseActivity {
                                         //Check whether the update succeeded.
                                         if (baseResponse.getStatusCode() == BaseResponse.SUCCESS) {
 
+                                            //Time until the swipe animations starts.
+                                            final long INTERVAL = 500;
+
                                             //If succeeded, sleep for 1 seconds and then do the swipe animation.
-                                            SystemClock.sleep(1000);
+                                            SystemClock.sleep(INTERVAL);
                                             mEventCard.startAnimation(swipeAnimation);
 
                                         } else {

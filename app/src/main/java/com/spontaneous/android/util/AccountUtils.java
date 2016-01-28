@@ -104,7 +104,7 @@ public class AccountUtils {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(SpontaneousApplication.getInstance());
         sp.edit().putString(PREF_USER, userJson).apply();
 
-        if (null != user) {
+        if (user != null) {
             setFacebookToken(user.getFacebookToken());
         }
     }
