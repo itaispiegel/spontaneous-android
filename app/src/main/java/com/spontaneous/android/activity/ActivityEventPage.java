@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.text.InputType;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -83,6 +84,32 @@ public class ActivityEventPage extends BaseActivity {
         }
     }
 
+    @Override
+    protected int getLayoutResourceId() {
+        return R.layout.activity_event_page;
+    }
+
+    @Override
+    protected boolean showToolbar() {
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        //Handle toolbar button clicks
+        switch (item.getItemId()) {
+
+            //Go back to main activity.
+            case android.R.id.home:
+                Logger.info("Navigating back to main activity");
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     /**
      * Update arrival status to the event.
      * Send the update to the server, and show a swipe animation at the end.
@@ -119,7 +146,9 @@ public class ActivityEventPage extends BaseActivity {
             }
         });
 
+        //Initialize the status edit text and make it capitalize sentences.
         final EditText statusEditText = new EditText(this);
+        statusEditText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 
         new AlertDialog.Builder(this)
                 .setTitle(dialogTitle)
@@ -173,31 +202,5 @@ public class ActivityEventPage extends BaseActivity {
             public void onClick(DialogInterface dialog, int which) {
             }
         }).show();
-    }
-
-    @Override
-    protected int getLayoutResourceId() {
-        return R.layout.activity_event_page;
-    }
-
-    @Override
-    protected boolean showToolbar() {
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        //Handle toolbar button clicks
-        switch (item.getItemId()) {
-
-            //Go back
-            case android.R.id.home:
-                Logger.info("Navigating back to main activity");
-                finish();
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }

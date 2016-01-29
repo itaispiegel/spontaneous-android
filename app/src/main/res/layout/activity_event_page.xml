@@ -4,8 +4,8 @@
     android:layout_height="wrap_content">
 
     <include
-        android:id="@+id/custom_toolbar"
         layout="@layout/custom_toolbar"
+        android:id="@+id/custom_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />

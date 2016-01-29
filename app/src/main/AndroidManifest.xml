@@ -44,8 +44,7 @@
         </service>
         <service
             android:name="com.spontaneous.android.gcm.RegistrationIntentService"
-            android:exported="false">
-        </service>
+            android:exported="false"/>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

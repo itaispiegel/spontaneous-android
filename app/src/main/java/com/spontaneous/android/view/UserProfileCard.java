@@ -9,12 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
-import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.R;
+import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.model.User;
 
 /**
- * Display a user
+ * The user card contains representational data about the user.
  */
 public class UserProfileCard extends FrameLayout {
 

@@ -1,7 +1,7 @@
 package com.spontaneous.android.view;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -16,6 +16,9 @@ import com.spontaneous.android.R;
 import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.adapter.InvitedUsersListAdapter;
 import com.spontaneous.android.model.Event;
+import com.spontaneous.android.model.InvitedUser;
+import com.spontaneous.android.model.User;
+import com.spontaneous.android.util.AccountUtils;
 import com.spontaneous.android.util.Logger;
 
 import org.joda.time.format.DateTimeFormat;
@@ -108,6 +111,7 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
 
     /**
      * Set the view's content according to the given event.
+     *
      * @param event Event to display on card.
      */
     private void setEvent(final Event event) {
@@ -144,6 +148,7 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
 
     /**
      * Get URL of of map image.
+     *
      * @param event Event to get map to.
      * @return The URL of the map.
      */
@@ -166,11 +171,29 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
     }
 
     @Override
-    public void onItemClick(AdapterView parent, View view, int position, long id) {
+    public void onItemClick(final AdapterView parent, final View view, final int position, final long id) {
         Logger.info("Invited user was clicked: " + invitedUsersListAdapter.getItem(position));
 
-        UpdateInvitedUserDialog dialog = new UpdateInvitedUserDialog();
-        dialog.show(((Activity) mContext).getFragmentManager(), "");
+        //Show the dialog if the user clicked himself.
+        InvitedUser invitedUser = invitedUsersListAdapter.getItem(position);
+        User authenticatedUser = AccountUtils.getAuthenticatedUser();
+
+        if (!invitedUser.getUser().equals(authenticatedUser)) {
+            return;
+        }
+
+        //Show the dialog.
+        final UpdateInvitedUserDialog dialog = new UpdateInvitedUserDialog(getContext(), invitedUser);
+        dialog.show();
+
+        //Update the listview.
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                InvitedUser updated = ((UpdateInvitedUserDialog) dialog).getInvitedUser();
+                invitedUsersListAdapter.set(position, updated);
+            }
+        });
     }
 
     public InvitedUsersListAdapter getInvitedUsersListAdapter() {

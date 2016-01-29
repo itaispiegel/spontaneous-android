@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import com.spontaneous.android.R;
 import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.activity.ActivityEventPage;
+import com.spontaneous.android.activity.ActivityMain;
 import com.spontaneous.android.activity.BaseActivity;
 import com.spontaneous.android.adapter.EventListAdapter;
 import com.spontaneous.android.http.request.service.EventService;
@@ -29,6 +31,7 @@ import retrofit.client.Response;
  */
 public class FragmentEvents extends Fragment {
 
+    private ListView mEventsListView;
     private EventListAdapter mEventListAdapter;
 
     @Override
@@ -38,25 +41,29 @@ public class FragmentEvents extends Fragment {
         View mListEmptyView = layout.findViewById(R.id.empty);
 
         mEventListAdapter = new EventListAdapter(getActivity());
-        ListView mEventsListView = (ListView) layout.findViewById(R.id.events_listview);
+
+        mEventsListView = (ListView) layout.findViewById(R.id.events_listview);
         mEventsListView.setAdapter(mEventListAdapter);
         mEventsListView.setEmptyView(mListEmptyView);
 
-        //OnClickListener and OnLongClickListener
+        //OnClickListener, OnLongClickListener and OnScrollListener
         mEventsListView.setOnItemClickListener(itemClickListener());
         mEventsListView.setOnItemLongClickListener(itemLongClickListener());
+        mEventsListView.setOnScrollListener(listViewScrollListener());
 
         return layout;
     }
 
     /**
      * When the user clicks on an event in the listview, open the event page.
+     *
+     * @return The {@link View.OnClickListener}.
      */
     private AdapterView.OnItemClickListener itemClickListener() {
         return new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View view, int position, long id) {
-                Logger.info("Event at position (" + position + ") was clicked.");
+                Logger.info("Event at position #" + position + " was clicked.");
 
                 Event event = mEventListAdapter.getItem(position);
 
@@ -69,6 +76,11 @@ public class FragmentEvents extends Fragment {
         };
     }
 
+    /**
+     * When the user long clicks an event in the listview, delete it.
+     *
+     * @return The {@link AdapterView.OnItemLongClickListener}.
+     */
     private AdapterView.OnItemLongClickListener itemLongClickListener() {
         return new AdapterView.OnItemLongClickListener() {
             @Override
@@ -101,6 +113,40 @@ public class FragmentEvents extends Fragment {
                 return true;
             }
         };
+    }
+
+    /**
+     * Set refresh enabled only if the listview is at it's top.
+     *
+     * @return The {@link AbsListView.OnScrollListener}.
+     */
+    private AbsListView.OnScrollListener listViewScrollListener() {
+        return new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                ((ActivityMain) getActivity()).setRefreshEnabled(isListViewAtTop());
+            }
+        };
+    }
+
+    /**
+     * @return Whether the listview is at it's top.
+     */
+    public boolean isListViewAtTop() {
+        boolean atTop = false;
+
+        if (mEventsListView != null && mEventsListView.getChildCount() > 0) {
+            boolean firstItemVisible = mEventsListView.getFirstVisiblePosition() == 0;
+            boolean topOfFirstItemVisible = mEventsListView.getChildAt(0).getTop() == 0;
+
+            atTop = firstItemVisible && topOfFirstItemVisible;
+        }
+
+        return atTop;
     }
 
     /**

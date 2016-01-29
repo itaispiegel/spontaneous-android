@@ -47,6 +47,11 @@ public class InvitedUsersListAdapter extends BaseAdapter {
         this.mInvitedUsers = new ArrayList<>();
     }
 
+    public void set(int position, InvitedUser invitedUser) {
+        mInvitedUsers.set(position, invitedUser);
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return mInvitedUsers.size();

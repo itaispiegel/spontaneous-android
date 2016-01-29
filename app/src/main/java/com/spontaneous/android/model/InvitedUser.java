@@ -1,5 +1,7 @@
 package com.spontaneous.android.model;
 
+import com.spontaneous.android.http.request.model.UpdateInvitedUserRequest;
+
 /**
  * This class represents a user invited to an event.
  * This object contains data of the user specific to the event, and a pointer to the user itself.
@@ -78,6 +80,15 @@ public class InvitedUser extends BaseEntity {
      */
     public void setIsAttending(boolean isAttending) {
         this.isAttending = isAttending;
+    }
+
+    /**
+     * Update the InvitedUser according to the given {@link UpdateInvitedUserRequest}.
+     * @param updateRequest The request to update the invited user.
+     */
+    public void update(UpdateInvitedUserRequest updateRequest) {
+        this.isAttending = updateRequest.isAttending();
+        this.status = updateRequest.getStatus();
     }
 
     @Override

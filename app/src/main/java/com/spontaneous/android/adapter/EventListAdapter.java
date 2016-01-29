@@ -133,7 +133,7 @@ public class EventListAdapter extends BaseAdapter {
         //Set event details
         Event currEvent = mEvents.get(position);
 
-        DateTimeFormatter dateFormat = DateTimeFormat.forPattern("dd-MM-yyyy, H:m");
+        DateTimeFormatter dateFormat = DateTimeFormat.forPattern("dd-MM-yyyy, H:mm");
 
         eventTitle.setText(currEvent.getTitle());
         eventDescription.setText(currEvent.getDescription());

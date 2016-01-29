@@ -183,6 +183,25 @@ public class User extends BaseEntity {
     }
 
     /**
+     * The two {@link User} entities are equal, if the have equal id's, names, and emails.
+     *
+     * @param o Object to compare to.
+     * @return Whether this equals the given object.
+     */
+    @Override
+    public boolean equals(Object o) {
+        User user = (User) o;
+
+        return super.equals(o) && name.equals(user.name) && email.equals(user.email);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
+
+    /**
      * Return a string representation of the user.
      */
     @Override
