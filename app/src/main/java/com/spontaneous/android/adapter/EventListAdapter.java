@@ -12,9 +12,7 @@ import com.spontaneous.android.R;
 import com.spontaneous.android.model.Event;
 import com.spontaneous.android.model.User;
 import com.spontaneous.android.util.AccountUtils;
-
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import com.spontaneous.android.util.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -133,15 +131,13 @@ public class EventListAdapter extends BaseAdapter {
         //Set event details
         Event currEvent = mEvents.get(position);
 
-        DateTimeFormatter dateFormat = DateTimeFormat.forPattern("dd-MM-yyyy, H:mm");
-
         eventTitle.setText(currEvent.getTitle());
         eventDescription.setText(currEvent.getDescription());
-        eventDate.setText(dateFormat.print(currEvent.getDate()));
+        eventDate.setText(DateTimeFormatter.format(currEvent.getDate()));
         eventLocation.setText(currEvent.getLocation());
 
         isUserAttending.setImageDrawable(currEvent.isUserAttending(authenticatedUser)
-                        ? mContext.getDrawable(R.drawable.ic_cab_done_holo_light)
+                        ? mContext.getDrawable(R.drawable.ic_done_black)
                         : mContext.getDrawable(R.drawable.ic_close_black)
         );
 

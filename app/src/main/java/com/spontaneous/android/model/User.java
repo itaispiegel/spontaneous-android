@@ -1,6 +1,7 @@
 package com.spontaneous.android.model;
 
 import org.joda.time.DateTime;
+import org.joda.time.Years;
 
 /**
  * This class represents a user persisted in the database.
@@ -147,6 +148,14 @@ public class User extends BaseEntity {
     }
 
     /**
+     * @return The age of the user.
+     */
+    public int getAge() {
+        return Math.abs(Years.yearsBetween(DateTime.now(), birthday)
+                .getYears());
+    }
+
+    /**
      * @return the phone number of the user.
      */
     public String getPhoneNumber() {
@@ -194,11 +203,6 @@ public class User extends BaseEntity {
 
         return super.equals(o) && name.equals(user.name) && email.equals(user.email);
 
-    }
-
-    @Override
-    public int hashCode() {
-        return 0;
     }
 
     /**

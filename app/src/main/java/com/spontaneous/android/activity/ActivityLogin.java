@@ -55,7 +55,7 @@ public class ActivityLogin extends BaseActivity {
         //Initialize login button and set its permissions, callback and click listener
         LoginButton mLoginButton = (LoginButton) findViewById(R.id.login_button);
 
-        mLoginButton.setReadPermissions("public_profile", "user_friends", "email");
+        mLoginButton.setReadPermissions("public_profile", "user_friends", "email", "user_birthday");
         mLoginButton.registerCallback(mCallbackManager, getFacebookCallback());
         mLoginButton.setOnClickListener(getLoginButtonOnClickListener());
     }

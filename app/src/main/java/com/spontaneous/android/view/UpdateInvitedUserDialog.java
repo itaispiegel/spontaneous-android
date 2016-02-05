@@ -48,14 +48,23 @@ public class UpdateInvitedUserDialog extends AlertDialog {
         negative.setOnClickListener(getOnClickListener());
     }
 
+    /**
+     * @return Get the dialog input.
+     */
     public String getInput() {
         return ((EditText) findViewById(R.id.dialog_status)).getText().toString();
     }
 
+    /**
+     * @return The invited user being edited.
+     */
     public InvitedUser getInvitedUser() {
         return this.invitedUser;
     }
 
+    /**
+     * @return On click listener for buttons.
+     */
     public View.OnClickListener getOnClickListener() {
         return new View.OnClickListener() {
             @Override

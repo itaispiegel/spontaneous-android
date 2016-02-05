@@ -125,7 +125,7 @@ public class InvitedUsersListAdapter extends BaseAdapter {
 
         //Set whether the user is coming to the event
         isUserComingImage.setImageDrawable(currUser.isAttending()
-                        ? mContext.getDrawable(R.drawable.ic_cab_done_holo_light)
+                        ? mContext.getDrawable(R.drawable.ic_done_black)
                         : mContext.getDrawable(R.drawable.ic_close_black)
         );
 

@@ -19,10 +19,8 @@ import com.spontaneous.android.model.Event;
 import com.spontaneous.android.model.InvitedUser;
 import com.spontaneous.android.model.User;
 import com.spontaneous.android.util.AccountUtils;
+import com.spontaneous.android.util.DateTimeFormatter;
 import com.spontaneous.android.util.Logger;
-
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -140,9 +138,8 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
 
         invitedUsersListAdapter.addAll(event.getInvitedUsers());
 
-        DateTimeFormatter dateFormat = DateTimeFormat.forPattern("dd-MM-yyyy, H:m");
         eventDateTextView.setText(mContext.getString(
-                R.string.event_page_date, dateFormat.print(event.getDate())
+                R.string.event_page_date, DateTimeFormatter.format(event.getDate())
         ));
     }
 

@@ -100,10 +100,14 @@ public class Event extends BaseEntity {
         this.location = location;
     }
 
+    /**
+     * @param user The given user.
+     * @return Whether the given user is attending the event.
+     */
     public boolean isUserAttending(User user) {
         for (InvitedUser invitedUser : invitedUsers) {
             if(invitedUser.getUser().equals(user)) {
-                return true;
+                return invitedUser.isAttending();
             }
         }
 

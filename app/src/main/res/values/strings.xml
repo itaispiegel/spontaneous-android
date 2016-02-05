@@ -2,7 +2,6 @@
 
     <!--App configurations-->
     <string name="app_name">Spontaneous</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="app_name_caps">SPONTANEOUS</string>
     <string name="app_slogan">MAKE EVERY EVENT EPIC</string>
@@ -28,25 +27,14 @@
     <string name="label_email">Email Address</string>
     <string name="label_password">Password</string>
     <string name="message_loading">Loading</string>
-    <string name="authentication_failed">Incorrect email and/or password</string>
     <string name="logout">Logout</string>
-    <string name="loading_events">Loading events</string>
-    <string name="connection_error">Connection Error</string>
     <string name="no_events">NO EVENTS</string>
 
     <!--    Event Creation Wizard-->
-    <string name="create_event">Create Event</string>
-    <string name="prev">Previous</string>
-    <string name="next">Next</string>
-    <string name="event_confirmation">Are you sure you would like to create this event?</string>
-    <string name="create">Create</string>
-    <string name="finish">Finish</string>
-    <string name="title">Title</string>
-    <string name="description">Description</string>
     <string name="event_title">Event title</string>
     <string name="event_description">Tell us a little bit about the event</string>
-    <string name="event_location">Where the event is?</string>
-    <string name="done">DONE</string>
+    <string name="event_location">Where is the event?</string>
+    <string name="event_done">DONE</string>
     <string name="event_invited_users">Who would you like to invite?</string>
     <string name="event_date">Date</string>
     <string name="event_time">Time</string>
@@ -57,9 +45,9 @@
     <!--Event Page-->
     <string name="event_page_date">Date: %1$s</string>
     <string name="event_page_location">Location: %1$s</string>
-    <string name="previous">previous</string>
     <string name="invitation_decline">This button declines arrival to the event.</string>
     <string name="invitation_confirmation">This button confirms arrival to the event.</string>
     <string name="event_is_invitation">"com.spontaneous.android.EVENT_IS_INVITATION"</string>
     <string name="dialog_textview">What do you have to say about the event?</string>
+    <string name="event_edit">Edit</string>
 </resources>

@@ -59,7 +59,8 @@ public class SpontaneousGcmListenerService extends GcmListenerService {
         if (notificationType == NotificationType.INVITATION) {
 
             //Get event details.
-            Event event = GsonFactory.getGson().fromJson(data.getString("data"), Event.class);
+            Event event = GsonFactory.getGson()
+                    .fromJson(data.getString("data"), Event.class);
 
             //Set the intent.
             intent = new Intent(this, ActivityEventPage.class);

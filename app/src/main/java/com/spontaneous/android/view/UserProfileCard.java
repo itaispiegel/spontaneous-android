@@ -1,7 +1,6 @@
 package com.spontaneous.android.view;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -22,22 +21,20 @@ public class UserProfileCard extends FrameLayout {
 
     private NetworkImageView mProfilePicture;
     private TextView mUserName;
-    private TextView mStatus;
-    private TextView mAge;
-    private ImageView mGenderPhoto;
-    private TextView mEmail;
+    private ImageView mUserGender;
+    private TextView mUserEmail;
+    private TextView mUserAge;
 
     public UserProfileCard(Context context) {
         super(context);
         this.mContext = context;
     }
 
-    public UserProfileCard(Context context, User mUser) {
-        super(context);
-        init();
+    public UserProfileCard(Context context, User user) {
+        this(context);
 
-        this.mContext = context;
-        setUser(mUser);
+        init();
+        setUser(user);
     }
 
     private void init() {
@@ -46,26 +43,21 @@ public class UserProfileCard extends FrameLayout {
 
         mProfilePicture = (NetworkImageView) layout.findViewById(R.id.user_profile_picture);
         mUserName = (TextView) layout.findViewById(R.id.user_name);
-        mAge = (TextView) layout.findViewById(R.id.user_age);
-        mGenderPhoto = (ImageView) layout.findViewById(R.id.user_gender);
-        mEmail = (TextView) layout.findViewById(R.id.user_email);
+        mUserGender = (ImageView) layout.findViewById(R.id.user_gender);
+        mUserEmail = (TextView) layout.findViewById(R.id.user_email);
+        mUserAge = (TextView) layout.findViewById(R.id.user_age);
     }
 
-    private void setUser(User mUser) {
+    private void setUser(User user) {
 
-        mProfilePicture.setImageUrl(mUser.getProfilePicture(), SpontaneousApplication.getInstance().getImageLoader());
-        mUserName.setText(mUser.getName());
-        //mStatus.setText("\"" + mUser.getStatus() + "\"");
-        //mAge.setText(mUser.getAge() + "");
+        mProfilePicture.setImageUrl(user.getProfilePicture(), SpontaneousApplication.getInstance().getImageLoader());
+        mUserName.setText(user.getName());
 
-        Drawable genderDrawable;
-        if (mUser.getGender() == User.Gender.Female) {
-            genderDrawable = mContext.getDrawable(R.drawable.ic_female);
-        } else {
-            genderDrawable = mContext.getDrawable(R.drawable.ic_male);
-        }
-        mGenderPhoto.setImageDrawable(genderDrawable);
+        mUserGender.setImageDrawable(user.getGender() == User.Gender.Male
+                ? mContext.getDrawable(R.drawable.ic_male)
+                : mContext.getDrawable(R.drawable.ic_female));
 
-        mEmail.setText(mUser.getEmail());
+        mUserEmail.setText(user.getEmail());
+        mUserAge.setText(String.valueOf(user.getAge()));
     }
 }

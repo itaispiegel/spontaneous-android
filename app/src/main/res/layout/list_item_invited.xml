@@ -34,23 +34,24 @@
             android:id="@+id/description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
             android:layout_below="@+id/title"
+            android:layout_toStartOf="@+id/is_attending"
             android:ellipsize="end"
             android:includeFontPadding="true"
-            android:lines="1"
-            android:text="It's gonna be LEGENDARY!"
+            android:text="It's gonna be legendary!"
             android:textColor="@color/text_color"
             android:textSize="14sp"
             tools:ignore="HardcodedText" />
 
         <ImageView
             android:id="@+id/is_attending"
-            android:contentDescription="@string/is_attending_icon_description"
-            android:src="@drawable/ic_cab_done_holo_light"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_alignBottom="@+id/description"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/is_attending_icon_description"
+            android:src="@drawable/ic_done_black" />
 
     </RelativeLayout>
 </RelativeLayout>
