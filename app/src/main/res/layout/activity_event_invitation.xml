@@ -4,8 +4,8 @@
     android:layout_height="wrap_content">
 
     <include
-        layout="@layout/custom_toolbar"
         android:id="@+id/custom_toolbar"
+        layout="@layout/custom_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />
@@ -23,4 +23,12 @@
             android:layout_height="wrap_content" />
 
     </ScrollView>
+
+    <include
+        android:id="@+id/event_footer_buttons"
+        layout="@layout/wizard_footer_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"/>
+
 </RelativeLayout>

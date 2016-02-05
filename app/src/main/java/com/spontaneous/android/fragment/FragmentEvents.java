@@ -69,7 +69,6 @@ public class FragmentEvents extends Fragment {
 
                 Intent eventActivity = new Intent(getContext(), ActivityEventPage.class);
                 eventActivity.putExtra(getString(R.string.event_card_intent_extras), event);
-                eventActivity.putExtra(getString(R.string.event_is_invitation), false);
 
                 startActivity(eventActivity);
             }

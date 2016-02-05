@@ -26,7 +26,6 @@ import com.spontaneous.android.util.AccountUtils;
 import com.spontaneous.android.util.Logger;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
-import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import org.joda.time.DateTime;
 
@@ -40,11 +39,16 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+import static com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener;
+import static com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance;
+import static com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener;
+import static com.wdullaer.materialdatetimepicker.time.TimePickerDialog.newInstance;
+
 /**
  * Using this activity, the user can create a new event.
  */
 public class ActivityCreateEvent extends BaseActivity implements
-        DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+        OnDateSetListener, OnTimeSetListener {
 
     public static final String DATE_FORMAT = "dd/MM/yyyy, E";
     public static final String TIME_FORMAT = "HH:mm";
@@ -91,7 +95,7 @@ public class ActivityCreateEvent extends BaseActivity implements
         //Initialize date dialog
         mCalendar = Calendar.getInstance();
         mEventDate.setOnTouchListener(showDateTimePickerDialog(
-                DatePickerDialog.newInstance(
+                newInstance(
                         ActivityCreateEvent.this,
                         mCalendar.get(Calendar.YEAR),
                         mCalendar.get(Calendar.MONTH),
@@ -101,7 +105,7 @@ public class ActivityCreateEvent extends BaseActivity implements
         //Initialize time dialog
         mEventTime = (EditText) findViewById(R.id.create_event_time);
         mEventTime.setOnTouchListener(showDateTimePickerDialog(
-                TimePickerDialog.newInstance(
+                newInstance(
                         ActivityCreateEvent.this,
                         mCalendar.get(Calendar.HOUR_OF_DAY),
                         mCalendar.get(Calendar.MINUTE),

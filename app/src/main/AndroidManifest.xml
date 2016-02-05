@@ -73,6 +73,9 @@
         <activity
             android:name=".activity.ActivityEventPage"
             android:parentActivityName=".activity.ActivityMain" />
+        <activity
+            android:name=".activity.ActivityEventInvitation"
+            android:parentActivityName=".activity.ActivityMain" />
 
     </application>
 </manifest>

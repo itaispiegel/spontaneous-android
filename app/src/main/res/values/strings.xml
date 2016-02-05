@@ -47,7 +47,7 @@
     <string name="event_page_location">Location: %1$s</string>
     <string name="invitation_decline">This button declines arrival to the event.</string>
     <string name="invitation_confirmation">This button confirms arrival to the event.</string>
-    <string name="event_is_invitation">"com.spontaneous.android.EVENT_IS_INVITATION"</string>
+    <string name="event_invitation">"com.spontaneous.android.EVENT_INVITATION"</string>
     <string name="dialog_textview">What do you have to say about the event?</string>
     <string name="event_edit">Edit</string>
 </resources>

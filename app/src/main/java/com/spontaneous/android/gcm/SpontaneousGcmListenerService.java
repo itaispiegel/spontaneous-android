@@ -12,7 +12,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gms.gcm.GcmListenerService;
 import com.spontaneous.android.R;
-import com.spontaneous.android.activity.ActivityEventPage;
+import com.spontaneous.android.activity.ActivityEventInvitation;
 import com.spontaneous.android.model.Event;
 import com.spontaneous.android.util.GsonFactory;
 import com.spontaneous.android.util.Logger;
@@ -63,10 +63,9 @@ public class SpontaneousGcmListenerService extends GcmListenerService {
                     .fromJson(data.getString("data"), Event.class);
 
             //Set the intent.
-            intent = new Intent(this, ActivityEventPage.class);
+            intent = new Intent(this, ActivityEventInvitation.class);
 
-            intent.putExtra(getString(R.string.event_card_intent_extras), event);
-            intent.putExtra(getString(R.string.event_is_invitation), true);
+            intent.putExtra(getString(R.string.event_invitation), event);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         }
 
