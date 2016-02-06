@@ -54,7 +54,7 @@ public class SpontaneousApplication extends Application {
 
         //Initialize Volley
         mRequestQueue = Volley.newRequestQueue(this);
-        mImageLoader = new ImageLoader(this.mRequestQueue, new ImageLoader.ImageCache() {
+        mImageLoader = new ImageLoader(mRequestQueue, new ImageLoader.ImageCache() {
             private final int maxCacheSize = 10000;
             private final LruCache<String, Bitmap> mCache = new LruCache<>(maxCacheSize);
 
@@ -85,13 +85,6 @@ public class SpontaneousApplication extends Application {
                 .setConverter(new GsonConverter(GsonFactory.getGson()))
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
-    }
-
-    /**
-     * @return {@link #mRequestQueue}
-     */
-    public RequestQueue getRequestQueue() {
-        return mRequestQueue;
     }
 
     /**

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.spontaneous.android.R;
@@ -211,6 +212,9 @@ public class ActivityMain extends BaseActivity {
                     @Override
                     public void success(BaseResponse<List<Event>> events, Response response) {
                         Logger.debug("User events retrieved");
+                        mLoadingImage.startAnimation(finishAnimation);
+
+                        setToolbarMessage(getString(R.string.app_name_caps));
 
                         //Clear the adapter just in case.
                         mEventsFragment.getEventListAdapter()
@@ -218,14 +222,17 @@ public class ActivityMain extends BaseActivity {
 
                         mEventsFragment.getEventListAdapter()
                                 .addAll(events.getBody());
-
-                        mLoadingImage.startAnimation(finishAnimation);
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
                         Logger.debug("Events retrieval failed.");
                         mLoadingImage.startAnimation(finishAnimation);
+
+                        setToolbarMessage(getString(R.string.app_name_caps) + " - OFFLINE");
+
+                        Toast.makeText(getApplicationContext(), "Connection Error", Toast.LENGTH_SHORT)
+                                .show();
                     }
                 });
     }

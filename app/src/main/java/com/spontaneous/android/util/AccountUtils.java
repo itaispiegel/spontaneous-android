@@ -67,10 +67,18 @@ public class AccountUtils {
      *
      * @param token to set.
      */
-    public static void setFacebookToken(final String token) {
+    private static void setFacebookToken(final String token) {
         AccountUtils.sFacebookToken = token;
+
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(SpontaneousApplication.getInstance());
         sp.edit().putString(PREF_FACEBOOK_TOKEN, token).apply();
+    }
+
+    /**
+     * Clears the current Facebook token.
+     */
+    private static void clearAuthenticationToken() {
+        setFacebookToken(null);
     }
 
     /**
@@ -80,18 +88,10 @@ public class AccountUtils {
     public static void logout(Context context) {
         AccountUtils.clearAuthenticationToken();
         AccountUtils.setAuthenticatedUser(null);
+
         AccountUtils.startAuthenticationFlow((BaseActivity) context);
 
         LoginManager.getInstance().logOut();
-    }
-
-    /**
-     * Clears the current Facebook token.
-     */
-    private static void clearAuthenticationToken() {
-        AccountUtils.sFacebookToken = null;
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(SpontaneousApplication.getInstance());
-        sp.edit().putString(PREF_FACEBOOK_TOKEN, null).apply();
     }
 
     /**
@@ -100,6 +100,7 @@ public class AccountUtils {
     public static void setAuthenticatedUser(@Nullable User user) {
         AccountUtils.sUser = user;
 
+        //Save user in application preferences.
         String userJson = GsonFactory.getGson().toJson(user);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(SpontaneousApplication.getInstance());
         sp.edit().putString(PREF_USER, userJson).apply();

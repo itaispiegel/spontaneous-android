@@ -21,8 +21,8 @@
             android:id="@+id/empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableTop="@drawable/ic_no_events"
             android:drawablePadding="30dp"
+            android:drawableTop="@drawable/ic_no_events"
             android:text="@string/no_events"
             android:textColor="#FF9fabc3"
             android:textSize="22sp" />

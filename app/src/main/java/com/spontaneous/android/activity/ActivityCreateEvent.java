@@ -53,9 +53,6 @@ public class ActivityCreateEvent extends BaseActivity implements
     public static final String DATE_FORMAT = "dd/MM/yyyy, E";
     public static final String TIME_FORMAT = "HH:mm";
 
-    @SuppressWarnings("FieldCanBeLocal")
-    private final String ACTIVITY_TITLE = "Create Event";
-
     private Calendar mCalendar;
 
     //Views
@@ -71,7 +68,7 @@ public class ActivityCreateEvent extends BaseActivity implements
         super.onCreate(savedInstanceState);
 
         //Set toolbar
-        setToolbarMessage(ACTIVITY_TITLE);
+        setToolbarMessage("Create Event");
         showBackButtonOnToolbar();
 
         // Initialize views

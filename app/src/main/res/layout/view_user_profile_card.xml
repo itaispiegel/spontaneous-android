@@ -1,7 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#FFfdfdfd"
     android:gravity="top|center_horizontal"
     android:orientation="vertical">
 
@@ -30,7 +29,7 @@
                 android:id="@+id/user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Itai Spiegel"
+                android:text="@string/user_profile_example_name"
                 android:textColor="@color/text_color"
                 android:textSize="25sp"
                 android:textStyle="bold" />
@@ -40,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/user_name"
-                android:text="itai.spiegel@gmail.com"
+                android:text="@string/user_profile_example_email"
                 android:textColor="@color/text_color"
                 android:textSize="13sp" />
 
@@ -63,7 +62,7 @@
                 android:layout_marginEnd="24dp"
                 android:gravity="center"
                 android:includeFontPadding="false"
-                android:text="17"
+                android:text="@string/user_profile_example_age"
                 android:textColor="@color/text_color"
                 android:textSize="50sp" />
 

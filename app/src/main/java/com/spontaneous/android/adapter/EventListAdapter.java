@@ -122,11 +122,11 @@ public class EventListAdapter extends BaseAdapter {
         User authenticatedUser = AccountUtils.getAuthenticatedUser();
 
         //Initialize views
-        TextView eventTitle = (TextView) convertView.findViewById(R.id.title);
-        TextView eventDescription = (TextView) convertView.findViewById(R.id.description);
-        ImageView isUserAttending = (ImageView) convertView.findViewById(R.id.is_attending);
-        TextView eventDate = (TextView) convertView.findViewById(R.id.when);
-        TextView eventLocation = (TextView) convertView.findViewById(R.id.location);
+        TextView eventTitle = (TextView) convertView.findViewById(R.id.event_list_title);
+        TextView eventDescription = (TextView) convertView.findViewById(R.id.event_list_description);
+        ImageView isUserAttending = (ImageView) convertView.findViewById(R.id.event_list_attending);
+        TextView eventDate = (TextView) convertView.findViewById(R.id.event_list_date);
+        TextView eventLocation = (TextView) convertView.findViewById(R.id.event_list_location);
 
         //Set event details
         Event currEvent = mEvents.get(position);

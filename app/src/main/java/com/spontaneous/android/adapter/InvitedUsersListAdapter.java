@@ -108,10 +108,10 @@ public class InvitedUsersListAdapter extends BaseAdapter {
         }
 
         //Initialize user details
-        NetworkImageView userProfilePicture = (NetworkImageView) convertView.findViewById(R.id.photo);
-        TextView userNameTextView = (TextView) convertView.findViewById(R.id.title);
-        TextView userStatusTextView = (TextView) convertView.findViewById(R.id.description);
-        ImageView isUserComingImage = (ImageView) convertView.findViewById(R.id.is_attending);
+        NetworkImageView userProfilePicture = (NetworkImageView) convertView.findViewById(R.id.invited_list_user_photo);
+        TextView userNameTextView = (TextView) convertView.findViewById(R.id.invited_list_user_name);
+        TextView userStatusTextView = (TextView) convertView.findViewById(R.id.invited_list_user_status);
+        ImageView isUserAttendingDrawable = (ImageView) convertView.findViewById(R.id.invited_list_user_attending);
 
         //Get invited user entity
         InvitedUser currUser = mInvitedUsers.get(position);
@@ -124,7 +124,7 @@ public class InvitedUsersListAdapter extends BaseAdapter {
         userStatusTextView.setText(currUser.getStatus());
 
         //Set whether the user is coming to the event
-        isUserComingImage.setImageDrawable(currUser.isAttending()
+        isUserAttendingDrawable.setImageDrawable(currUser.isAttending()
                         ? mContext.getDrawable(R.drawable.ic_done_black)
                         : mContext.getDrawable(R.drawable.ic_close_black)
         );

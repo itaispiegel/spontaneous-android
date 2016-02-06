@@ -6,6 +6,10 @@
     <string name="app_name_caps">SPONTANEOUS</string>
     <string name="app_slogan">MAKE EVERY EVENT EPIC</string>
 
+    <!--Main Activity-->
+    <string name="event_button_toolbar">This button represents the events fragment in the main activity.</string>
+    <string name="user_profile_button_toolbar">This button represents the user profile fragment in the main activity.</string>
+
     <!--Login Page-->
     <string name="login_with_facebook">Login with Facebook</string>
 
@@ -50,4 +54,15 @@
     <string name="event_invitation">"com.spontaneous.android.EVENT_INVITATION"</string>
     <string name="dialog_textview">What do you have to say about the event?</string>
     <string name="event_edit">Edit</string>
+    <string name="user_profile_example_name">Itai Spiegel</string>
+    <string name="user_profile_example_email">itai.spiegel@gmail.com</string>
+    <string name="user_profile_example_age">15</string>
+    <string name="event_list_example_date">20–3–2014</string>
+    <string name="event_list_example_title">Mall Hangout</string>
+    <string name="event_list_example_description">Hey guys, We\'re hanging out today in the mall during the evening. We\'re probably gonna play some bowling and catch a movie. Come and have a great time with us!</string>
+    <string name="event_list_example_location">Shivaat Hakhohavim Mall, Herzeliya</string>
+    <string name="event_card_example_title">Mall Hangout</string>
+    <string name="event_card_example_description">Hey guys, We\'re hanging out today in the mall during the evening. We\'re probably gonna play some bowling and catch a movie. Come and have a great time with us!</string>
+    <string name="event_card_example_date">When: Tuesday at 20:00, March 20th</string>
+    <string name="event_card_example_location">Where: Shiv\'at Hakohavim Mall, Herzeliya</string>
 </resources>

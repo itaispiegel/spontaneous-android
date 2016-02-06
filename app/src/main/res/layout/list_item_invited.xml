@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <com.android.volley.toolbox.NetworkImageView
-        android:id="@+id/photo"
+        android:id="@+id/invited_list_user_photo"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_alignParentStart="true"
@@ -16,11 +16,11 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/photo"
+        android:layout_toEndOf="@+id/invited_list_user_photo"
         android:padding="20dp">
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/invited_list_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
@@ -31,12 +31,12 @@
             tools:ignore="HardcodedText" />
 
         <TextView
-            android:id="@+id/description"
+            android:id="@+id/invited_list_user_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/title"
-            android:layout_toStartOf="@+id/is_attending"
+            android:layout_below="@+id/invited_list_user_name"
+            android:layout_toStartOf="@+id/invited_list_user_attending"
             android:ellipsize="end"
             android:includeFontPadding="true"
             android:text="It's gonna be legendary!"
@@ -45,7 +45,7 @@
             tools:ignore="HardcodedText" />
 
         <ImageView
-            android:id="@+id/is_attending"
+            android:id="@+id/invited_list_user_attending"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_alignParentEnd="true"

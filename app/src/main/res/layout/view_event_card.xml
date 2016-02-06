@@ -9,54 +9,53 @@
     android:paddingTop="15dp">
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/event_card_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:paddingBottom="10dp"
-        android:text="Mall Hangout"
+        android:text="@string/event_card_example_title"
         android:textColor="@color/text_color"
         android:textSize="22sp"
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/description"
+        android:id="@+id/event_card_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:lineSpacingExtra="3dp"
         android:paddingBottom="10dp"
-        android:text="Hey guys, We're hanging out today in the mall during the evening. We're probably gonna play some bowling and catch a movie. Come and have a great time with us!"
+        android:text="@string/event_card_example_description"
         android:textColor="@color/text_color"
         android:textSize="13sp" />
 
     <TextView
-        android:id="@+id/when"
+        android:id="@+id/event_card_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="When: Tuesday at 20:00, March 20th"
+        android:text="@string/event_card_example_date"
         android:textColor="@color/text_color"
         android:textSize="14sp"
         android:textStyle="bold" />
 
     <LinearLayout
-        android:id="@+id/location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingBottom="10dp">
 
         <TextView
-            android:id="@+id/where_textView"
+            android:id="@+id/event_card_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="10dp"
-            android:text="Where: Shiv'at Hakohavim Mall, Herzeliya"
+            android:text="@string/event_card_example_location"
             android:textColor="@color/text_color"
             android:textSize="14sp"
             android:textStyle="bold" />
 
         <com.android.volley.toolbox.NetworkImageView
-            android:id="@+id/where_map"
+            android:id="@+id/event_card_map"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:background="#FF38476b"
@@ -74,7 +73,7 @@
         android:textStyle="bold" />
 
     <ListView
-        android:id="@+id/invited_list"
+        android:id="@+id/event_card_invited_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="-20dp" />

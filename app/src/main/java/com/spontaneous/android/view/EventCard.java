@@ -93,16 +93,16 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
         View layout = inflater.inflate(R.layout.view_event_card, this);
 
         //Initialize views in card.
-        eventTitleTextView = (TextView) layout.findViewById(R.id.title);
-        eventDescriptionTextView = (TextView) layout.findViewById(R.id.description);
-        eventDateTextView = (TextView) layout.findViewById(R.id.when);
-        eventLocationTextView = (TextView) layout.findViewById(R.id.where_textView);
+        eventTitleTextView = (TextView) layout.findViewById(R.id.event_card_title);
+        eventDescriptionTextView = (TextView) layout.findViewById(R.id.event_card_description);
+        eventDateTextView = (TextView) layout.findViewById(R.id.event_card_date);
+        eventLocationTextView = (TextView) layout.findViewById(R.id.event_card_location);
 
-        eventMapImage = (NetworkImageView) layout.findViewById(R.id.where_map);
+        eventMapImage = (NetworkImageView) layout.findViewById(R.id.event_card_map);
 
         invitedUsersListAdapter = new InvitedUsersListAdapter(mContext);
 
-        ListView invitedUserListView = (ListView) layout.findViewById(R.id.invited_list);
+        ListView invitedUserListView = (ListView) layout.findViewById(R.id.event_card_invited_list);
         invitedUserListView.setAdapter(invitedUsersListAdapter);
         invitedUserListView.setOnItemClickListener(this);
     }

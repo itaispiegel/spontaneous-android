@@ -100,12 +100,12 @@ public class ActivityLogin extends BaseActivity {
                 //Add the first permission.
                 String permissions = "";
                 Iterator<String> permissionIterator = token.getPermissions().iterator();
-                if(permissionIterator.hasNext()) {
+                if (permissionIterator.hasNext()) {
                     permissions += permissionIterator.next();
                 }
 
                 //Separate the next permissions with a comma.
-                while(permissionIterator.hasNext()) {
+                while (permissionIterator.hasNext()) {
                     permissions += "," + permissionIterator.next();
                 }
 
@@ -189,8 +189,7 @@ public class ActivityLogin extends BaseActivity {
             mWaitDialog.dismiss();
         }
 
-        //Set user data in application memory
-        AccountUtils.setFacebookToken(user.getFacebookToken());
+        //Set user data in application memory.
         AccountUtils.setAuthenticatedUser(user);
 
         //Start the main activity

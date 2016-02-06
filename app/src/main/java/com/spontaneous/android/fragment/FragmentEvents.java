@@ -22,6 +22,8 @@ import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.Event;
 import com.spontaneous.android.util.Logger;
 
+import java.util.Locale;
+
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -87,7 +89,7 @@ public class FragmentEvents extends Fragment {
 
                 ((BaseActivity) getActivity()).showWaitDialog();
 
-                Logger.info(String.format("Deleting item at position #%d.", position));
+                Logger.info(String.format(Locale.getDefault(), "Deleting item at position #%d.", position));
                 Event event = mEventListAdapter.getItem(position);
 
                 SpontaneousApplication.getInstance().getService(EventService.class)

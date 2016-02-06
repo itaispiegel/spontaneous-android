@@ -5,14 +5,14 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/when"
+        android:id="@+id/event_list_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:paddingTop="10dp"
-        android:text="20-3-2014"
+        android:text="@string/event_list_example_date"
         android:textColor="@color/grey_text" />
 
 
@@ -25,48 +25,48 @@
         android:paddingTop="20dp">
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/event_list_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
             android:paddingBottom="5dp"
-            android:text="Mall Hangout"
+            android:text="@string/event_list_example_title"
             android:textColor="@color/text_color"
             android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/description"
+            android:id="@+id/event_list_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/title"
+            android:layout_below="@+id/event_list_title"
             android:layout_marginEnd="20dp"
             android:ellipsize="end"
             android:includeFontPadding="true"
             android:lines="1"
-            android:text="Hey guys, We're hanging out today in the mall during the evening. We're probably gonna play some bowling and catch a movie. Come and have a great time with us!"
+            android:text="@string/event_list_example_description"
             android:textColor="@color/text_color"
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/location"
+            android:id="@+id/event_list_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/description"
+            android:layout_below="@+id/event_list_description"
             android:layout_marginTop="10dp"
             android:ellipsize="end"
             android:includeFontPadding="true"
             android:lines="1"
-            android:text="Shivaat Hakhohavim Mall, Herzeliya"
+            android:text="@string/event_list_example_location"
             android:textColor="@color/text_color"
             android:textSize="13sp"
             android:textStyle="italic" />
 
         <ImageView
-            android:id="@+id/is_attending"
+            android:id="@+id/event_list_attending"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_alignBaseline="@+id/description"
+            android:layout_alignBaseline="@+id/event_list_description"
             android:layout_alignParentEnd="true"
             android:layout_centerInParent="true"
             android:contentDescription="@string/is_attending_icon_description" />
