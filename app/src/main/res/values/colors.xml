@@ -4,7 +4,8 @@
     <color name="tab_background_selected">#FFADACAD</color>
     <color name="tab_background_regular">#FFEBEBEB</color>
     <color name="text_color">#FF312a4f</color>
-    <color name="light_blue">#FF0060ff</color>
+    <color name="light_blue">#03A9F4</color>
+    <color name="dark_blue">#0288D1</color>
     <color name="grey_text">#98585858</color>
 
 </resources>
