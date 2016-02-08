@@ -13,15 +13,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.spontaneous.android.R;
@@ -111,34 +108,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets a ListView's height based on its number of children.
-     *
-     * @param listView to apply the height
-     */
-    final void setListViewHeightBasedOnChildren(ListView listView) {
-        //Get adapter and exit method if it is null
-        ListAdapter listAdapter = listView.getAdapter();
-
-        if (listAdapter == null) {
-            return;
-        }
-
-        //Add current item height to the total height
-        int totalHeight = 0;
-        for (int i = 0; i < listAdapter.getCount(); i++) {
-            View listItem = listAdapter.getView(i, null, listView);
-            listItem.measure(0, View.MeasureSpec.UNSPECIFIED);
-            totalHeight += listItem.getMeasuredHeight();
-        }
-
-        //Set the new calculated required height
-        ViewGroup.LayoutParams params = listView.getLayoutParams();
-        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
-        listView.setLayoutParams(params);
-        listView.requestLayout();
-    }
-
-    /**
      * Show a progress dialog with the text "Loading" in the given activity.
      */
     final public void showWaitDialog() {
@@ -158,12 +127,12 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Dismiss the progress dialog if it is showing.
      */
     final public void dismissDialog() {
+
         //Dismiss the wait dialog.
         if (mWaitDialog != null && mWaitDialog.isShowing()) {
             mWaitDialog.dismiss();
         }
     }
-
 
     /**
      * Setup email auto complete to an AutoCompleteTextView.
@@ -204,18 +173,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     /**
-     * Hide the keyboard on the give activity.
-     */
-    final void hideKeyboard() {
-        View currentFocus = getCurrentFocus();
-
-        if (currentFocus != null) {
-            InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        }
-    }
-
-    /**
      * Get finish animation for the loading image.
      *
      * @param loadingImage       The loading spinner image.
@@ -246,6 +203,18 @@ public abstract class BaseActivity extends AppCompatActivity {
         });
 
         return finishAnimation;
+    }
+
+    /**
+     * Hide the keyboard on the give activity.
+     */
+    public void hideKeyboard() {
+        View currentFocus = getCurrentFocus();
+
+        if (currentFocus != null) {
+            InputMethodManager inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 
     /**

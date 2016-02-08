@@ -32,11 +32,6 @@ public class SpontaneousApplication extends Application {
     private RestAdapter restAdapter;
 
     /**
-     * A queue of all image loading requests.
-     */
-    private RequestQueue mRequestQueue;
-
-    /**
      * The image loader object.
      */
     private ImageLoader mImageLoader;
@@ -53,7 +48,7 @@ public class SpontaneousApplication extends Application {
         sInstance = this;
 
         //Initialize Volley
-        mRequestQueue = Volley.newRequestQueue(this);
+        RequestQueue mRequestQueue = Volley.newRequestQueue(this);
         mImageLoader = new ImageLoader(mRequestQueue, new ImageLoader.ImageCache() {
             private final int maxCacheSize = 10000;
             private final LruCache<String, Bitmap> mCache = new LruCache<>(maxCacheSize);

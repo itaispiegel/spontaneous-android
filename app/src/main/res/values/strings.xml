@@ -18,10 +18,10 @@
     <string name="google_api_key">AIzaSyA3HLsaOVY6sa72JWS7RTnI1JsrIsx4Avc</string>
 
     <!--Server Messages-->
-    <string name="error_network">network error</string>
-    <string name="error_no_response">no response error</string>
-    <string name="error_network_http_error">http error</string>
-    <string name="error_unknown">unknown error</string>
+    <string name="error_network">Network Error</string>
+    <string name="error_no_response">No Response Error</string>
+    <string name="error_network_http_error">HTTP Error</string>
+    <string name="error_unknown">Unknown Error</string>
 
     <!--Intent extras-->
     <string name="created_event_intent_extra">com.spontaneous.android.CREATED_EVENT</string>
@@ -54,9 +54,9 @@
     <string name="event_invitation">"com.spontaneous.android.EVENT_INVITATION"</string>
     <string name="dialog_textview">What do you have to say about the event?</string>
     <string name="event_edit">Edit</string>
-    <string name="user_profile_example_name">Itai Spiegel</string>
-    <string name="user_profile_example_email">itai.spiegel@gmail.com</string>
-    <string name="user_profile_example_age">15</string>
+    <string name="user_profile_example_name">ABC</string>
+    <string name="user_profile_example_email">abc@abc.com</string>
+    <string name="user_profile_example_age">0</string>
     <string name="event_list_example_date">20–3–2014</string>
     <string name="event_list_example_title">Mall Hangout</string>
     <string name="event_list_example_description">Hey guys, We\'re hanging out today in the mall during the evening. We\'re probably gonna play some bowling and catch a movie. Come and have a great time with us!</string>

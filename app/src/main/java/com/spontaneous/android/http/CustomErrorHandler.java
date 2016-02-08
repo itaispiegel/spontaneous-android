@@ -28,7 +28,8 @@ public class CustomErrorHandler implements ErrorHandler {
             try {
                 errorDescription = (String) error.getBodyAs(String.class);
             } catch (RuntimeException ex) {
-                errorDescription = SpontaneousApplication.getInstance().getString(R.string.error_network_http_error, error.getResponse().getStatus());
+                errorDescription = SpontaneousApplication.getInstance().getString(R.string.error_network_http_error) +
+                        " " + error.getResponse().getStatus();
             }
         }
 

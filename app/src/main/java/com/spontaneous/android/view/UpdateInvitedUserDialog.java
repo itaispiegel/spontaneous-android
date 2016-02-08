@@ -75,6 +75,8 @@ public class UpdateInvitedUserDialog extends AlertDialog {
                 UpdateInvitedUserRequest updateRequest = new UpdateInvitedUserRequest(status, isAttending);
                 invitedUser.update(updateRequest);
 
+                dismiss();
+
                 SpontaneousApplication.getInstance()
                         .getService(EventService.class)
                         .updateInvitedUser(invitedUser.getId(), updateRequest, new Callback<BaseResponse>() {
@@ -82,14 +84,12 @@ public class UpdateInvitedUserDialog extends AlertDialog {
                             public void success(BaseResponse baseResponse, Response response) {
                                 Toast.makeText(getContext(), "Status updated", Toast.LENGTH_SHORT)
                                         .show();
-                                dismiss();
                             }
 
                             @Override
                             public void failure(RetrofitError error) {
                                 Toast.makeText(getContext(), "Couldn't update status.", Toast.LENGTH_SHORT)
                                         .show();
-                                dismiss();
                             }
                         });
             }

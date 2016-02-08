@@ -133,7 +133,7 @@ public class ActivityLogin extends BaseActivity {
                 //If the Facebook authentication did not succeed, show an error.
                 Logger.error("Facebook authentication error: " + error.getMessage());
 
-                Toast.makeText(getApplicationContext(), "Facebook connection error.", Toast.LENGTH_SHORT)
+                Toast.makeText(getApplicationContext(), "Facebook Connection Error.", Toast.LENGTH_SHORT)
                         .show();
             }
         };
@@ -168,11 +168,14 @@ public class ActivityLogin extends BaseActivity {
             public void failure(RetrofitError error) {
                 dismissDialog();
 
+                Toast.makeText(getApplicationContext(), "Connection Error", Toast.LENGTH_SHORT)
+                        .show();
+
                 Logger.error("LoginActivity onFailure, " + error.getMessage());
 
                 //Sign out of Facebook if the app didn't manage to authenticate with Spontaneous server.
                 if (AccountUtils.isAuthenticatedWithFacebook()) {
-                    AccountUtils.logout(getApplicationContext());
+                    AccountUtils.logout(getApplicationContext(), false);
                     Logger.error("Logged out of Facebook since the app couldn't authenticate with Spontaneous server.");
                 }
             }

@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/user_profile_example_name"
                 android:textColor="@color/text_color"
-                android:textSize="25sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -41,7 +41,7 @@
                 android:layout_below="@+id/user_name"
                 android:text="@string/user_profile_example_email"
                 android:textColor="@color/text_color"
-                android:textSize="13sp" />
+                android:textSize="12sp" />
 
             <ImageView
                 android:id="@+id/user_gender"
@@ -49,7 +49,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_alignParentBottom="true"
-                android:layout_marginBottom="7dp"
+                android:layout_marginBottom="5dp"
                 android:src="@drawable/ic_male" />
 
             <TextView
@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="0dp"
                 android:layout_marginEnd="24dp"
                 android:gravity="center"
                 android:includeFontPadding="false"

@@ -1,5 +1,6 @@
 package com.spontaneous.android.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -83,15 +84,20 @@ public class AccountUtils {
 
     /**
      * Logout the current user.
-     * Clears the current Facebook token, sets current user to null and starts the authentication flow.
+     * Clears the current Facebook token, sets current user to null.
+     *
+     * @param context                 Current context.
+     * @param startAuthenticationFlow Whether the app should start the authentication flow.
      */
-    public static void logout(Context context) {
+    public static void logout(Context context, boolean startAuthenticationFlow) {
         AccountUtils.clearAuthenticationToken();
         AccountUtils.setAuthenticatedUser(null);
 
-        AccountUtils.startAuthenticationFlow((BaseActivity) context);
-
         LoginManager.getInstance().logOut();
+
+        if (startAuthenticationFlow) {
+            startAuthenticationFlow((BaseActivity) context);
+        }
     }
 
     /**

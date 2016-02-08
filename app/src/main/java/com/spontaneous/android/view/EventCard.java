@@ -21,6 +21,7 @@ import com.spontaneous.android.model.User;
 import com.spontaneous.android.util.AccountUtils;
 import com.spontaneous.android.util.DateTimeFormatter;
 import com.spontaneous.android.util.Logger;
+import com.spontaneous.android.util.UserInterfaceUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -68,6 +69,7 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
      * ListViewAdapter for the invited users.
      */
     private InvitedUsersListAdapter invitedUsersListAdapter;
+    private ListView invitedUserListView;
 
     public EventCard(Context context) {
         super(context);
@@ -102,7 +104,7 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
 
         invitedUsersListAdapter = new InvitedUsersListAdapter(mContext);
 
-        ListView invitedUserListView = (ListView) layout.findViewById(R.id.event_card_invited_list);
+        invitedUserListView = (ListView) layout.findViewById(R.id.event_card_invited_list);
         invitedUserListView.setAdapter(invitedUsersListAdapter);
         invitedUserListView.setOnItemClickListener(this);
     }
@@ -137,6 +139,7 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
         });
 
         invitedUsersListAdapter.addAll(event.getInvitedUsers());
+        UserInterfaceUtils.setListViewHeightBasedOnChildren(invitedUserListView);
 
         eventDateTextView.setText(mContext.getString(
                 R.string.event_page_date, DateTimeFormatter.format(event.getDate())

@@ -26,6 +26,7 @@ import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.Event;
 import com.spontaneous.android.util.AccountUtils;
 import com.spontaneous.android.util.Logger;
+import com.spontaneous.android.util.UserInterfaceUtils;
 
 import java.util.List;
 
@@ -161,7 +162,7 @@ public class ActivityMain extends BaseActivity {
                 // Do nothing for now
                 return true;
             case R.id.logout:
-                AccountUtils.logout(this);
+                AccountUtils.logout(this, true);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

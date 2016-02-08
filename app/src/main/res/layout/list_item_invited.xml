@@ -9,7 +9,6 @@
         android:id="@+id/invited_list_user_photo"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_alignParentStart="true"
         android:background="#FF38476b"
         android:scaleType="centerCrop" />
 
