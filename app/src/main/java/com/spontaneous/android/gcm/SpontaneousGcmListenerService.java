@@ -56,6 +56,7 @@ public class SpontaneousGcmListenerService extends GcmListenerService {
         //The action to perform
         Intent intent = null;
 
+        //Build the notification based on the notification type.
         if (notificationType == NotificationType.INVITATION) {
 
             //Get event details.

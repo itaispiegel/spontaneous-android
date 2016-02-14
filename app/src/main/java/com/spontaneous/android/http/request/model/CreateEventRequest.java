@@ -1,6 +1,7 @@
 package com.spontaneous.android.http.request.model;
 
 import com.google.gson.annotations.Expose;
+
 import org.joda.time.DateTime;
 
 import java.util.List;

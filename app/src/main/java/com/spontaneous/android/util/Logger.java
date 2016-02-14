@@ -7,13 +7,12 @@ import android.util.Log;
  */
 public abstract class Logger {
 
-    /**
-     * Logcat tag name.
-     */
     private static final String LOG_TAG = "Spontaneous";
 
     /**
      * Send an info log message.
+     *
+     * @param message The message to log.
      */
     public static void info(String message) {
         if (message == null) {
@@ -25,6 +24,8 @@ public abstract class Logger {
 
     /**
      * Send a debug log message.
+     *
+     * @param message The message to log.
      */
     public static void debug(String message) {
         if (message == null) {
@@ -36,6 +37,8 @@ public abstract class Logger {
 
     /**
      * Send an error log message.
+     *
+     * @param message The message to log.
      */
     public static void error(String message) {
         if (message == null) {
@@ -47,6 +50,9 @@ public abstract class Logger {
 
     /**
      * Send an error log message.
+     *
+     * @param message   The message to log.
+     * @param throwable The exception to log.
      */
     public static void error(String message, Throwable throwable) {
         if (message == null) {

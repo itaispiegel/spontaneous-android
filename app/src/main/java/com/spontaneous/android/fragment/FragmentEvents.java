@@ -20,7 +20,9 @@ import com.spontaneous.android.adapter.EventListAdapter;
 import com.spontaneous.android.http.request.service.EventService;
 import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.Event;
+import com.spontaneous.android.util.AccountUtils;
 import com.spontaneous.android.util.Logger;
+import com.spontaneous.android.util.UserInterfaceUtils;
 
 import java.util.Locale;
 
@@ -87,10 +89,16 @@ public class FragmentEvents extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView parent, View view, final int position, long id) {
 
+                Event event = mEventListAdapter.getItem(position);
+
+                //Don't do anything if the authenticated user is not hosting the requested event.
+                if(event.getHost() == AccountUtils.getAuthenticatedUser()) {
+                    return true;
+                }
+
                 ((BaseActivity) getActivity()).showWaitDialog();
 
                 Logger.info(String.format(Locale.getDefault(), "Deleting item at position #%d.", position));
-                Event event = mEventListAdapter.getItem(position);
 
                 SpontaneousApplication.getInstance().getService(EventService.class)
                         .deleteEvent(event.getId(), new Callback<BaseResponse>() {
@@ -129,25 +137,9 @@ public class FragmentEvents extends Fragment {
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                ((ActivityMain) getActivity()).setRefreshEnabled(isListViewAtTop());
+                ((ActivityMain) getActivity()).setRefreshEnabled(UserInterfaceUtils.isListViewAtTop(mEventsListView));
             }
         };
-    }
-
-    /**
-     * @return Whether the listview is at it's top.
-     */
-    public boolean isListViewAtTop() {
-        boolean atTop = false;
-
-        if (mEventsListView != null && mEventsListView.getChildCount() > 0) {
-            boolean firstItemVisible = mEventsListView.getFirstVisiblePosition() == 0;
-            boolean topOfFirstItemVisible = mEventsListView.getChildAt(0).getTop() == 0;
-
-            atTop = firstItemVisible && topOfFirstItemVisible;
-        }
-
-        return atTop;
     }
 
     /**

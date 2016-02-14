@@ -18,6 +18,9 @@ public final class GsonFactory {
 
     private static Gson sGson;
 
+    /**
+     * @return Return the gson instance.
+     */
     public static Gson getGson() {
 
         if (sGson == null) {

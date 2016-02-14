@@ -218,9 +218,9 @@ public class ActivityCreateEvent extends BaseActivity implements
     }
 
     /**
-     * @return New event generated from the user input.
+     * @return New create event request generated from the user input.
      */
-    private CreateEventRequest generateEvent() {
+    private CreateEventRequest generateCreateEventRequest() {
         return new CreateEventRequest(
                 mEventTitle.getText().toString(),
                 mEventDescription.getText().toString(),
@@ -237,7 +237,7 @@ public class ActivityCreateEvent extends BaseActivity implements
      * If failed, show an error to the user.
      */
     private void submitEvent() {
-        final CreateEventRequest event = generateEvent();
+        final CreateEventRequest event = generateCreateEventRequest();
         final Intent intent = new Intent();
 
         showWaitDialog();

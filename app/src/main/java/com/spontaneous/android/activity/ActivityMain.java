@@ -26,7 +26,6 @@ import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.Event;
 import com.spontaneous.android.util.AccountUtils;
 import com.spontaneous.android.util.Logger;
-import com.spontaneous.android.util.UserInterfaceUtils;
 
 import java.util.List;
 

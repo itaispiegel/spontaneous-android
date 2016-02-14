@@ -11,6 +11,7 @@ public class DateTimeFormatter {
     private static final String DEFAULT_FORMAT = "dd-MM-yyyy, H:mm";
 
     public static String format(DateTime date) {
-        return DateTimeFormat.forPattern(DEFAULT_FORMAT).print(date);
+        return DateTimeFormat.forPattern(DEFAULT_FORMAT)
+                .print(date);
     }
 }
