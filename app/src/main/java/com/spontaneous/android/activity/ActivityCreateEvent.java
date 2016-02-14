@@ -23,14 +23,13 @@ import com.spontaneous.android.http.request.service.EventService;
 import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.Event;
 import com.spontaneous.android.util.AccountUtils;
+import com.spontaneous.android.util.DateTimeFormatter;
 import com.spontaneous.android.util.Logger;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 
 import org.joda.time.DateTime;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -47,11 +46,7 @@ import static com.wdullaer.materialdatetimepicker.time.TimePickerDialog.newInsta
 /**
  * Using this activity, the user can create a new event.
  */
-public class ActivityCreateEvent extends BaseActivity implements
-        OnDateSetListener, OnTimeSetListener {
-
-    public static final String DATE_FORMAT = "dd/MM/yyyy, E";
-    public static final String TIME_FORMAT = "HH:mm";
+public class ActivityCreateEvent extends BaseActivity implements OnDateSetListener, OnTimeSetListener {
 
     private Calendar mCalendar;
 
@@ -170,11 +165,10 @@ public class ActivityCreateEvent extends BaseActivity implements
      */
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+        final String dateFormat = "dd/MM/yyyy, E";
 
         mCalendar.set(year, monthOfYear, dayOfMonth);
-
-        mEventDate.setText(dateFormat.format(mCalendar.getTime()));
+        mEventDate.setText(DateTimeFormatter.format(dateFormat, mCalendar.getTime()));
     }
 
     /**
@@ -182,13 +176,13 @@ public class ActivityCreateEvent extends BaseActivity implements
      */
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
-        DateFormat dateFormat = new SimpleDateFormat(TIME_FORMAT);
+        final String timeFormat = "HH:mm";
 
         mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
         mCalendar.set(Calendar.MINUTE, minute);
         mCalendar.set(Calendar.SECOND, second);
 
-        mEventTime.setText(dateFormat.format(mCalendar.getTime()));
+        mEventTime.setText(DateTimeFormatter.format(timeFormat, mCalendar.getTime()));
     }
 
     /**

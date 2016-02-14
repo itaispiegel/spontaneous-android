@@ -95,11 +95,11 @@ public class ActivityLogin extends BaseActivity {
             public void onSuccess(LoginResult loginResult) {
 
                 //Add the permissions.
-                AccessToken token = loginResult.getAccessToken();
+                AccessToken accessToken = loginResult.getAccessToken();
 
                 //Add the first permission.
                 String permissions = "";
-                Iterator<String> permissionIterator = token.getPermissions().iterator();
+                Iterator<String> permissionIterator = accessToken.getPermissions().iterator();
                 if (permissionIterator.hasNext()) {
                     permissions += permissionIterator.next();
                 }
@@ -111,12 +111,12 @@ public class ActivityLogin extends BaseActivity {
 
                 //Send a a log message
                 Logger.info("Facebook authentication succeeded, proceeding to authentication with Heroku Server.");
-                Logger.info("token = " + token.getToken() + ", userId = " + token.getUserId() +
-                        ", app id = " + token.getApplicationId() + ", permissions = " + permissions);
+                Logger.info("token = " + accessToken.getToken() + ", userId = " + accessToken.getUserId() +
+                        ", app id = " + accessToken.getApplicationId() + ", permissions = " + permissions);
 
                 //Create and send a FacebookLoginRequest to the Heroku Server.
                 LoginService loginService = SpontaneousApplication.getInstance().getService(LoginService.class);
-                FacebookLoginRequest loginRequestModel = new FacebookLoginRequest(token.getUserId(), token.getToken());
+                FacebookLoginRequest loginRequestModel = new FacebookLoginRequest(accessToken.getUserId(), accessToken.getToken());
 
                 //Send the login request.
                 loginService.login(loginRequestModel, getLoginRequestCallback());
