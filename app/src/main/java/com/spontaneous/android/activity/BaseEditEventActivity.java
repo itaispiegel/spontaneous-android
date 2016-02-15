@@ -1,8 +1,6 @@
 package com.spontaneous.android.activity;
 
-import android.app.DatePickerDialog;
 import android.app.DialogFragment;
-import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.util.Rfc822Tokenizer;
 import android.view.Menu;
@@ -10,13 +8,19 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TimePicker;
 
+import com.android.ex.chips.BaseRecipientAdapter;
+import com.android.ex.chips.RecipientEditTextView;
+import com.android.ex.chips.recipientchip.DrawableRecipientChip;
+import com.spontaneous.android.R;
 import com.spontaneous.android.adapter.PlacesAutoCompleteAdapter;
+import com.spontaneous.android.http.request.model.EditEventRequest;
+import com.spontaneous.android.util.AccountUtils;
 import com.spontaneous.android.util.DateTimeFormatter;
 import com.spontaneous.android.util.Logger;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 
 import org.joda.time.DateTime;
 
@@ -30,9 +34,9 @@ import static com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSe
 import static com.wdullaer.materialdatetimepicker.time.TimePickerDialog.newInstance;
 
 /**
- * Created by USER1 on 15/02/2016.
+ * This is a base activity for creating/editing an event.
  */
-public abstract class BaseEditEvent extends BaseActivity implements OnDateSetListener, OnTimeSetListener {
+public abstract class BaseEditEventActivity extends BaseActivity implements OnDateSetListener, OnTimeSetListener {
 
     protected Calendar mCalendar;
 
@@ -73,7 +77,7 @@ public abstract class BaseEditEvent extends BaseActivity implements OnDateSetLis
         mCalendar = Calendar.getInstance();
         mEventDate.setOnTouchListener(showDateTimePickerDialog(
                 newInstance(
-                        ActivityCreateEvent.this,
+                        BaseEditEventActivity.this,
                         mCalendar.get(Calendar.YEAR),
                         mCalendar.get(Calendar.MONTH),
                         mCalendar.get(Calendar.DAY_OF_MONTH)
@@ -83,7 +87,7 @@ public abstract class BaseEditEvent extends BaseActivity implements OnDateSetLis
         mEventTime = (EditText) findViewById(R.id.create_event_time);
         mEventTime.setOnTouchListener(showDateTimePickerDialog(
                 newInstance(
-                        ActivityCreateEvent.this,
+                        BaseEditEventActivity.this,
                         mCalendar.get(Calendar.HOUR_OF_DAY),
                         mCalendar.get(Calendar.MINUTE),
                         true
@@ -194,6 +198,20 @@ public abstract class BaseEditEvent extends BaseActivity implements OnDateSetLis
         }
 
         return emails;
+    }
+
+    /**
+     * @return New create event request generated from the user input.
+     */
+    protected EditEventRequest generateEditEventRequest() {
+        return new EditEventRequest(
+                mEventTitle.getText().toString(),
+                mEventDescription.getText().toString(),
+                AccountUtils.getAuthenticatedUser().getId(),
+                getInvitedUsersList(),
+                getDateTime(),
+                mEventLocation.getText().toString()
+        );
     }
 
     /**
