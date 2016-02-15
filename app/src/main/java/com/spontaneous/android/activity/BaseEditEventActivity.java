@@ -38,15 +38,15 @@ import static com.wdullaer.materialdatetimepicker.time.TimePickerDialog.newInsta
  */
 public abstract class BaseEditEventActivity extends BaseActivity implements OnDateSetListener, OnTimeSetListener {
 
-    protected Calendar mCalendar;
+    private Calendar mCalendar;
 
     //Views
-    protected EditText mEventTitle;
-    protected EditText mEventDescription;
-    protected AutoCompleteTextView mEventLocation;
-    protected RecipientEditTextView mInvitedUsers;
-    protected EditText mEventDate;
-    protected EditText mEventTime;
+    private EditText mEventTitle;
+    private EditText mEventDescription;
+    private AutoCompleteTextView mEventLocation;
+    private RecipientEditTextView mInvitedUsers;
+    private EditText mEventDate;
+    private EditText mEventTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
