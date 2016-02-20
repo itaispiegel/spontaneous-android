@@ -12,13 +12,25 @@ import java.util.Date;
  */
 public class DateTimeFormatter {
 
-    private static final String DEFAULT_FORMAT = "dd-MM-yyyy, HH:mm";
+    private static final String DEFAULT_DATE_FORMAT = "dd-MM-yyyy";
+    private static final String DEFAULT_TIME_FORMAT = "HH:mm";
 
+    /**
+     * Format a date by the default format.
+     * @param date The given date object to format.
+     * @return String representation of the given date.
+     */
     public static String format(DateTime date) {
-        return DateTimeFormat.forPattern(DEFAULT_FORMAT)
+        return DateTimeFormat.forPattern(DEFAULT_DATE_FORMAT + ", " + DEFAULT_TIME_FORMAT)
                 .print(date);
     }
 
+    /**
+     * Format a date by a given format.
+     * @param format Format to format by.
+     * @param date The given date to format.
+     * @return String representation of the given date by the given format.
+     */
     public static String format(String format, Date date) {
         DateFormat dateFormat = new SimpleDateFormat(format);
         return dateFormat.format(date);

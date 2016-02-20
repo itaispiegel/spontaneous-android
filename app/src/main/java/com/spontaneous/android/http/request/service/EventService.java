@@ -1,6 +1,6 @@
 package com.spontaneous.android.http.request.service;
 
-import com.spontaneous.android.http.request.model.EditEventRequest;
+import com.spontaneous.android.http.request.model.SaveEventRequest;
 import com.spontaneous.android.http.request.model.UpdateInvitedUserRequest;
 import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.Event;
@@ -24,11 +24,20 @@ public interface EventService {
     /**
      * Create a new event in the server.
      *
-     * @param editEventRequest Request entity to create event.
-     * @param cb                 Callback of the request.
+     * @param saveEventRequest Request entity to create event.
+     * @param cb               Callback of the request.
      */
     @POST("/API/events")
-    void createEvent(@Body EditEventRequest editEventRequest, Callback<BaseResponse<Event>> cb);
+    void createEvent(@Body SaveEventRequest saveEventRequest, Callback<BaseResponse<Event>> cb);
+
+    /**
+     * Edit an existing event.
+     *
+     * @param saveEventRequest Request entity to edit event.
+     * @param cb               Callback of the request.
+     */
+    @PUT("/API/events")
+    void editEvent(@Query("id") long id, @Body SaveEventRequest saveEventRequest, Callback<BaseResponse<Event>> cb);
 
     /**
      * Get all the events related to the given user.

@@ -74,6 +74,10 @@
         <activity
             android:name=".activity.ActivityCreateEvent"
             android:parentActivityName=".activity.ActivityMain" />
+
+        <activity
+            android:name=".activity.ActivityEditEvent"
+            android:parentActivityName=".activity.ActivityEventPage" />
         <activity
             android:name=".activity.ActivityEventPage"
             android:parentActivityName=".activity.ActivityMain" />

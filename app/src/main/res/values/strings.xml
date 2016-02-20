@@ -65,4 +65,5 @@
     <string name="event_card_example_description">Hey guys, We\'re hanging out today in the mall during the evening. We\'re probably gonna play some bowling and catch a movie. Come and have a great time with us!</string>
     <string name="event_card_example_date">When: Tuesday at 20:00, March 20th</string>
     <string name="event_card_example_location">Where: Shiv\'at Hakohavim Mall, Herzeliya</string>
+    <string name="error_update_invited_user">Could not update invited user.</string>
 </resources>

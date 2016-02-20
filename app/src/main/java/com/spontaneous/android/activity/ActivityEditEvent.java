@@ -9,6 +9,7 @@ import com.spontaneous.android.http.request.model.SaveEventRequest;
 import com.spontaneous.android.http.request.service.EventService;
 import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.Event;
+import com.spontaneous.android.util.DateTimeFormatter;
 import com.spontaneous.android.util.Logger;
 
 import retrofit.Callback;
@@ -16,31 +17,26 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 /**
- * Using this activity, the user can create a new event.
+ * This is an activity for editing an event.
  */
-public class ActivityCreateEvent extends BaseSaveEventActivity {
+public class ActivityEditEvent extends BaseSaveEventActivity {
 
-    /**
-     * Submit the created event to the server.
-     * Show a wait dialog, and when succeeded return to {@link ActivityMain}.
-     * If failed, show an error to the user.
-     */
     @Override
-    protected void submitEvent() {
-        final SaveEventRequest event = generateEditEventRequest();
+    void submitEvent() {
+        final SaveEventRequest saveEventRequest = generateEditEventRequest();
 
         showWaitDialog();
-        Logger.info("Creating new event: " + event);
+        Logger.info("Creating new event: " + saveEventRequest);
 
         //Submit event to server.
-        SpontaneousApplication.getInstance().getService(EventService.class).createEvent(event, new Callback<BaseResponse<Event>>() {
+        SpontaneousApplication.getInstance().getService(EventService.class).editEvent(getEvent().getId(), saveEventRequest, new Callback<BaseResponse<Event>>() {
             @Override
             public void success(BaseResponse<Event> eventBaseResponse, Response response) {
                 Intent intent = new Intent();
 
                 dismissDialog();
 
-                Logger.info("Event created successfully on server.");
+                Logger.info("Event saved successfully on server.");
                 intent.putExtra(getString(R.string.created_event_intent_extra), eventBaseResponse.getBody());
                 setResult(RESULT_OK, intent);
 
@@ -52,14 +48,34 @@ public class ActivityCreateEvent extends BaseSaveEventActivity {
             public void failure(RetrofitError error) {
                 dismissDialog();
 
-                Logger.error("Event creation on server failed.");
+                Logger.error("Event update on server failed.");
                 Toast.makeText(getApplicationContext(), "Connection failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    /**
+     * @return The details of the event being edited.
+     */
+    private Event getEvent() {
+        return (Event) getIntent().getExtras().getSerializable(getString(R.string.event_edit));
+    }
+
     @Override
     protected void initializeViews() {
-        //No need to initialize anything if creating a new event.
+        Event event = getEvent();
+
+        //Return void if the event is null.
+        if (event == null) {
+            return;
+        }
+
+        //Initialize the views based on the event details.
+        mEventTitle.setText(event.getTitle());
+        mEventDescription.setText(event.getDescription());
+        mEventLocation.setText(event.getLocation());
+        mEventDate.setText(DateTimeFormatter.format(dateFormat, event.getDate().toDate()));
+        mEventTime.setText(DateTimeFormatter.format(timeFormat, event.getDate().toDate()));
+
     }
 }

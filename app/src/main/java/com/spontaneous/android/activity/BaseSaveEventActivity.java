@@ -15,7 +15,7 @@ import com.android.ex.chips.RecipientEditTextView;
 import com.android.ex.chips.recipientchip.DrawableRecipientChip;
 import com.spontaneous.android.R;
 import com.spontaneous.android.adapter.PlacesAutoCompleteAdapter;
-import com.spontaneous.android.http.request.model.EditEventRequest;
+import com.spontaneous.android.http.request.model.SaveEventRequest;
 import com.spontaneous.android.util.AccountUtils;
 import com.spontaneous.android.util.DateTimeFormatter;
 import com.spontaneous.android.util.Logger;
@@ -36,17 +36,21 @@ import static com.wdullaer.materialdatetimepicker.time.TimePickerDialog.newInsta
 /**
  * This is a base activity for creating/editing an event.
  */
-public abstract class BaseEditEventActivity extends BaseActivity implements OnDateSetListener, OnTimeSetListener {
+public abstract class BaseSaveEventActivity extends BaseActivity implements OnDateSetListener, OnTimeSetListener {
+
+
+    protected final String dateFormat = "dd/MM/yyyy, E";
+    protected final String timeFormat = "HH:mm";
 
     private Calendar mCalendar;
 
     //Views
-    private EditText mEventTitle;
-    private EditText mEventDescription;
-    private AutoCompleteTextView mEventLocation;
-    private RecipientEditTextView mInvitedUsers;
-    private EditText mEventDate;
-    private EditText mEventTime;
+    protected EditText mEventTitle;
+    protected EditText mEventDescription;
+    protected AutoCompleteTextView mEventLocation;
+    protected RecipientEditTextView mInvitedUsers;
+    protected EditText mEventDate;
+    protected EditText mEventTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +81,7 @@ public abstract class BaseEditEventActivity extends BaseActivity implements OnDa
         mCalendar = Calendar.getInstance();
         mEventDate.setOnTouchListener(showDateTimePickerDialog(
                 newInstance(
-                        BaseEditEventActivity.this,
+                        BaseSaveEventActivity.this,
                         mCalendar.get(Calendar.YEAR),
                         mCalendar.get(Calendar.MONTH),
                         mCalendar.get(Calendar.DAY_OF_MONTH)
@@ -87,11 +91,13 @@ public abstract class BaseEditEventActivity extends BaseActivity implements OnDa
         mEventTime = (EditText) findViewById(R.id.create_event_time);
         mEventTime.setOnTouchListener(showDateTimePickerDialog(
                 newInstance(
-                        BaseEditEventActivity.this,
+                        BaseSaveEventActivity.this,
                         mCalendar.get(Calendar.HOUR_OF_DAY),
                         mCalendar.get(Calendar.MINUTE),
                         true
                 )));
+
+        initializeViews();
     }
 
     @Override
@@ -154,8 +160,6 @@ public abstract class BaseEditEventActivity extends BaseActivity implements OnDa
      */
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        final String dateFormat = "dd/MM/yyyy, E";
-
         mCalendar.set(year, monthOfYear, dayOfMonth);
         mEventDate.setText(DateTimeFormatter.format(dateFormat, mCalendar.getTime()));
     }
@@ -165,8 +169,6 @@ public abstract class BaseEditEventActivity extends BaseActivity implements OnDa
      */
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
-        final String timeFormat = "HH:mm";
-
         mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
         mCalendar.set(Calendar.MINUTE, minute);
         mCalendar.set(Calendar.SECOND, second);
@@ -203,8 +205,8 @@ public abstract class BaseEditEventActivity extends BaseActivity implements OnDa
     /**
      * @return New create event request generated from the user input.
      */
-    protected EditEventRequest generateEditEventRequest() {
-        return new EditEventRequest(
+    protected SaveEventRequest generateEditEventRequest() {
+        return new SaveEventRequest(
                 mEventTitle.getText().toString(),
                 mEventDescription.getText().toString(),
                 AccountUtils.getAuthenticatedUser().getId(),
@@ -221,4 +223,8 @@ public abstract class BaseEditEventActivity extends BaseActivity implements OnDa
      */
     abstract void submitEvent();
 
+    /**
+     * Initialize the values of the views in the activity.
+     */
+    abstract void initializeViews();
 }

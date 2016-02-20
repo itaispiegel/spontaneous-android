@@ -1,11 +1,11 @@
 package com.spontaneous.android.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
-import android.widget.Toast;
 
 import com.spontaneous.android.R;
 import com.spontaneous.android.model.Event;
@@ -77,9 +77,10 @@ public class ActivityEventPage extends BaseActivity {
                 return true;
 
             case R.id.event_edit_button:
-                //TODO: Launch event edit activity.
-                Toast.makeText(ActivityEventPage.this, "Editing event...", Toast.LENGTH_SHORT)
-                        .show();
+                Intent editEventIntent = new Intent(getApplicationContext(), ActivityEditEvent.class);
+                editEventIntent.putExtra(getString(R.string.event_edit), mEvent);
+
+                startActivity(editEventIntent);
         }
 
         return super.onOptionsItemSelected(item);

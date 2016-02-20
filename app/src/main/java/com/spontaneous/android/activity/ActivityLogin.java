@@ -40,20 +40,23 @@ public class ActivityLogin extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Initialize email and password EditTexts
+        //Initialize email and password EditTexts.
         AutoCompleteTextView mEmail = (AutoCompleteTextView) findViewById(R.id.email);
 
-        //Setup email auto complete
+        //Setup email auto complete.
         setupEmailAutoComplete(mEmail, this);
 
-        //Just in case the user is accidentally authenticated
+        //Just in case the user is accidentally authenticated.
         LoginManager.getInstance().logOut();
 
-        //Initialize FacebookSDK
+        //Initialize the Facebook SDK.
         mCallbackManager = CallbackManager.Factory.create();
 
-        //Initialize login button and set its permissions, callback and click listener
+        //Initialize login button and set its permissions, callback and click listener.
         LoginButton mLoginButton = (LoginButton) findViewById(R.id.login_button);
+
+        //Remove the default drawables for the login button.
+        mLoginButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 
         mLoginButton.setReadPermissions("public_profile", "user_friends", "email", "user_birthday");
         mLoginButton.registerCallback(mCallbackManager, getFacebookCallback());

@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * This class represents an HTTP POST request to create a new event.
  */
-public class EditEventRequest {
+public class SaveEventRequest {
 
     /**
      * The title of the event.
@@ -47,7 +47,7 @@ public class EditEventRequest {
     @Expose
     private final String location;
 
-    public EditEventRequest(String title, String description, long hostUserId, List<String> invitedUsersEmails, DateTime date, String location) {
+    public SaveEventRequest(String title, String description, long hostUserId, List<String> invitedUsersEmails, DateTime date, String location) {
         this.title = title;
         this.description = description;
         this.hostUserId = hostUserId;
@@ -82,7 +82,7 @@ public class EditEventRequest {
 
     @Override
     public String toString() {
-        return "EditEventRequest{" +
+        return "SaveEventRequest{" +
                 "title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", hostUserId=" + hostUserId +

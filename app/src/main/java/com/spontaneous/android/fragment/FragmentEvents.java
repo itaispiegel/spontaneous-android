@@ -92,7 +92,7 @@ public class FragmentEvents extends Fragment {
                 Event event = mEventListAdapter.getItem(position);
 
                 //Don't do anything if the authenticated user is not hosting the requested event.
-                if(event.getHost() == AccountUtils.getAuthenticatedUser()) {
+                if(!event.getHost().equals(AccountUtils.getAuthenticatedUser())) {
                     return true;
                 }
 

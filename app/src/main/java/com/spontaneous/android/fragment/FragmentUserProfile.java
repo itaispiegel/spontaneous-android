@@ -20,7 +20,6 @@ import com.spontaneous.android.view.UserProfileCard;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * A fragment that contains a user profile
