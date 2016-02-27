@@ -76,6 +76,5 @@ public class ActivityEditEvent extends BaseSaveEventActivity {
         mEventLocation.setText(event.getLocation());
         mEventDate.setText(DateTimeFormatter.format(dateFormat, event.getDate().toDate()));
         mEventTime.setText(DateTimeFormatter.format(timeFormat, event.getDate().toDate()));
-
     }
 }

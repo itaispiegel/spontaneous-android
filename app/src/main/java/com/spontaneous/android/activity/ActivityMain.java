@@ -22,8 +22,10 @@ import com.spontaneous.android.fragment.FragmentEvents;
 import com.spontaneous.android.fragment.FragmentUserProfile;
 import com.spontaneous.android.gcm.RegistrationIntentService;
 import com.spontaneous.android.http.request.service.EventService;
+import com.spontaneous.android.http.request.service.UserService;
 import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.Event;
+import com.spontaneous.android.model.UserProfile;
 import com.spontaneous.android.util.AccountUtils;
 import com.spontaneous.android.util.Logger;
 
@@ -222,6 +224,18 @@ public class ActivityMain extends BaseActivity {
 
                         mEventsFragment.getEventListAdapter()
                                 .addAll(events.getBody());
+
+                        SpontaneousApplication.getInstance().getService(UserService.class)
+                                .getUserFriends(AccountUtils.getAuthenticatedUser().getId(), new Callback<BaseResponse<List<UserProfile>>>() {
+                                    @Override
+                                    public void success(BaseResponse<List<UserProfile>> baseResponse, Response response) {
+                                        mUserProfileFragment.addFriends(baseResponse.getBody());
+                                    }
+
+                                    @Override
+                                    public void failure(RetrofitError error) {
+                                    }
+                                });
                     }
 
                     @Override

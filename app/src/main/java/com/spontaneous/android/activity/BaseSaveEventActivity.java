@@ -38,7 +38,6 @@ import static com.wdullaer.materialdatetimepicker.time.TimePickerDialog.newInsta
  */
 public abstract class BaseSaveEventActivity extends BaseActivity implements OnDateSetListener, OnTimeSetListener {
 
-
     protected final String dateFormat = "dd/MM/yyyy, E";
     protected final String timeFormat = "HH:mm";
 
