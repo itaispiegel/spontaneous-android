@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -14,7 +13,6 @@ import android.widget.Toast;
 import com.spontaneous.android.R;
 import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.activity.ActivityEventPage;
-import com.spontaneous.android.activity.ActivityMain;
 import com.spontaneous.android.activity.BaseActivity;
 import com.spontaneous.android.adapter.EventListAdapter;
 import com.spontaneous.android.http.request.service.EventService;
@@ -35,7 +33,6 @@ import retrofit.client.Response;
  */
 public class FragmentEvents extends Fragment {
 
-    private ListView mEventsListView;
     private EventListAdapter mEventListAdapter;
 
     @Override
@@ -46,14 +43,14 @@ public class FragmentEvents extends Fragment {
 
         mEventListAdapter = new EventListAdapter(getActivity());
 
-        mEventsListView = (ListView) layout.findViewById(R.id.events_listview);
-        mEventsListView.setAdapter(mEventListAdapter);
-        mEventsListView.setEmptyView(mListEmptyView);
+        ListView eventsListView = (ListView) layout.findViewById(R.id.events_listview);
+        eventsListView.setAdapter(mEventListAdapter);
+        eventsListView.setEmptyView(mListEmptyView);
 
         //OnClickListener, OnLongClickListener and OnScrollListener
-        mEventsListView.setOnItemClickListener(itemClickListener());
-        mEventsListView.setOnItemLongClickListener(itemLongClickListener());
-        mEventsListView.setOnScrollListener(listViewScrollListener());
+        eventsListView.setOnItemClickListener(itemClickListener());
+        eventsListView.setOnItemLongClickListener(itemLongClickListener());
+        eventsListView.setOnScrollListener(UserInterfaceUtils.listViewScrollListener(eventsListView));
 
         return layout;
     }
@@ -120,24 +117,6 @@ public class FragmentEvents extends Fragment {
                         });
 
                 return true;
-            }
-        };
-    }
-
-    /**
-     * Set refresh enabled only if the listview is at it's top.
-     *
-     * @return The {@link AbsListView.OnScrollListener}.
-     */
-    private AbsListView.OnScrollListener listViewScrollListener() {
-        return new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                ((ActivityMain) getActivity()).setRefreshEnabled(UserInterfaceUtils.isListViewAtTop(mEventsListView));
             }
         };
     }

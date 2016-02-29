@@ -16,11 +16,6 @@
             android:layout_height="wrap_content" />
     </ScrollView>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="List of friends using Spontaneous: " />
-
     <ListView
         android:id="@+id/friends_list"
         android:layout_width="match_parent"
