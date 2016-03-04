@@ -6,6 +6,12 @@
         android:id="@+id/event_edit_button"
         android:icon="@drawable/ic_mode_edit_white_24dp"
         android:title="@string/event_edit"
-        app:showAsAction="always|withText"/>
+        app:showAsAction="ifRoom|withText" />
+
+    <item
+        android:id="@+id/event_broadcast_message_button"
+        android:icon="@drawable/ic_speaker_phone_black_24dp"
+        android:title="@string/event_broadcast_message_string"
+        app:showAsAction="always" />
 
 </menu>

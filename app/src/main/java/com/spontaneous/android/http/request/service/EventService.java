@@ -1,10 +1,10 @@
 package com.spontaneous.android.http.request.service;
 
 import com.spontaneous.android.http.request.model.SaveEventRequest;
-import com.spontaneous.android.http.request.model.UpdateInvitedUserRequest;
+import com.spontaneous.android.http.request.model.UpdateGuestRequest;
 import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.Event;
-import com.spontaneous.android.model.InvitedUser;
+import com.spontaneous.android.model.Guest;
 
 import java.util.List;
 
@@ -58,12 +58,15 @@ public interface EventService {
     void deleteEvent(@Query("id") long id, Callback<BaseResponse> cb);
 
     /**
-     * Update an {@link InvitedUser}.
+     * Update an {@link Guest}.
      *
-     * @param id Id of the {@link InvitedUser}.
+     * @param id Id of the {@link Guest}.
      * @param cb Callback of the request.
      */
-    @PUT("/API/events/updateInvitedUser")
-    void updateInvitedUser(@Query("id") long id, @Body UpdateInvitedUserRequest updateRequest, Callback<BaseResponse> cb);
+    @PUT("/API/events/updateGuest")
+    void updateGuest(@Query("id") long id, @Body UpdateGuestRequest updateRequest, Callback<BaseResponse> cb);
+
+    @POST("/API/events/notify")
+    void notifyGuests(@Query("id") long id, @Body String message, Callback<Object> cb);
 
 }

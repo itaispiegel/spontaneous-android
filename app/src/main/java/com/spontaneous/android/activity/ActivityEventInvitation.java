@@ -17,11 +17,11 @@ import android.widget.Toast;
 
 import com.spontaneous.android.R;
 import com.spontaneous.android.SpontaneousApplication;
-import com.spontaneous.android.http.request.model.UpdateInvitedUserRequest;
+import com.spontaneous.android.http.request.model.UpdateGuestRequest;
 import com.spontaneous.android.http.request.service.EventService;
 import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.Event;
-import com.spontaneous.android.model.InvitedUser;
+import com.spontaneous.android.model.Guest;
 import com.spontaneous.android.util.AccountUtils;
 import com.spontaneous.android.util.Logger;
 import com.spontaneous.android.view.EventCard;
@@ -153,23 +153,23 @@ public class ActivityEventInvitation extends BaseActivity {
                         //Get the status text.
                         String status = statusEditText.getText().toString();
 
-                        //Get the instance of the authenticated invited user.
-                        InvitedUser currUser = mEventCard.getInvitedUsersListAdapter()
-                                .getInvitedUserByEmail(AccountUtils.getAuthenticatedUser().getEmail());
+                        //Get the instance of the authenticated guest user.
+                        Guest currUser = mEventCard.getGuestsListAdapter()
+                                .getGuestByEmail(AccountUtils.getAuthenticatedUser().getEmail());
 
                         //Create a new update request.
-                        UpdateInvitedUserRequest updateRequest = new UpdateInvitedUserRequest(status, userConfirmedArrival);
+                        UpdateGuestRequest updateRequest = new UpdateGuestRequest(status, userConfirmedArrival);
 
-                        //Update the invited user in the database.
+                        //Update the guest in the database.
                         SpontaneousApplication.getInstance().getService(EventService.class)
-                                .updateInvitedUser(currUser.getId(), updateRequest, new Callback<BaseResponse>() {
+                                .updateGuest(currUser.getId(), updateRequest, new Callback<BaseResponse>() {
                                     @Override
                                     public void success(BaseResponse baseResponse, Response response) {
                                         //Check whether the update succeeded.
                                         if (baseResponse.getStatusCode() == BaseResponse.SUCCESS) {
 
                                             //Time until the swipe animations starts.
-                                            final long INTERVAL = 500;
+                                            final long INTERVAL = 300;
 
                                             //If succeeded, sleep for 1 seconds and then do the swipe animation.
                                             SystemClock.sleep(INTERVAL);
@@ -178,14 +178,14 @@ public class ActivityEventInvitation extends BaseActivity {
                                         } else {
 
                                             //If there was an error, then show a toast message.
-                                            Toast.makeText(getApplicationContext(), "Could not update invited user.", Toast.LENGTH_SHORT)
+                                            Toast.makeText(getApplicationContext(), "Could not update guest.", Toast.LENGTH_SHORT)
                                                     .show();
                                         }
                                     }
 
                                     @Override
                                     public void failure(RetrofitError error) {
-                                        Toast.makeText(getApplicationContext(), "Could not update invited user.", Toast.LENGTH_SHORT)
+                                        Toast.makeText(getApplicationContext(), "Could not update guest.", Toast.LENGTH_SHORT)
                                                 .show();
                                     }
                                 });

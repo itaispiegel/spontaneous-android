@@ -14,9 +14,9 @@ import android.widget.TextView;
 import com.android.volley.toolbox.NetworkImageView;
 import com.spontaneous.android.R;
 import com.spontaneous.android.SpontaneousApplication;
-import com.spontaneous.android.adapter.InvitedUsersListAdapter;
+import com.spontaneous.android.adapter.GuestsListAdapter;
 import com.spontaneous.android.model.Event;
-import com.spontaneous.android.model.InvitedUser;
+import com.spontaneous.android.model.Guest;
 import com.spontaneous.android.model.User;
 import com.spontaneous.android.util.AccountUtils;
 import com.spontaneous.android.util.DateTimeFormatter;
@@ -66,10 +66,10 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
     private NetworkImageView eventMapImage;
 
     /**
-     * ListViewAdapter for the invited users.
+     * ListViewAdapter for the guests.
      */
-    private InvitedUsersListAdapter invitedUsersListAdapter;
-    private ListView invitedUserListView;
+    private GuestsListAdapter guestsListAdapter;
+    private ListView guestsListView;
 
     public EventCard(Context context) {
         super(context);
@@ -102,11 +102,11 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
 
         eventMapImage = (NetworkImageView) layout.findViewById(R.id.event_card_map);
 
-        invitedUsersListAdapter = new InvitedUsersListAdapter(mContext);
+        guestsListAdapter = new GuestsListAdapter(mContext);
 
-        invitedUserListView = (ListView) layout.findViewById(R.id.event_card_invited_list);
-        invitedUserListView.setAdapter(invitedUsersListAdapter);
-        invitedUserListView.setOnItemClickListener(this);
+        guestsListView = (ListView) layout.findViewById(R.id.event_card_guests_list);
+        guestsListView.setAdapter(guestsListAdapter);
+        guestsListView.setOnItemClickListener(this);
     }
 
     /**
@@ -138,8 +138,8 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
             }
         });
 
-        invitedUsersListAdapter.addAll(event.getInvitedUsers());
-        UserInterfaceUtils.setListViewHeightBasedOnChildren(invitedUserListView);
+        guestsListAdapter.addAll(event.getGuests());
+        UserInterfaceUtils.setListViewHeightBasedOnChildren(guestsListView);
 
         eventDateTextView.setText(mContext.getString(
                 R.string.event_page_date, DateTimeFormatter.format(event.getDate())
@@ -172,31 +172,31 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
 
     @Override
     public void onItemClick(final AdapterView parent, final View view, final int position, final long id) {
-        Logger.info("Invited user was clicked: " + invitedUsersListAdapter.getItem(position));
+        Logger.info("Guest was clicked: " + guestsListAdapter.getItem(position));
 
         //Show the dialog if the user clicked himself.
-        InvitedUser invitedUser = invitedUsersListAdapter.getItem(position);
+        Guest guest = guestsListAdapter.getItem(position);
         User authenticatedUser = AccountUtils.getAuthenticatedUser();
 
-        if (!invitedUser.getUser().equals(authenticatedUser)) {
+        if (!guest.getUserProfile().equals(authenticatedUser)) {
             return;
         }
 
         //Show the dialog.
-        final UpdateInvitedUserDialog dialog = new UpdateInvitedUserDialog(getContext(), invitedUser);
+        final UpdateGuestDialog dialog = new UpdateGuestDialog(getContext(), guest);
         dialog.show();
 
         //Update the listview.
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
-                InvitedUser updated = ((UpdateInvitedUserDialog) dialog).getInvitedUser();
-                invitedUsersListAdapter.set(position, updated);
+                Guest updated = ((UpdateGuestDialog) dialog).getGuest();
+                guestsListAdapter.set(position, updated);
             }
         });
     }
 
-    public InvitedUsersListAdapter getInvitedUsersListAdapter() {
-        return invitedUsersListAdapter;
+    public GuestsListAdapter getGuestsListAdapter() {
+        return guestsListAdapter;
     }
 }

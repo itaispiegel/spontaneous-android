@@ -1,7 +1,7 @@
 package com.spontaneous.android.http.request.service;
 
 import com.spontaneous.android.http.response.BaseResponse;
-import com.spontaneous.android.model.UserProfile;
+import com.spontaneous.android.model.User;
 
 import java.util.List;
 
@@ -18,6 +18,6 @@ public interface UserService {
     void updateGcmToken(@Query("id") long id, @Query("token") String token, Callback<BaseResponse> cb);
 
     @GET("/API/users/friends")
-    void getUserFriends(@Query("id") long id, Callback<BaseResponse<List<UserProfile>>> cb);
+    void getUserFriends(@Query("id") long id, Callback<BaseResponse<List<User>>> cb);
 
 }

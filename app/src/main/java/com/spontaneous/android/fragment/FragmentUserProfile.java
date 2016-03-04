@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
@@ -13,9 +12,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.spontaneous.android.R;
-import com.spontaneous.android.activity.ActivityMain;
 import com.spontaneous.android.model.User;
-import com.spontaneous.android.model.UserProfile;
 import com.spontaneous.android.util.AccountUtils;
 import com.spontaneous.android.util.UserInterfaceUtils;
 import com.spontaneous.android.view.UserProfileCard;
@@ -54,29 +51,33 @@ public class FragmentUserProfile extends Fragment {
 
         mFriendsListView.setAdapter(mFriendsAdapter);
 
+        //Add friends
+        addFriends(AccountUtils.getAuthenticatedUser().getFriends());
+
         return layout;
     }
 
     /**
      * Add a list of friends to the friends listview.
+     *
      * @param friendsList The list of friends to add.
      */
-    public void addFriends(List<UserProfile> friendsList) {
+    public void addFriends(List<User> friendsList) {
+
+        //Return void if friends list is empty.
+        if (friendsList == null || friendsList.isEmpty()) {
+            return;
+        }
 
         //Clear friends.
         mFriendsAdapter.clear();
-
-        //Return void if friends list is empty.
-        if(friendsList.isEmpty()) {
-            return;
-        }
 
         TextView title = new TextView(getContext());
         title.setText("List of friends using Spontaneous: ");
         mFriendsListView.addHeaderView(title);
 
         //Add the email of each friend.
-        for(UserProfile userProfile : friendsList) {
+        for (User userProfile : friendsList) {
             mFriendsAdapter.add(userProfile.getEmail());
         }
     }

@@ -1,27 +1,24 @@
 package com.spontaneous.android.http.request.model;
 
-import com.google.gson.annotations.Expose;
-import com.spontaneous.android.model.InvitedUser;
+import com.spontaneous.android.model.Guest;
 
 
 /**
- * This class represents an HTTP PUT request to update an {@link InvitedUser} entity.
+ * This class represents an HTTP PUT request to update an {@link Guest} entity.
  */
-public class UpdateInvitedUserRequest {
+public class UpdateGuestRequest {
 
     /**
      * What the user has to say about the event.
      */
-    @Expose
     private final String status;
 
     /**
      * Whether the user is attending.
      */
-    @Expose
     private final boolean isAttending;
 
-    public UpdateInvitedUserRequest(String status, boolean isAttending) {
+    public UpdateGuestRequest(String status, boolean isAttending) {
         this.status = status;
         this.isAttending = isAttending;
     }
@@ -36,7 +33,7 @@ public class UpdateInvitedUserRequest {
 
     @Override
     public String toString() {
-        return "UpdateInvitedUserRequest{" +
+        return "UpdateGuestRequest{" +
                 ", status='" + status + '\'' +
                 ", isAttending=" + isAttending +
                 '}';

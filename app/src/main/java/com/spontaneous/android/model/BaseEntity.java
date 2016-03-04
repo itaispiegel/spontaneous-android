@@ -23,16 +23,8 @@ public abstract class BaseEntity implements Serializable {
         return id;
     }
 
-    protected void setId(long id) {
-        this.id = id;
-    }
-
     public DateTime getCreationTime() {
         return creationTime;
-    }
-
-    protected void setCreationTime(DateTime creationTime) {
-        this.creationTime = creationTime;
     }
 
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")

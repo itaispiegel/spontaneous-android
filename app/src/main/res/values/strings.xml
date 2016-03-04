@@ -8,7 +8,7 @@
 
     <!--Main Activity-->
     <string name="event_button_toolbar">This button represents the events fragment in the main activity.</string>
-    <string name="user_profile_button_toolbar">This button represents the user profile fragment in the main activity.</string>
+    <string name="user_profile_button_toolbar">This button represents the userProfile profile fragment in the main activity.</string>
 
     <!--Login Page-->
     <string name="login_with_facebook">Login with Facebook</string>
@@ -39,12 +39,12 @@
     <string name="event_description">Tell us a little bit about the event</string>
     <string name="event_location">Where is the event?</string>
     <string name="event_done">DONE</string>
-    <string name="event_invited_users">Who would you like to invite?</string>
+    <string name="event_guests">Who would you like to invite?</string>
     <string name="event_date">Date</string>
     <string name="event_time">Time</string>
 
-    <string name="is_attending_icon_description">This is an icon that shows whether the user attending the event.</string>
-    <string name="user_gender_icon_description">This is an icon that shows the gender of the user.</string>
+    <string name="is_attending_icon_description">This is an icon that shows whether the userProfile attending the event.</string>
+    <string name="user_gender_icon_description">This is an icon that shows the gender of the userProfile.</string>
 
     <!--Event Page-->
     <string name="event_page_date">Date: %1$s</string>
@@ -65,5 +65,6 @@
     <string name="event_card_example_description">Hey guys, We\'re hanging out today in the mall during the evening. We\'re probably gonna play some bowling and catch a movie. Come and have a great time with us!</string>
     <string name="event_card_example_date">When: Tuesday at 20:00, March 20th</string>
     <string name="event_card_example_location">Where: Shiv\'at Hakohavim Mall, Herzeliya</string>
-    <string name="error_update_invited_user">Could not update invited user.</string>
+    <string name="error_update_invited_user">Could not update guest.</string>
+    <string name="event_broadcast_message_string">Notify</string>
 </resources>

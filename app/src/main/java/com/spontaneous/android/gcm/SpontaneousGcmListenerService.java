@@ -53,8 +53,15 @@ public class SpontaneousGcmListenerService extends GcmListenerService {
         String title = data.getString("title");
         String content = data.getString("content");
 
-        //The action to perform
-        Intent intent = null;
+        //Notification configuration.
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_event_white)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher))
+                .setContentTitle(title)
+                .setContentText(content)
+                .setAutoCancel(true)
+                .setSound(defaultSoundUri);
 
         //Build the notification based on the notification type.
         if (notificationType == NotificationType.INVITATION) {
@@ -64,25 +71,17 @@ public class SpontaneousGcmListenerService extends GcmListenerService {
                     .fromJson(data.getString("data"), Event.class);
 
             //Set the intent.
-            intent = new Intent(this, ActivityEventInvitation.class);
+            Intent intent = new Intent(this, ActivityEventInvitation.class);
 
+            //The action to perform when clicking the notification.
             intent.putExtra(getString(R.string.event_invitation), event);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
+                    PendingIntent.FLAG_ONE_SHOT);
+
+            notificationBuilder.setContentIntent(pendingIntent);
         }
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                PendingIntent.FLAG_ONE_SHOT);
-
-        //Notification configuration.
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_event_white)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher))
-                .setContentTitle(title)
-                .setContentText(content)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -91,9 +90,18 @@ public class SpontaneousGcmListenerService extends GcmListenerService {
     }
 
     /**
-     * This class represents the type of notification sent to the user's device.
+     * This class represents the type of notificationType sent to the user's device.
      */
-    private enum NotificationType {
-        INVITATION
+    enum NotificationType {
+
+        /**
+         * Invitation to a created event.
+         */
+        INVITATION,
+
+        /**
+         * The event host can send a broadcast message to his guests.
+         */
+        BROADCAST
     }
 }

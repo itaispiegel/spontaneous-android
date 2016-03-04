@@ -3,7 +3,7 @@ package com.spontaneous.android.model;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * This class represents an event persisted in the database.
@@ -30,7 +30,7 @@ public class Event extends BaseEntity {
      * Users attending to the event.
      * One event has many users attending.
      */
-    private Collection<InvitedUser> invitedUsers;
+    private List<Guest> guests;
 
     /**
      * When the event is.
@@ -44,60 +44,31 @@ public class Event extends BaseEntity {
 
     public Event() {
         super();
-        invitedUsers = new ArrayList<>();
-    }
-
-    private void inviteUser(User user) {
-        InvitedUser invitedUser = new InvitedUser(user);
-        invitedUsers.add(invitedUser);
+        guests = new ArrayList<>();
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public User getHost() {
         return host;
     }
 
-    public void setHost(User host) {
-        this.host = host;
-    }
-
-    public Collection<InvitedUser> getInvitedUsers() {
-        return invitedUsers;
-    }
-
-    public void setInvitedUsers(Collection<InvitedUser> invitedUsers) {
-        this.invitedUsers = invitedUsers;
+    public List<Guest> getGuests() {
+        return guests;
     }
 
     public DateTime getDate() {
         return date;
     }
 
-    public void setDate(DateTime date) {
-        this.date = date;
-    }
-
     public String getLocation() {
         return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
     }
 
     /**
@@ -105,9 +76,9 @@ public class Event extends BaseEntity {
      * @return Whether the given user is attending the event.
      */
     public boolean isUserAttending(User user) {
-        for (InvitedUser invitedUser : invitedUsers) {
-            if(invitedUser.getUser().equals(user)) {
-                return invitedUser.isAttending();
+        for (Guest guest : guests) {
+            if (user.equals(guest.getUserProfile())) {
+                return guest.isAttending();
             }
         }
 

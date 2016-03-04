@@ -1,7 +1,5 @@
 package com.spontaneous.android.http.request.model;
 
-import com.google.gson.annotations.Expose;
-
 import org.joda.time.DateTime;
 
 import java.util.List;
@@ -14,44 +12,38 @@ public class SaveEventRequest {
     /**
      * The title of the event.
      */
-    @Expose
     private final String title;
 
     /**
      * A short description about the event.
      */
-    @Expose
     private final String description;
 
     /**
      * Id number of the host user.
      */
-    @Expose
     private final long hostUserId;
 
     /**
      * Emails of the users to invite.
      */
-    @Expose
-    private final List<String> invitedUsersEmails;
+    private final List<String> guestsEmails;
 
     /**
      * When the event is.
      */
-    @Expose
     private final DateTime date;
 
     /**
      * Where the event is.
      */
-    @Expose
     private final String location;
 
-    public SaveEventRequest(String title, String description, long hostUserId, List<String> invitedUsersEmails, DateTime date, String location) {
+    public SaveEventRequest(String title, String description, long hostUserId, List<String> guestsEmails, DateTime date, String location) {
         this.title = title;
         this.description = description;
         this.hostUserId = hostUserId;
-        this.invitedUsersEmails = invitedUsersEmails;
+        this.guestsEmails = guestsEmails;
         this.date = date;
         this.location = location;
     }
@@ -68,8 +60,8 @@ public class SaveEventRequest {
         return hostUserId;
     }
 
-    public List<String> getInvitedUsersEmails() {
-        return invitedUsersEmails;
+    public List<String> getGuestsEmails() {
+        return guestsEmails;
     }
 
     public DateTime getDate() {
@@ -86,7 +78,7 @@ public class SaveEventRequest {
                 "title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", hostUserId=" + hostUserId +
-                ", invitedUsersEmails=" + invitedUsersEmails +
+                ", guestsEmails=" + guestsEmails +
                 ", date=" + date +
                 ", location='" + location + '\'' +
                 '}';

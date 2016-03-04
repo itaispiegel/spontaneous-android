@@ -78,11 +78,11 @@
             </LinearLayout>
 
             <com.android.ex.chips.RecipientEditTextView
-                android:id="@+id/create_event_invited_users"
+                android:id="@+id/create_event_guests"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:hint="@string/event_invited_users"
+                android:hint="@string/event_guests"
                 android:inputType="textEmailAddress|textMultiLine"
                 android:textSize="18sp" />
         </LinearLayout>

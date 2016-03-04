@@ -1,7 +1,10 @@
 package com.spontaneous.android.model;
 
 import org.joda.time.DateTime;
+import org.joda.time.Partial;
 import org.joda.time.Years;
+
+import java.util.List;
 
 /**
  * This class represents a user persisted in the database.
@@ -50,6 +53,8 @@ public class User extends BaseEntity {
 
     private String gcmToken;
 
+    private List<User> friends;
+
     /**
      * Create an empty user object.
      */
@@ -64,24 +69,10 @@ public class User extends BaseEntity {
     }
 
     /**
-     * Sets the facebook user id.
-     */
-    public void setFacebookUserId(String facebookUserId) {
-        this.facebookUserId = facebookUserId;
-    }
-
-    /**
      * @return facebook token of the user.
      */
     public String getFacebookToken() {
         return facebookToken;
-    }
-
-    /**
-     * Sets the facebook token of the user.
-     */
-    public void setFacebookToken(String facebookToken) {
-        this.facebookToken = facebookToken;
     }
 
     /**
@@ -92,24 +83,10 @@ public class User extends BaseEntity {
     }
 
     /**
-     * Sets the name of the user.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
      * @return the email of the user.
      */
     public String getEmail() {
         return email;
-    }
-
-    /**
-     * Sets the email of the user.
-     */
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     /**
@@ -120,31 +97,10 @@ public class User extends BaseEntity {
     }
 
     /**
-     * Sets the profile picture of the user.
-     */
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
-    }
-
-    /**
      * @return birthday of the user.
      */
     public DateTime getBirthday() {
         return birthday;
-    }
-
-    /**
-     * Sets the birthday of the user.
-     */
-    public void setBirthday(DateTime birthday) {
-        this.birthday = birthday;
-    }
-
-    /**
-     * Sets the birthday of the user.
-     */
-    public void setBirthday(String birthday) {
-        this.birthday = new DateTime(birthday);
     }
 
     /**
@@ -163,24 +119,10 @@ public class User extends BaseEntity {
     }
 
     /**
-     * Set the phone number of the user.
-     */
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    /**
      * @return whether the user is a male or female.
      */
     public Gender getGender() {
         return gender;
-    }
-
-    /**
-     * Set whether the user is a male or a female.
-     */
-    public void setGender(Gender gender) {
-        this.gender = gender;
     }
 
     public String getGcmToken() {
@@ -189,6 +131,10 @@ public class User extends BaseEntity {
 
     public void setGcmToken(String gcmToken) {
         this.gcmToken = gcmToken;
+    }
+
+    public List<User> getFriends() {
+        return friends;
     }
 
     /**

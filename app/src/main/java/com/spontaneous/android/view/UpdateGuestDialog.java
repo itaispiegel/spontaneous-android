@@ -11,10 +11,10 @@ import android.widget.Toast;
 
 import com.spontaneous.android.R;
 import com.spontaneous.android.SpontaneousApplication;
-import com.spontaneous.android.http.request.model.UpdateInvitedUserRequest;
+import com.spontaneous.android.http.request.model.UpdateGuestRequest;
 import com.spontaneous.android.http.request.service.EventService;
 import com.spontaneous.android.http.response.BaseResponse;
-import com.spontaneous.android.model.InvitedUser;
+import com.spontaneous.android.model.Guest;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -24,19 +24,19 @@ import retrofit.client.Response;
  * This dialog contains an EditText representing the user's response to the event and two buttons,
  * representing whether the user is arriving.
  */
-public class UpdateInvitedUserDialog extends AlertDialog {
+public class UpdateGuestDialog extends AlertDialog {
 
-    private final InvitedUser invitedUser;
+    private final Guest guest;
 
-    protected UpdateInvitedUserDialog(Context context, InvitedUser invitedUser) {
+    protected UpdateGuestDialog(Context context, Guest guest) {
         super(context);
-        this.invitedUser = invitedUser;
+        this.guest = guest;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.dialog_update_invited_user);
+        this.setContentView(R.layout.dialog_update_guest);
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
@@ -56,10 +56,10 @@ public class UpdateInvitedUserDialog extends AlertDialog {
     }
 
     /**
-     * @return The invited user being edited.
+     * @return The guest being edited.
      */
-    public InvitedUser getInvitedUser() {
-        return this.invitedUser;
+    public Guest getGuest() {
+        return this.guest;
     }
 
     /**
@@ -72,14 +72,14 @@ public class UpdateInvitedUserDialog extends AlertDialog {
                 String status = getInput();
                 boolean isAttending = v.getId() == R.id.event_confirmation;
 
-                UpdateInvitedUserRequest updateRequest = new UpdateInvitedUserRequest(status, isAttending);
-                invitedUser.update(updateRequest);
+                UpdateGuestRequest updateRequest = new UpdateGuestRequest(status, isAttending);
+                guest.update(updateRequest);
 
                 dismiss();
 
                 SpontaneousApplication.getInstance()
                         .getService(EventService.class)
-                        .updateInvitedUser(invitedUser.getId(), updateRequest, new Callback<BaseResponse>() {
+                        .updateGuest(guest.getId(), updateRequest, new Callback<BaseResponse>() {
                             @Override
                             public void success(BaseResponse baseResponse, Response response) {
                                 Toast.makeText(getContext(), "Status updated", Toast.LENGTH_SHORT)

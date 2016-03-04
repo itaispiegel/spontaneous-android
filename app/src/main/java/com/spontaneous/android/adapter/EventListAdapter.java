@@ -69,6 +69,14 @@ public class EventListAdapter extends BaseAdapter {
     }
 
     /**
+     * Pushes an event at index 0.
+     * @param event Event to insert.
+     */
+    public void enqueue(Event event) {
+        add(0, event);
+    }
+
+    /**
      * Add a new event to the adapter.
      * @param location Index to add at.
      * @param event Event entity to add.

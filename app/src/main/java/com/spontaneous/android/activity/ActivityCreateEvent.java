@@ -53,6 +53,8 @@ public class ActivityCreateEvent extends BaseSaveEventActivity {
                 dismissDialog();
 
                 Logger.error("Event creation on server failed.");
+                Logger.error(error.getMessage());
+
                 Toast.makeText(getApplicationContext(), "Connection failed", Toast.LENGTH_SHORT).show();
             }
         });

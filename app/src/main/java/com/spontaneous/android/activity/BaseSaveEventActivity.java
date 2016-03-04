@@ -25,6 +25,7 @@ import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -47,7 +48,7 @@ public abstract class BaseSaveEventActivity extends BaseActivity implements OnDa
     protected EditText mEventTitle;
     protected EditText mEventDescription;
     protected AutoCompleteTextView mEventLocation;
-    protected RecipientEditTextView mInvitedUsers;
+    protected RecipientEditTextView mGuests;
     protected EditText mEventDate;
     protected EditText mEventTime;
 
@@ -61,7 +62,7 @@ public abstract class BaseSaveEventActivity extends BaseActivity implements OnDa
         // Initialize views
         mEventTitle = (EditText) findViewById(R.id.create_event_title);
         mEventDescription = (EditText) findViewById(R.id.create_event_description);
-        mInvitedUsers = (RecipientEditTextView) findViewById(R.id.create_event_invited_users);
+        mGuests = (RecipientEditTextView) findViewById(R.id.create_event_guests);
         mEventDate = (EditText) findViewById(R.id.create_event_date);
 
         //Initialize places autocompletion
@@ -70,8 +71,8 @@ public abstract class BaseSaveEventActivity extends BaseActivity implements OnDa
         mEventLocation.setAdapter(mPlacesAutoCompleteAdapter);
 
         //Initialize contacts bubble autocompletion
-        mInvitedUsers.setTokenizer(new Rfc822Tokenizer());
-        mInvitedUsers.setAdapter(new BaseRecipientAdapter(
+        mGuests.setTokenizer(new Rfc822Tokenizer());
+        mGuests.setAdapter(new BaseRecipientAdapter(
                 BaseRecipientAdapter.QUERY_TYPE_EMAIL,
                 this
         ));
@@ -183,12 +184,12 @@ public abstract class BaseSaveEventActivity extends BaseActivity implements OnDa
     }
 
     /**
-     * @return List of emails of invited users - from {@link #mInvitedUsers}.
+     * @return List of emails of guests - from {@link #mGuests}.
      */
-    private List<String> getInvitedUsersList() {
+    private List<String> getGuestsList() {
 
-        //Get the array of invited users.
-        DrawableRecipientChip[] recipientChips = mInvitedUsers.getRecipients();
+        //Get the array of guests.
+        DrawableRecipientChip[] recipientChips = mGuests.getRecipients();
 
         //Create a new ArrayList and preallocate its size.
         ArrayList<String> emails = new ArrayList<>(recipientChips.length);
@@ -209,7 +210,7 @@ public abstract class BaseSaveEventActivity extends BaseActivity implements OnDa
                 mEventTitle.getText().toString(),
                 mEventDescription.getText().toString(),
                 AccountUtils.getAuthenticatedUser().getId(),
-                getInvitedUsersList(),
+                getGuestsList(),
                 getDateTime(),
                 mEventLocation.getText().toString()
         );
