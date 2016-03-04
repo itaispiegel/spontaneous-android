@@ -9,10 +9,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.ex.chips.BaseRecipientAdapter;
 import com.android.ex.chips.RecipientEditTextView;
 import com.android.ex.chips.recipientchip.DrawableRecipientChip;
+import com.mobsandgeeks.saripaar.ValidationError;
+import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.spontaneous.android.R;
 import com.spontaneous.android.adapter.PlacesAutoCompleteAdapter;
 import com.spontaneous.android.http.request.model.SaveEventRequest;
@@ -25,7 +29,6 @@ import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -37,20 +40,34 @@ import static com.wdullaer.materialdatetimepicker.time.TimePickerDialog.newInsta
 /**
  * This is a base activity for creating/editing an event.
  */
-public abstract class BaseSaveEventActivity extends BaseActivity implements OnDateSetListener, OnTimeSetListener {
+public abstract class BaseSaveEventActivity extends BaseActivity implements OnDateSetListener, OnTimeSetListener,
+        Validator.ValidationListener {
 
     protected final String dateFormat = "dd/MM/yyyy, E";
     protected final String timeFormat = "HH:mm";
 
     private Calendar mCalendar;
 
+    protected Validator validator;
+
     //Views
+
+    @NotEmpty
     protected EditText mEventTitle;
+
+    @NotEmpty
     protected EditText mEventDescription;
+
+    @NotEmpty
     protected AutoCompleteTextView mEventLocation;
-    protected RecipientEditTextView mGuests;
+
+    @NotEmpty
     protected EditText mEventDate;
+
+    @NotEmpty
     protected EditText mEventTime;
+
+    protected RecipientEditTextView mGuests;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +114,9 @@ public abstract class BaseSaveEventActivity extends BaseActivity implements OnDa
                         true
                 )));
 
+        validator = new Validator(this);
+        validator.setValidationListener(this);
+
         initializeViews();
     }
 
@@ -128,9 +148,9 @@ public abstract class BaseSaveEventActivity extends BaseActivity implements OnDa
                 finish();
                 return true;
 
-            //Submit event
+            //Submit the event if the input is valid
             case R.id.event_done_button:
-                submitEvent();
+                validator.validate();
                 break;
         }
 
@@ -214,6 +234,35 @@ public abstract class BaseSaveEventActivity extends BaseActivity implements OnDa
                 getDateTime(),
                 mEventLocation.getText().toString()
         );
+    }
+
+    /**
+     * If validation failed, show the appropriate errors.
+     *
+     * @param errors Errors of validation.
+     */
+    @Override
+    public void onValidationFailed(List<ValidationError> errors) {
+        for (ValidationError error : errors) {
+            View view = error.getView();
+            String message = error.getCollatedErrorMessage(this);
+
+            // Display error messages
+            if (view instanceof EditText) {
+                ((EditText) view).setError(message);
+            } else {
+                Toast.makeText(this, message, Toast.LENGTH_LONG)
+                        .show();
+            }
+        }
+    }
+
+    /**
+     * If validation succeeded, submit the event.
+     */
+    @Override
+    public void onValidationSucceeded() {
+        submitEvent();
     }
 
     /**

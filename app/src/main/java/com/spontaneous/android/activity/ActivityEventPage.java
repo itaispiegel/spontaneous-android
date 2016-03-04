@@ -100,7 +100,7 @@ public class ActivityEventPage extends BaseActivity {
                 messageEditText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 
                 new AlertDialog.Builder(ActivityEventPage.this)
-                        .setTitle("Send a notification to your guests")
+                        .setTitle("Send a notification to your guests:")
                         .setView(messageEditText)
                         .setPositiveButton("Send", new DialogInterface.OnClickListener() {
                             @Override

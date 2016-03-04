@@ -10,7 +10,7 @@
 
     <item
         android:id="@+id/event_broadcast_message_button"
-        android:icon="@drawable/ic_speaker_phone_black_24dp"
+        android:icon="@drawable/ic_speaker_phone_white_24dp"
         android:title="@string/event_broadcast_message_string"
         app:showAsAction="always" />
 
