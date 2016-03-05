@@ -34,24 +34,24 @@ public class ActivityEditEvent extends BaseSaveEventActivity {
             public void success(BaseResponse<Event> eventBaseResponse, Response response) {
                 Intent intent = new Intent();
 
-                dismissDialog();
+                        dismissDialog();
 
-                Logger.info("Event saved successfully on server.");
-                intent.putExtra(getString(R.string.created_event_intent_extra), eventBaseResponse.getBody());
-                setResult(RESULT_OK, intent);
+                        Logger.info("Event saved successfully on server.");
+                        intent.putExtra(getString(R.string.created_event_intent_extra), eventBaseResponse.getBody());
+                        setResult(RESULT_OK, intent);
 
-                finish();
-            }
+                        finish();
+                    }
 
-            //In case of failure show an error.
-            @Override
-            public void failure(RetrofitError error) {
-                dismissDialog();
+                    //In case of failure show an error.
+                    @Override
+                    public void failure(RetrofitError error) {
+                        dismissDialog();
 
-                Logger.error("Event update on server failed.");
-                Toast.makeText(getApplicationContext(), "Connection failed", Toast.LENGTH_SHORT).show();
-            }
-        });
+                        Logger.error("Event update on server failed.");
+                        Toast.makeText(getApplicationContext(), "Connection failed", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     /**
