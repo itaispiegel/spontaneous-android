@@ -48,7 +48,7 @@ public abstract class BaseSaveEventActivity extends BaseActivity implements OnDa
 
     private Calendar mCalendar;
 
-    protected Validator validator;
+    private Validator validator;
 
     //Views
 
