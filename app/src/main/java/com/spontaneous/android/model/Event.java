@@ -3,6 +3,7 @@ package com.spontaneous.android.model;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -69,6 +70,17 @@ public class Event extends BaseEntity {
 
     public String getLocation() {
         return location;
+    }
+
+    public HashSet<String> getGuestsEmails() {
+        HashSet<String> emails = new HashSet<>(guests.size());
+
+        for(Guest guest : guests) {
+            emails.add(guest.getUserProfile()
+                    .getEmail());
+        }
+
+        return emails;
     }
 
     /**
