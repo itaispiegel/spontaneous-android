@@ -122,7 +122,7 @@ public abstract class BaseSaveEventActivity extends BaseActivity implements OnDa
 
     @Override
     protected int getLayoutResourceId() {
-        return R.layout.activity_create_event;
+        return R.layout.activity_save_event;
     }
 
     @Override
