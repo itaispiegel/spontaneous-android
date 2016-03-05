@@ -3,17 +3,12 @@ package com.spontaneous.android.activity;
 import android.content.Intent;
 import android.widget.Toast;
 
-import com.android.ex.chips.BaseRecipientAdapter;
-import com.android.ex.chips.RecipientEntry;
-import com.android.ex.chips.recipientchip.DrawableRecipientChip;
 import com.spontaneous.android.R;
 import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.http.request.model.SaveEventRequest;
 import com.spontaneous.android.http.request.service.EventService;
 import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.Event;
-import com.spontaneous.android.model.Guest;
-import com.spontaneous.android.model.User;
 import com.spontaneous.android.util.DateTimeFormatter;
 import com.spontaneous.android.util.Logger;
 
