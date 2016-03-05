@@ -43,6 +43,8 @@ public class UserInterfaceUtils {
 
     /**
      * A scroll listener for list views colliding with Pull To Refresh.
+     * Set refresh enabled if listview is at top.
+     *
      * @param listView The listview to integrate with Pull To Refresh.
      * @return An OnScrollListener for the given listview.
      */
@@ -54,7 +56,8 @@ public class UserInterfaceUtils {
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                ((ActivityMain) listView.getContext()).setRefreshEnabled(UserInterfaceUtils.isListViewAtTop(listView));
+                ActivityMain activityMain = ((ActivityMain) listView.getContext());
+                activityMain.setRefreshEnabled(isListViewAtTop(listView));
             }
         };
     }
@@ -64,9 +67,9 @@ public class UserInterfaceUtils {
      */
     public static boolean isListViewAtTop(ListView listView) {
 
-        //Return false if the listview is null, or if it does not have children.
-        if (listView == null || listView.getChildCount() <= 0) {
-            return false;
+        //Return true if the listview is null, or if it does not have children.
+        if (listView == null || listView.getChildCount() == 0) {
+            return true;
         }
 
         boolean firstItemVisible = listView.getFirstVisiblePosition() == 0;

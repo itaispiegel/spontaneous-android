@@ -1,7 +1,6 @@
 package com.spontaneous.android.activity;
 
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -138,14 +137,13 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Setup email auto complete to an AutoCompleteTextView.
      * Uses email from device data.
      *
-     * @param view    to set the AutoComplete to.
-     * @param context of the activity.
+     * @param view to set the AutoComplete to.
      */
-    final void setupEmailAutoComplete(AutoCompleteTextView view, Context context) {
-        final Uri emailContentUri = ContactsContract.CommonDataKinds.Email.CONTENT_URI;
-        ContentResolver cr = context.getContentResolver();
+    final void setupEmailAutoComplete(AutoCompleteTextView view) {
+        final Uri emailUri = ContactsContract.CommonDataKinds.Email.CONTENT_URI;
 
-        Cursor emailCursor = cr.query(emailContentUri, null, null, null, null);
+        Cursor emailCursor = getContentResolver().
+                query(emailUri, null, null, null, null);
 
         //Exit method if email cursor is null
         if (emailCursor == null) {
@@ -163,7 +161,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             emailsCollection.add(email);
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_dropdown_item_1line,
                 new ArrayList<>(emailsCollection));
         view.setAdapter(adapter);

@@ -3,12 +3,15 @@ package com.spontaneous.android.activity;
 import android.content.Intent;
 import android.widget.Toast;
 
+import com.android.ex.chips.RecipientEntry;
 import com.spontaneous.android.R;
 import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.http.request.model.SaveEventRequest;
 import com.spontaneous.android.http.request.service.EventService;
 import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.Event;
+import com.spontaneous.android.model.Guest;
+import com.spontaneous.android.model.User;
 import com.spontaneous.android.util.DateTimeFormatter;
 import com.spontaneous.android.util.Logger;
 
@@ -29,10 +32,12 @@ public class ActivityEditEvent extends BaseSaveEventActivity {
         Logger.info("Creating new event: " + saveEventRequest);
 
         //Submit event to server.
-        SpontaneousApplication.getInstance().getService(EventService.class).editEvent(getEvent().getId(), saveEventRequest, new Callback<BaseResponse<Event>>() {
-            @Override
-            public void success(BaseResponse<Event> eventBaseResponse, Response response) {
-                Intent intent = new Intent();
+        SpontaneousApplication.getInstance()
+                .getService(EventService.class)
+                .editEvent(getEvent().getId(), saveEventRequest, new Callback<BaseResponse<Event>>() {
+                    @Override
+                    public void success(BaseResponse<Event> eventBaseResponse, Response response) {
+                        Intent intent = new Intent();
 
                         dismissDialog();
 
@@ -76,5 +81,14 @@ public class ActivityEditEvent extends BaseSaveEventActivity {
         mEventLocation.setText(event.getLocation());
         mEventDate.setText(DateTimeFormatter.format(dateFormat, event.getDate().toDate()));
         mEventTime.setText(DateTimeFormatter.format(timeFormat, event.getDate().toDate()));
+
+        //Initialize the guests.
+        for (Guest guest : event.getGuests()) {
+
+            User user = guest.getUserProfile();
+
+            RecipientEntry entry = RecipientEntry.constructGeneratedEntry(user.getName(), user.getEmail(), true);
+            mGuests.addRecipient(entry);
+        }
     }
 }

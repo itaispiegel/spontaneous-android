@@ -34,6 +34,7 @@ import retrofit.client.Response;
 public class FragmentEvents extends Fragment {
 
     private EventListAdapter mEventListAdapter;
+    private ListView eventsListView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class FragmentEvents extends Fragment {
 
         mEventListAdapter = new EventListAdapter(getActivity());
 
-        ListView eventsListView = (ListView) layout.findViewById(R.id.events_listview);
+        eventsListView = (ListView) layout.findViewById(R.id.events_listview);
         eventsListView.setAdapter(mEventListAdapter);
         eventsListView.setEmptyView(mListEmptyView);
 

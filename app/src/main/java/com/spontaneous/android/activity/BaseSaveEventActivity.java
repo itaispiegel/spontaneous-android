@@ -7,8 +7,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.ex.chips.BaseRecipientAdapter;
@@ -51,7 +53,6 @@ public abstract class BaseSaveEventActivity extends BaseActivity implements OnDa
     private Validator validator;
 
     //Views
-
     @NotEmpty
     protected EditText mEventTitle;
 
@@ -79,7 +80,6 @@ public abstract class BaseSaveEventActivity extends BaseActivity implements OnDa
         // Initialize views
         mEventTitle = (EditText) findViewById(R.id.create_event_title);
         mEventDescription = (EditText) findViewById(R.id.create_event_description);
-        mGuests = (RecipientEditTextView) findViewById(R.id.create_event_guests);
         mEventDate = (EditText) findViewById(R.id.create_event_date);
 
         //Initialize places autocompletion
@@ -88,11 +88,9 @@ public abstract class BaseSaveEventActivity extends BaseActivity implements OnDa
         mEventLocation.setAdapter(mPlacesAutoCompleteAdapter);
 
         //Initialize contacts bubble autocompletion
+        mGuests = (RecipientEditTextView) findViewById(R.id.create_event_guests);
         mGuests.setTokenizer(new Rfc822Tokenizer());
-        mGuests.setAdapter(new BaseRecipientAdapter(
-                BaseRecipientAdapter.QUERY_TYPE_EMAIL,
-                this
-        ));
+        mGuests.setAdapter(new BaseRecipientAdapter(BaseRecipientAdapter.QUERY_TYPE_EMAIL, this));
 
         //Initialize date dialog
         mCalendar = Calendar.getInstance();
@@ -117,7 +115,16 @@ public abstract class BaseSaveEventActivity extends BaseActivity implements OnDa
         validator = new Validator(this);
         validator.setValidationListener(this);
 
-        initializeViews();
+        //Initialize the view after it is created.
+        final RelativeLayout layout = (RelativeLayout) findViewById(R.id.save_event_layout);
+        layout.getViewTreeObserver()
+                .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        layout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        initializeViews();
+                    }
+                });
     }
 
     @Override

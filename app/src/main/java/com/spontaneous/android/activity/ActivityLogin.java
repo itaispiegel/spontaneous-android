@@ -3,7 +3,6 @@ package com.spontaneous.android.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -39,12 +38,6 @@ public class ActivityLogin extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //Initialize email and password EditTexts.
-        AutoCompleteTextView mEmail = (AutoCompleteTextView) findViewById(R.id.email);
-
-        //Setup email auto complete.
-        setupEmailAutoComplete(mEmail, this);
 
         //Just in case the user is accidentally authenticated.
         LoginManager.getInstance().logOut();
