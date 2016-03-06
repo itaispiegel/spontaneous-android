@@ -48,7 +48,9 @@ public class ActivityLogin extends BaseActivity {
         //Initialize login button and set its permissions, callback and click listener.
         LoginButton mLoginButton = (LoginButton) findViewById(R.id.login_button);
 
-        //Remove the default drawables for the login button.
+        //Set custom button image.
+        mLoginButton.setBackgroundResource(R.drawable.btn_login_facebook);
+        mLoginButton.setText("");
         mLoginButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 
         mLoginButton.setReadPermissions("public_profile", "user_friends", "email", "user_birthday");
