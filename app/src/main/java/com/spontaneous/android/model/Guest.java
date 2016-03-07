@@ -2,6 +2,9 @@ package com.spontaneous.android.model;
 
 import com.spontaneous.android.http.request.model.UpdateGuestRequest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This class represents a userProfile invited to an event.
  * This object contains data of the userProfile specific to the event, and a pointer to the userProfile itself.
@@ -23,20 +26,16 @@ public class Guest extends BaseEntity {
      */
     private boolean isAttending;
 
+    private List<Item> items;
+
     /**
      * Create an empty guest instance..
      */
     private Guest() {
         status = "";
         isAttending = false;
-    }
 
-    /**
-     * Create a guest that references to the given userProfile.
-     */
-    public Guest(User userProfile) {
-        this();
-        this.userProfile = userProfile;
+        items = new ArrayList<>();
     }
 
     public User getUserProfile() {
@@ -58,8 +57,13 @@ public class Guest extends BaseEntity {
         return isAttending;
     }
 
+    public List<Item> getItems() {
+        return items;
+    }
+
     /**
      * Update the Guest according to the given {@link UpdateGuestRequest}.
+     *
      * @param updateRequest The request to update the guest.
      */
     public void update(UpdateGuestRequest updateRequest) {

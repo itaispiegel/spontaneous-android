@@ -1,7 +1,6 @@
 package com.spontaneous.android.model;
 
 import org.joda.time.DateTime;
-import org.joda.time.Partial;
 import org.joda.time.Years;
 
 import java.util.List;

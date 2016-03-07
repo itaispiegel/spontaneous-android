@@ -65,7 +65,7 @@ public class AccountUtils {
     /**
      * Sets a Facebook token.
      *
-     * @param token to set.
+     * @param token to updateGuest.
      */
     private static void setFacebookToken(final String token) {
         AccountUtils.sFacebookToken = token;

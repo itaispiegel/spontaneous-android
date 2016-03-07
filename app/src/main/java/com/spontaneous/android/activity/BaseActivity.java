@@ -137,7 +137,7 @@ public abstract class BaseActivity extends AppCompatActivity {
      * Setup email auto complete to an AutoCompleteTextView.
      * Uses email from device data.
      *
-     * @param view to set the AutoComplete to.
+     * @param view to updateGuest the AutoComplete to.
      */
     final void setupEmailAutoComplete(AutoCompleteTextView view) {
         final Uri emailUri = ContactsContract.CommonDataKinds.Email.CONTENT_URI;

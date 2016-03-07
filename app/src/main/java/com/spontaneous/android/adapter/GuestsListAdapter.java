@@ -9,9 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
-import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.R;
+import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.model.Guest;
+import com.spontaneous.android.model.Item;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,7 +48,7 @@ public class GuestsListAdapter extends BaseAdapter {
         this.mGuests = new ArrayList<>();
     }
 
-    public void set(int position, Guest guest) {
+    public void updateGuest(int position, Guest guest) {
         mGuests.set(position, guest);
         notifyDataSetChanged();
     }
@@ -113,20 +114,25 @@ public class GuestsListAdapter extends BaseAdapter {
         ImageView isUserAttendingDrawable = (ImageView) convertView.findViewById(R.id.guests_list_attending);
 
         //Get the guest entity.
-        Guest currUser = mGuests.get(position);
+        Guest guest = mGuests.get(position);
 
         //Set views data.
-        userProfilePicture.setImageUrl(currUser.getUserProfile().getProfilePicture(),
+        userProfilePicture.setImageUrl(guest.getUserProfile().getProfilePicture(),
                 SpontaneousApplication.getInstance().getImageLoader());
 
-        userNameTextView.setText(currUser.getUserProfile().getName());
-        userStatusTextView.setText(currUser.getStatus());
+        userNameTextView.setText(guest.getUserProfile().getName());
+        userStatusTextView.setText(guest.getStatus());
 
         //Set whether the user is attending the event.
-        isUserAttendingDrawable.setImageDrawable(currUser.isAttending()
-                        ? mContext.getDrawable(R.drawable.ic_done_black)
-                        : mContext.getDrawable(R.drawable.ic_close_black)
-        );
+        isUserAttendingDrawable.setImageDrawable(guest.isAttending()
+                ? mContext.getDrawable(R.drawable.ic_done_black)
+                : mContext.getDrawable(R.drawable.ic_close_black));
+
+        TextView itemsTextView = (TextView) convertView.findViewById(R.id.event_card_items);
+
+        for(Item item : guest.getItems()) {
+            itemsTextView.append(item.getTitle() + " ");
+        }
 
         return convertView;
     }

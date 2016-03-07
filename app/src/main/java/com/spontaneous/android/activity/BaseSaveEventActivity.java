@@ -183,7 +183,7 @@ public abstract class BaseSaveEventActivity extends BaseActivity implements OnDa
     }
 
     /**
-     * Handle date set in picker dialog.
+     * Handle date updateGuest in picker dialog.
      */
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
@@ -192,7 +192,7 @@ public abstract class BaseSaveEventActivity extends BaseActivity implements OnDa
     }
 
     /**
-     * Handle time set in picker dialog.
+     * Handle time updateGuest in picker dialog.
      */
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {

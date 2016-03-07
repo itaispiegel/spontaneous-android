@@ -31,6 +31,8 @@ import java.net.URLEncoder;
  */
 public class EventCard extends FrameLayout implements AdapterView.OnItemClickListener {
 
+    private Event mEvent;
+
     /**
      * Context of the application.
      */
@@ -43,33 +45,33 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
     /**
      * Event title TextView.
      */
-    private TextView eventTitleTextView;
+    private TextView mEventTitleTextView;
 
     /**
      * Event description TextView.
      */
-    private TextView eventDescriptionTextView;
+    private TextView mEventDescriptionTextView;
 
     /**
      * Event date TextView.
      */
-    private TextView eventDateTextView;
+    private TextView mEventDateTextView;
 
     /**
      * Event location TextView.
      */
-    private TextView eventLocationTextView;
+    private TextView mEventLocationTextView;
 
     /**
      * Event map NetworkImageView.
      */
-    private NetworkImageView eventMapImage;
+    private NetworkImageView mEventMapImage;
 
     /**
      * ListViewAdapter for the guests.
      */
-    private GuestsListAdapter guestsListAdapter;
-    private ListView guestsListView;
+    private GuestsListAdapter mGuestsListAdapter;
+    private ListView mGuestsListView;
 
     public EventCard(Context context) {
         super(context);
@@ -95,18 +97,19 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
         View layout = inflater.inflate(R.layout.view_event_card, this);
 
         //Initialize views in card.
-        eventTitleTextView = (TextView) layout.findViewById(R.id.event_card_title);
-        eventDescriptionTextView = (TextView) layout.findViewById(R.id.event_card_description);
-        eventDateTextView = (TextView) layout.findViewById(R.id.event_card_date);
-        eventLocationTextView = (TextView) layout.findViewById(R.id.event_card_location);
+        mEventTitleTextView = (TextView) layout.findViewById(R.id.event_card_title);
+        mEventDescriptionTextView = (TextView) layout.findViewById(R.id.event_card_description);
+        mEventDateTextView = (TextView) layout.findViewById(R.id.event_card_date);
+        mEventLocationTextView = (TextView) layout.findViewById(R.id.event_card_location);
 
-        eventMapImage = (NetworkImageView) layout.findViewById(R.id.event_card_map);
+        mEventMapImage = (NetworkImageView) layout.findViewById(R.id.event_card_map);
 
-        guestsListAdapter = new GuestsListAdapter(mContext);
+        //Initialize guests list view.
+        mGuestsListAdapter = new GuestsListAdapter(mContext);
 
-        guestsListView = (ListView) layout.findViewById(R.id.event_card_guests_list);
-        guestsListView.setAdapter(guestsListAdapter);
-        guestsListView.setOnItemClickListener(this);
+        mGuestsListView = (ListView) layout.findViewById(R.id.event_card_guests_list);
+        mGuestsListView.setAdapter(mGuestsListAdapter);
+        mGuestsListView.setOnItemClickListener(this);
     }
 
     /**
@@ -116,17 +119,20 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
      */
     private void setEvent(final Event event) {
 
+        //Set the event field.
+        this.mEvent = event;
+
         //Set views text
-        eventTitleTextView.setText(event.getTitle());
-        eventDescriptionTextView.setText(event.getDescription());
-        eventLocationTextView.setText(
+        mEventTitleTextView.setText(event.getTitle());
+        mEventDescriptionTextView.setText(event.getDescription());
+        mEventLocationTextView.setText(
                 mContext.getString(R.string.event_page_location, event.getLocation())
         );
 
         //Set map image url and click listener.
         //On click open a navigation app.
-        eventMapImage.setImageUrl(getMapUrl(event), SpontaneousApplication.getInstance().getImageLoader());
-        eventMapImage.setOnClickListener(new OnClickListener() {
+        mEventMapImage.setImageUrl(getMapUrl(event), SpontaneousApplication.getInstance().getImageLoader());
+        mEventMapImage.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(
@@ -138,10 +144,10 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
             }
         });
 
-        guestsListAdapter.addAll(event.getGuests());
-        UserInterfaceUtils.setListViewHeightBasedOnChildren(guestsListView);
+        mGuestsListAdapter.addAll(event.getGuests());
+        UserInterfaceUtils.setListViewHeightBasedOnChildren(mGuestsListView);
 
-        eventDateTextView.setText(mContext.getString(
+        mEventDateTextView.setText(mContext.getString(
                 R.string.event_page_date, DateTimeFormatter.format(event.getDate())
         ));
     }
@@ -172,10 +178,10 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
 
     @Override
     public void onItemClick(final AdapterView parent, final View view, final int position, final long id) {
-        Logger.info("Guest was clicked: " + guestsListAdapter.getItem(position));
+        Logger.info("Guest was clicked: " + mGuestsListAdapter.getItem(position));
 
         //Show the dialog if the user clicked himself.
-        Guest guest = guestsListAdapter.getItem(position);
+        Guest guest = mGuestsListAdapter.getItem(position);
         User authenticatedUser = AccountUtils.getAuthenticatedUser();
 
         if (!guest.getUserProfile().equals(authenticatedUser)) {
@@ -191,12 +197,12 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
             @Override
             public void onDismiss(DialogInterface dialog) {
                 Guest updated = ((UpdateGuestDialog) dialog).getGuest();
-                guestsListAdapter.set(position, updated);
+                mGuestsListAdapter.updateGuest(position, updated);
             }
         });
     }
 
     public GuestsListAdapter getGuestsListAdapter() {
-        return guestsListAdapter;
+        return mGuestsListAdapter;
     }
 }

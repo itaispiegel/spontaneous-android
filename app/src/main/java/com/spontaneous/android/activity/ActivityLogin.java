@@ -45,7 +45,7 @@ public class ActivityLogin extends BaseActivity {
         //Initialize the Facebook SDK.
         mCallbackManager = CallbackManager.Factory.create();
 
-        //Initialize login button and set its permissions, callback and click listener.
+        //Initialize login button and updateGuest its permissions, callback and click listener.
         LoginButton mLoginButton = (LoginButton) findViewById(R.id.login_button);
 
         //Set custom button image.
