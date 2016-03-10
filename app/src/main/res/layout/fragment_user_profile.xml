@@ -16,6 +16,15 @@
             android:layout_height="wrap_content" />
     </ScrollView>
 
+    <TextView
+        android:id="@+id/friends_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/list_of_friends_using_spontaneous"
+        android:textColor="@color/text_color"
+        android:textSize="15sp"
+        android:visibility="gone" />
+
     <ListView
         android:id="@+id/friends_list"
         android:layout_width="match_parent"

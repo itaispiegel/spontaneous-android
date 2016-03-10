@@ -75,12 +75,26 @@ public class Event extends BaseEntity {
     public HashSet<String> getGuestsEmails() {
         HashSet<String> emails = new HashSet<>(guests.size());
 
-        for(Guest guest : guests) {
+        for (Guest guest : guests) {
             emails.add(guest.getUserProfile()
                     .getEmail());
         }
 
         return emails;
+    }
+
+    /**
+     * @return The list of required items for the event.
+     */
+    public List<Item> getItems() {
+        ArrayList<Item> items = new ArrayList<>();
+
+        //Iterate over all of the guests, and return all of the items of the event.
+        for (Guest guest : guests) {
+            items.addAll(guest.getItems());
+        }
+
+        return items;
     }
 
     /**

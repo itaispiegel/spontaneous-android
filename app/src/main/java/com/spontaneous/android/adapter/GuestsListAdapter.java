@@ -12,7 +12,6 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.spontaneous.android.R;
 import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.model.Guest;
-import com.spontaneous.android.model.Item;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,11 +47,6 @@ public class GuestsListAdapter extends BaseAdapter {
         this.mGuests = new ArrayList<>();
     }
 
-    public void updateGuest(int position, Guest guest) {
-        mGuests.set(position, guest);
-        notifyDataSetChanged();
-    }
-
     @Override
     public int getCount() {
         return mGuests.size();
@@ -73,9 +67,9 @@ public class GuestsListAdapter extends BaseAdapter {
      *
      * @param email The given email address.
      * @return The guest with the given email address.
-     * @throws NullPointerException In case that there is no such guest.
+     * @throws RuntimeException In case that there is no such guest.
      */
-    public Guest getGuestByEmail(String email) throws NullPointerException {
+    public Guest getGuestByEmail(String email) throws RuntimeException {
         for (Guest guest : mGuests) {
 
             //Iterate every each invited user in the collection, and check if it's email equals the given email.
@@ -84,7 +78,18 @@ public class GuestsListAdapter extends BaseAdapter {
             }
         }
 
-        throw new NullPointerException(String.format("No such guest with the email '%s'", email));
+        throw new RuntimeException(String.format("No such guest with the email '%s'", email));
+    }
+
+    /**
+     * Updates a guest at a given index.
+     *
+     * @param index Index of guest to update.
+     * @param guest The updated guest details.
+     */
+    public void updateGuest(int index, Guest guest) {
+        mGuests.set(index, guest);
+        notifyDataSetChanged();
     }
 
     /**
@@ -127,12 +132,6 @@ public class GuestsListAdapter extends BaseAdapter {
         isUserAttendingDrawable.setImageDrawable(guest.isAttending()
                 ? mContext.getDrawable(R.drawable.ic_done_black)
                 : mContext.getDrawable(R.drawable.ic_close_black));
-
-        TextView itemsTextView = (TextView) convertView.findViewById(R.id.event_card_items);
-
-        for(Item item : guest.getItems()) {
-            itemsTextView.append(item.getTitle() + " ");
-        }
 
         return convertView;
     }

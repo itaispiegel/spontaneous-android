@@ -15,6 +15,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import com.spontaneous.android.R;
 import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.adapter.GuestsListAdapter;
+import com.spontaneous.android.adapter.ItemsListAdapter;
 import com.spontaneous.android.model.Event;
 import com.spontaneous.android.model.Guest;
 import com.spontaneous.android.model.User;
@@ -31,47 +32,29 @@ import java.net.URLEncoder;
  */
 public class EventCard extends FrameLayout implements AdapterView.OnItemClickListener {
 
-    private Event mEvent;
-
     /**
      * Context of the application.
      */
     private Context mContext;
 
     //Google maps API constants.
-    private final String GOOGLE_MAPS_NAVIGATION_API_URL = "http://maps.google.com/maps?q=";
+    @SuppressWarnings("FieldCanBeLocal")
     private final String GOOGLE_MAPS_STATIC_MAPS_API_URL = "https://maps.googleapis.com/maps/api/staticmap?";
+    private final String GOOGLE_MAPS_NAVIGATION_API_URL = "http://maps.google.com/maps?q=";
 
-    /**
-     * Event title TextView.
-     */
+    // Views
     private TextView mEventTitleTextView;
-
-    /**
-     * Event description TextView.
-     */
     private TextView mEventDescriptionTextView;
-
-    /**
-     * Event date TextView.
-     */
     private TextView mEventDateTextView;
-
-    /**
-     * Event location TextView.
-     */
     private TextView mEventLocationTextView;
-
-    /**
-     * Event map NetworkImageView.
-     */
     private NetworkImageView mEventMapImage;
 
-    /**
-     * ListViewAdapter for the guests.
-     */
     private GuestsListAdapter mGuestsListAdapter;
     private ListView mGuestsListView;
+
+    private ItemsListAdapter mItemsListAdapter;
+    private ListView mItemsListView;
+    private TextView mItemsTextView;
 
     public EventCard(Context context) {
         super(context);
@@ -110,6 +93,13 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
         mGuestsListView = (ListView) layout.findViewById(R.id.event_card_guests_list);
         mGuestsListView.setAdapter(mGuestsListAdapter);
         mGuestsListView.setOnItemClickListener(this);
+
+        mItemsListAdapter = new ItemsListAdapter(mContext);
+
+        mItemsListView = (ListView) layout.findViewById(R.id.event_card_items_list);
+        mItemsListView.setAdapter(mItemsListAdapter);
+
+        mItemsTextView = (TextView) layout.findViewById(R.id.event_card_items_text);
     }
 
     /**
@@ -120,7 +110,6 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
     private void setEvent(final Event event) {
 
         //Set the event field.
-        this.mEvent = event;
 
         //Set views text
         mEventTitleTextView.setText(event.getTitle());
@@ -144,9 +133,22 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
             }
         });
 
+        //Populate the guests list view.
         mGuestsListAdapter.addAll(event.getGuests());
         UserInterfaceUtils.setListViewHeightBasedOnChildren(mGuestsListView);
 
+        //Populate the items listview.
+        mItemsListAdapter.addAll(event.getItems());
+        UserInterfaceUtils.setListViewHeightBasedOnChildren(mItemsListView);
+
+        //If items list view is not empty, show the text view.
+        if (!mItemsListAdapter.isEmpty()) {
+            mItemsTextView.setVisibility(VISIBLE);
+        } else {
+            mItemsTextView.setVisibility(GONE);
+        }
+
+        //Show the date of the event in format.
         mEventDateTextView.setText(mContext.getString(
                 R.string.event_page_date, DateTimeFormatter.format(event.getDate())
         ));

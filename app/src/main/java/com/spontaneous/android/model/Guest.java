@@ -57,7 +57,18 @@ public class Guest extends BaseEntity {
         return isAttending;
     }
 
+    /**
+     * Set the bringer for each item as the guest, and return the list.
+     *
+     * @return List of items the guest is bringing to the event.
+     */
     public List<Item> getItems() {
+
+        //Set the bringer for each item.
+        for (Item item : items) {
+            item.setBringer(this);
+        }
+
         return items;
     }
 

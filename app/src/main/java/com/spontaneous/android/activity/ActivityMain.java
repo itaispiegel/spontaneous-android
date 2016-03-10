@@ -157,9 +157,6 @@ public class ActivityMain extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                // Do nothing for now
-                return true;
             case R.id.logout:
                 AccountUtils.logout(this, true);
                 return true;

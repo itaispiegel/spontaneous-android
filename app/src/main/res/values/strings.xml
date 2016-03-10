@@ -68,4 +68,5 @@
     <string name="event_broadcast_message_string">Notify</string>
     <string name="item_list_example_title">Popcorn</string>
     <string name="item_list_example_bringer">Michael Jackson</string>
+    <string name="list_of_friends_using_spontaneous">List of friends using Spontaneous</string>
 </resources>

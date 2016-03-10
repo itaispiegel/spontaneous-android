@@ -9,35 +9,34 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.spontaneous.android.R;
-import com.spontaneous.android.model.Guest;
 import com.spontaneous.android.model.Item;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is an adapter for a list view of items in the event card.
  */
 public class ItemsListAdapter extends BaseAdapter {
 
-    private Guest mGuest;
-
-    private final Context mContext;
+    private Context mContext;
     private LayoutInflater mInflater;
+
+    private List<Item> mItems;
 
     public ItemsListAdapter(Context mContext) {
         this.mContext = mContext;
-    }
-
-    public void setGuest(Guest guest) {
-        this.mGuest = guest;
+        this.mItems = new ArrayList<>();
     }
 
     @Override
     public int getCount() {
-        return mGuest.getItems().size();
+        return mItems.size();
     }
 
     @Override
     public Item getItem(int position) {
-        return mGuest.getItems().get(position);
+        return mItems.get(position);
     }
 
     @Override
@@ -59,13 +58,18 @@ public class ItemsListAdapter extends BaseAdapter {
         TextView title = (TextView) convertView.findViewById(R.id.item_list_title);
         ImageView isBringing = (ImageView) convertView.findViewById(R.id.item_list_is_bringing);
 
-        Item item = mGuest.getItems().get(position);
+        Item item = mItems.get(position);
 
         title.setText(item.getTitle());
         isBringing.setImageDrawable(item.isBringing()
                 ? mContext.getDrawable(R.drawable.ic_done_black)
                 : mContext.getDrawable(R.drawable.ic_close_black));
 
-        return null;
+        return convertView;
+    }
+
+    public void addAll(List<Item> items) {
+        mItems.addAll(items);
+        notifyDataSetChanged();
     }
 }

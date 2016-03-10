@@ -67,7 +67,6 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:text="@string/who_is_coming"
         android:textColor="@color/text_color"
         android:textSize="15sp"
@@ -75,6 +74,22 @@
 
     <ListView
         android:id="@+id/event_card_guests_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none" />
+
+    <TextView
+        android:id="@+id/event_card_items_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/required_items"
+        android:textColor="@color/text_color"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <ListView
+        android:id="@+id/event_card_items_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="none" />

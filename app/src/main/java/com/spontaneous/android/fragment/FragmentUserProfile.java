@@ -26,7 +26,9 @@ public class FragmentUserProfile extends Fragment {
 
     private User mUser;
     private ArrayAdapter<String> mFriendsAdapter;
+
     private ListView mFriendsListView;
+    private TextView mFriendsTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,6 +53,8 @@ public class FragmentUserProfile extends Fragment {
 
         mFriendsListView.setAdapter(mFriendsAdapter);
 
+        mFriendsTextView = (TextView) layout.findViewById(R.id.friends_text);
+
         //Add friends
         addFriends(AccountUtils.getAuthenticatedUser().getFriends());
 
@@ -72,11 +76,10 @@ public class FragmentUserProfile extends Fragment {
         //Clear friends.
         mFriendsAdapter.clear();
 
-        TextView title = new TextView(getContext());
-        title.setText("List of friends using Spontaneous: ");
-        mFriendsListView.addHeaderView(title);
+        //Set the text visible.
+        mFriendsTextView.setVisibility(View.VISIBLE);
 
-        //Add the email of each friend.
+        //Add the each friend to the list view.
         for (User userProfile : friendsList) {
             mFriendsAdapter.add(userProfile.getEmail());
         }
