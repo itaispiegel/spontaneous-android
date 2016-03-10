@@ -1,5 +1,6 @@
 package com.spontaneous.android.view;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,9 +8,11 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.spontaneous.android.R;
@@ -32,10 +35,8 @@ import java.net.URLEncoder;
  */
 public class EventCard extends FrameLayout implements AdapterView.OnItemClickListener {
 
-    /**
-     * Context of the application.
-     */
     private Context mContext;
+    private Event mEvent;
 
     //Google maps API constants.
     @SuppressWarnings("FieldCanBeLocal")
@@ -110,6 +111,7 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
     private void setEvent(final Event event) {
 
         //Set the event field.
+        this.mEvent = event;
 
         //Set views text
         mEventTitleTextView.setText(event.getTitle());
@@ -186,9 +188,16 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
         Guest guest = mGuestsListAdapter.getItem(position);
         User authenticatedUser = AccountUtils.getAuthenticatedUser();
 
+        //If the authenticated user clicked is the host, and he clicked on a guest, assign an item to the guest.
         if (!guest.getUserProfile().equals(authenticatedUser)) {
+            if (mEvent.getHost().equals(authenticatedUser)) {
+                showItemAssignmentDialog();
+            }
+
+            //Return void in any case that the authenticated user clicks on another guest.
             return;
         }
+
 
         //Show the dialog.
         final UpdateGuestDialog dialog = new UpdateGuestDialog(getContext(), guest);
@@ -206,5 +215,20 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
 
     public GuestsListAdapter getGuestsListAdapter() {
         return mGuestsListAdapter;
+    }
+
+    public void showItemAssignmentDialog() {
+
+        final EditText userInput = new EditText(mContext);
+
+        Dialog.OnClickListener onPositiveClick = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getContext(), "Assigning item.", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        };
+
+        UserInterfaceUtils.showAlertDialog(getContext(), "Assign an item", "OK", "Cancel", onPositiveClick, userInput);
     }
 }

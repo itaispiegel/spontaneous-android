@@ -4,9 +4,19 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
+    <com.android.volley.toolbox.NetworkImageView
+        android:id="@+id/items_list_bringer_photo"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="#FF38476b"
+        android:scaleType="centerCrop" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/items_list_bringer_photo"
         android:paddingBottom="15dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"

@@ -1,10 +1,8 @@
 package com.spontaneous.android.activity;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.text.InputType;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -24,6 +22,7 @@ import com.spontaneous.android.model.Event;
 import com.spontaneous.android.model.Guest;
 import com.spontaneous.android.util.AccountUtils;
 import com.spontaneous.android.util.Logger;
+import com.spontaneous.android.util.UserInterfaceUtils;
 import com.spontaneous.android.view.EventCard;
 
 import retrofit.Callback;
@@ -109,20 +108,12 @@ public class ActivityEventInvitation extends BaseActivity {
      */
     private void onFooterButtonClick(int viewId) {
 
-        final String dialogTitle = "Write a status";
-        final String positiveButtonText = "OK";
-        final String negativeButtonText = "Cancel";
-
-        final Animation swipeAnimation;
-
         final boolean userConfirmedArrival = viewId == R.id.event_confirmation;
 
         //Set the swipe animation according to the clicked button.
-        if (userConfirmedArrival) {
-            swipeAnimation = AnimationUtils.loadAnimation(this, R.anim.animate_exit_right);
-        } else {
-            swipeAnimation = AnimationUtils.loadAnimation(this, R.anim.animate_exit_left);
-        }
+        final Animation swipeAnimation = userConfirmedArrival
+                ? AnimationUtils.loadAnimation(this, R.anim.animate_exit_right)
+                : AnimationUtils.loadAnimation(this, R.anim.animate_exit_left);
 
         swipeAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -139,62 +130,56 @@ public class ActivityEventInvitation extends BaseActivity {
             }
         });
 
+
         //Initialize the status edit text and make it capitalize sentences.
         final EditText statusEditText = new EditText(this);
-        statusEditText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 
-        new AlertDialog.Builder(this)
-                .setTitle(dialogTitle)
-                .setView(statusEditText)
-                .setPositiveButton(positiveButtonText, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        //Get the status text.
-                        String status = statusEditText.getText().toString();
-
-                        //Get the instance of the authenticated guest user.
-                        Guest currUser = mEventCard.getGuestsListAdapter()
-                                .getGuestByEmail(AccountUtils.getAuthenticatedUser().getEmail());
-
-                        //Create a new update request.
-                        UpdateGuestRequest updateRequest = new UpdateGuestRequest(status, userConfirmedArrival);
-
-                        //Update the guest in the database.
-                        SpontaneousApplication.getInstance().getService(EventService.class)
-                                .updateGuest(currUser.getId(), updateRequest, new Callback<BaseResponse>() {
-                                    @Override
-                                    public void success(BaseResponse baseResponse, Response response) {
-                                        //Check whether the update succeeded.
-                                        if (baseResponse.getStatusCode() == BaseResponse.SUCCESS) {
-
-                                            //Time until the swipe animations starts.
-                                            final long INTERVAL = 300;
-
-                                            //If succeeded, sleep for 1 seconds and then do the swipe animation.
-                                            SystemClock.sleep(INTERVAL);
-                                            mEventCard.startAnimation(swipeAnimation);
-
-                                        } else {
-
-                                            //If there was an error, then show a toast message.
-                                            Toast.makeText(getApplicationContext(), "Could not update guest.", Toast.LENGTH_SHORT)
-                                                    .show();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void failure(RetrofitError error) {
-                                        Toast.makeText(getApplicationContext(), "Could not update guest.", Toast.LENGTH_SHORT)
-                                                .show();
-                                    }
-                                });
-                    }
-                }).setNegativeButton(negativeButtonText, new DialogInterface.OnClickListener() {
+        DialogInterface.OnClickListener onPositiveClick = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //On cancel don't do anything
+
+                //Get the status text.
+                String status = statusEditText.getText().toString();
+
+                //Get the instance of the authenticated guest user.
+                Guest currUser = mEventCard.getGuestsListAdapter()
+                        .getGuestByEmail(AccountUtils.getAuthenticatedUser().getEmail());
+
+                //Create a new update request.
+                UpdateGuestRequest updateRequest = new UpdateGuestRequest(status, userConfirmedArrival);
+
+                //Update the guest in the database.
+                SpontaneousApplication.getInstance().getService(EventService.class)
+                        .updateGuest(currUser.getId(), updateRequest, new Callback<BaseResponse>() {
+                            @Override
+                            public void success(BaseResponse baseResponse, Response response) {
+                                //Check whether the update succeeded.
+                                if (baseResponse.getStatusCode() == BaseResponse.SUCCESS) {
+
+                                    //Time until the swipe animations starts.
+                                    final long INTERVAL = 300;
+
+                                    //If succeeded, sleep for 1 seconds and then do the swipe animation.
+                                    SystemClock.sleep(INTERVAL);
+                                    mEventCard.startAnimation(swipeAnimation);
+
+                                } else {
+
+                                    //If there was an error, then show a toast message.
+                                    Toast.makeText(getApplicationContext(), "Could not update guest.", Toast.LENGTH_SHORT)
+                                            .show();
+                                }
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Toast.makeText(getApplicationContext(), "Could not update guest.", Toast.LENGTH_SHORT)
+                                        .show();
+                            }
+                        });
             }
-        }).show();
+        };
+
+        UserInterfaceUtils.showAlertDialog(getApplicationContext(), "Write a status", "OK", "Cancel", onPositiveClick, statusEditText);
     }
 }

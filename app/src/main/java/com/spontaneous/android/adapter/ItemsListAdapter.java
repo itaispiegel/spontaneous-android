@@ -8,7 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.NetworkImageView;
 import com.spontaneous.android.R;
+import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.model.Item;
 
 import java.util.ArrayList;
@@ -57,6 +59,7 @@ public class ItemsListAdapter extends BaseAdapter {
 
         TextView title = (TextView) convertView.findViewById(R.id.item_list_title);
         ImageView isBringing = (ImageView) convertView.findViewById(R.id.item_list_is_bringing);
+        NetworkImageView bringerPhoto = (NetworkImageView) convertView.findViewById(R.id.items_list_bringer_photo);
 
         Item item = mItems.get(position);
 
@@ -64,6 +67,10 @@ public class ItemsListAdapter extends BaseAdapter {
         isBringing.setImageDrawable(item.isBringing()
                 ? mContext.getDrawable(R.drawable.ic_done_black)
                 : mContext.getDrawable(R.drawable.ic_close_black));
+
+        bringerPhoto.setImageUrl(item.getBringer()
+                .getUserProfile()
+                .getProfilePicture(), SpontaneousApplication.getInstance().getImageLoader());
 
         return convertView;
     }
