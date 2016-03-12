@@ -66,7 +66,32 @@ public interface EventService {
     @PUT("/API/events/updateGuest")
     void updateGuest(@Query("id") long id, @Body UpdateGuestRequest updateRequest, Callback<BaseResponse> cb);
 
+    /**
+     * Send a broadcast message to a guest.
+     *
+     * @param id      Id of the guest.
+     * @param message The message to broadcast.
+     * @param cb      Callback of the request.
+     */
     @POST("/API/events/notify")
     void notifyGuests(@Query("id") long id, @Body String message, Callback<Object> cb);
 
+    /**
+     * Assign an item to a guest.
+     *
+     * @param id    Id of the guest.
+     * @param title Title of the item.
+     * @param cb    Callback of the request.
+     */
+    @GET("/API/events/assign")
+    void assignItem(@Query("id") long id, @Query("title") String title, Callback<BaseResponse> cb);
+
+    /**
+     * Delete an item given its id.
+     *
+     * @param id Given id of the item.
+     * @param cb Callback of the request.
+     */
+    @DELETE("/API/events/item")
+    void deleteItem(@Query("id") long id, Callback<BaseResponse> cb);
 }

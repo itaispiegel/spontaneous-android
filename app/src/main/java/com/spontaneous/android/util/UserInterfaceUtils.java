@@ -60,7 +60,7 @@ public class UserInterfaceUtils {
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                ActivityMain activityMain = ((ActivityMain) listView.getContext());
+                ActivityMain activityMain = (ActivityMain) listView.getContext();
                 activityMain.setRefreshEnabled(isListViewAtTop(listView));
             }
         };

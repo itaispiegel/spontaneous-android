@@ -149,7 +149,8 @@ public class ActivityEventInvitation extends BaseActivity {
                 UpdateGuestRequest updateRequest = new UpdateGuestRequest(status, userConfirmedArrival);
 
                 //Update the guest in the database.
-                SpontaneousApplication.getInstance().getService(EventService.class)
+                SpontaneousApplication.getInstance()
+                        .getService(EventService.class)
                         .updateGuest(currUser.getId(), updateRequest, new Callback<BaseResponse>() {
                             @Override
                             public void success(BaseResponse baseResponse, Response response) {

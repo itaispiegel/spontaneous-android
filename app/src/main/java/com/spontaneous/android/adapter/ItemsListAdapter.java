@@ -14,6 +14,7 @@ import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.model.Item;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -75,8 +76,33 @@ public class ItemsListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void addAll(List<Item> items) {
+    /**
+     * Add a collection of items to the adapter.
+     *
+     * @param items Items to add.
+     */
+    public void addAll(Collection<Item> items) {
         mItems.addAll(items);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Add a given item to the adapter.
+     *
+     * @param item Given item to add.
+     */
+    public void addItem(Item item) {
+        mItems.add(item);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Remove an item from the adapter given its position.
+     *
+     * @param position Index of the item.
+     */
+    public void removeItem(int position) {
+        mItems.remove(position);
         notifyDataSetChanged();
     }
 }

@@ -1,10 +1,12 @@
 package com.spontaneous.android.view;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,8 +21,11 @@ import com.spontaneous.android.R;
 import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.adapter.GuestsListAdapter;
 import com.spontaneous.android.adapter.ItemsListAdapter;
+import com.spontaneous.android.http.request.service.EventService;
+import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.Event;
 import com.spontaneous.android.model.Guest;
+import com.spontaneous.android.model.Item;
 import com.spontaneous.android.model.User;
 import com.spontaneous.android.util.AccountUtils;
 import com.spontaneous.android.util.DateTimeFormatter;
@@ -30,10 +35,14 @@ import com.spontaneous.android.util.UserInterfaceUtils;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
 /**
  * This is a representational view for an event.
  */
-public class EventCard extends FrameLayout implements AdapterView.OnItemClickListener {
+public class EventCard extends FrameLayout {
 
     private Context mContext;
     private Event mEvent;
@@ -93,12 +102,13 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
 
         mGuestsListView = (ListView) layout.findViewById(R.id.event_card_guests_list);
         mGuestsListView.setAdapter(mGuestsListAdapter);
-        mGuestsListView.setOnItemClickListener(this);
+        mGuestsListView.setOnItemClickListener(guestItemClick());
 
         mItemsListAdapter = new ItemsListAdapter(mContext);
 
         mItemsListView = (ListView) layout.findViewById(R.id.event_card_items_list);
         mItemsListView.setAdapter(mItemsListAdapter);
+        mItemsListView.setOnItemLongClickListener(itemsLongClick());
 
         mItemsTextView = (TextView) layout.findViewById(R.id.event_card_items_text);
     }
@@ -144,11 +154,7 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
         UserInterfaceUtils.setListViewHeightBasedOnChildren(mItemsListView);
 
         //If items list view is not empty, show the text view.
-        if (!mItemsListAdapter.isEmpty()) {
-            mItemsTextView.setVisibility(VISIBLE);
-        } else {
-            mItemsTextView.setVisibility(GONE);
-        }
+        mItemsTextView.setVisibility(mItemsListAdapter.isEmpty() ? GONE : VISIBLE);
 
         //Show the date of the event in format.
         mEventDateTextView.setText(mContext.getString(
@@ -180,55 +186,134 @@ public class EventCard extends FrameLayout implements AdapterView.OnItemClickLis
                 "key=" + mContext.getString(R.string.google_api_key);
     }
 
-    @Override
-    public void onItemClick(final AdapterView parent, final View view, final int position, final long id) {
-        Logger.info("Guest was clicked: " + mGuestsListAdapter.getItem(position));
+    private AdapterView.OnItemClickListener guestItemClick() {
+        return new AdapterView.OnItemClickListener() {
 
-        //Show the dialog if the user clicked himself.
-        Guest guest = mGuestsListAdapter.getItem(position);
-        User authenticatedUser = AccountUtils.getAuthenticatedUser();
-
-        //If the authenticated user clicked is the host, and he clicked on a guest, assign an item to the guest.
-        if (!guest.getUserProfile().equals(authenticatedUser)) {
-            if (mEvent.getHost().equals(authenticatedUser)) {
-                showItemAssignmentDialog();
-            }
-
-            //Return void in any case that the authenticated user clicks on another guest.
-            return;
-        }
-
-
-        //Show the dialog.
-        final UpdateGuestDialog dialog = new UpdateGuestDialog(getContext(), guest);
-        dialog.show();
-
-        //Update the listview.
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
-            public void onDismiss(DialogInterface dialog) {
-                Guest updated = ((UpdateGuestDialog) dialog).getGuest();
-                mGuestsListAdapter.updateGuest(position, updated);
+            public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
+
+                Logger.info("Guest was clicked: " + mGuestsListAdapter.getItem(position));
+
+                //Show the dialog if the user clicked himself.
+                final Guest guest = mGuestsListAdapter.getItem(position);
+                final User authenticatedUser = AccountUtils.getAuthenticatedUser();
+
+                //If the user clicked on a different user.
+                if (!guest.getUserProfile().equals(authenticatedUser)) {
+
+                    //If the user is the host, assign an item to the clicked guest.
+                    if (mEvent.getHost().equals(authenticatedUser)) {
+                        assignItem(guest);
+                    }
+
+                    //Return void in any case that the authenticated user is not the host.
+                    return;
+                }
+
+                final String[] options = {"Update status", "Assign item"};
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Choose option");
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            final UpdateGuestDialog updateGuestDialog = new UpdateGuestDialog(getContext(), guest);
+                            updateGuestDialog.show();
+
+                            //Update the listview.
+                            updateGuestDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                @Override
+                                public void onDismiss(DialogInterface dialog) {
+                                    Guest updated = ((UpdateGuestDialog) dialog).getGuest();
+                                    mGuestsListAdapter.updateGuest(position, updated);
+                                }
+                            });
+
+                        } else if (which == 1) {
+                            assignItem(guest);
+                        }
+                    }
+                });
+                builder.show();
             }
-        });
+        };
     }
 
-    public GuestsListAdapter getGuestsListAdapter() {
-        return mGuestsListAdapter;
+    private AdapterView.OnItemLongClickListener itemsLongClick() {
+        return new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(final AdapterView parent, final View view, final int position, final long id) {
+                Logger.info("Item was clicked: " + mItemsListAdapter.getItem(position));
+
+                final Item item = mItemsListAdapter.getItem(position);
+                SpontaneousApplication.getInstance()
+                        .getService(EventService.class)
+                        .deleteItem(item.getId(), new Callback<BaseResponse>() {
+                            @Override
+                            public void success(BaseResponse baseResponse, Response response) {
+                                Logger.info("Item deleted successfully.");
+                                Toast.makeText(getContext(), "Item deleted successfully", Toast.LENGTH_SHORT)
+                                        .show();
+
+                                mItemsListAdapter.removeItem(position);
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Logger.error("Item could not be deleted.");
+                                Toast.makeText(getContext(), "Item could not be deleted", Toast.LENGTH_SHORT)
+                                        .show();
+                            }
+                        });
+
+                return false;
+            }
+        };
     }
 
-    public void showItemAssignmentDialog() {
-
+    /**
+     * Create a dialog for assigning an item to a given guest.
+     *
+     * @param guest Given guest to assign the item to.
+     */
+    private void assignItem(final Guest guest) {
+        //Show the item assignment dialog.
         final EditText userInput = new EditText(mContext);
+        userInput.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 
         Dialog.OnClickListener onPositiveClick = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getContext(), "Assigning item.", Toast.LENGTH_SHORT)
-                        .show();
+                SpontaneousApplication.getInstance()
+                        .getService(EventService.class)
+                        .assignItem(guest.getId(), userInput.getText().toString(), new Callback<BaseResponse>() {
+                            @Override
+                            public void success(BaseResponse baseResponse, Response response) {
+                                Toast.makeText(getContext(), "Item assigned successfully", Toast.LENGTH_SHORT)
+                                        .show();
+
+                                //Add the created item to the adapter.
+                                Item item = new Item(userInput.getText().toString(), guest, false);
+                                mItemsListAdapter.addItem(item);
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+                                Toast.makeText(getContext(), "Item was not assigned successfully", Toast.LENGTH_SHORT)
+                                        .show();
+                            }
+                        });
             }
         };
 
         UserInterfaceUtils.showAlertDialog(getContext(), "Assign an item", "OK", "Cancel", onPositiveClick, userInput);
+    }
+
+    /**
+     * @return The guest list adapter of the event card.
+     */
+    public GuestsListAdapter getGuestsListAdapter() {
+        return mGuestsListAdapter;
     }
 }

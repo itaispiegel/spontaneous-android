@@ -81,6 +81,14 @@ public class SpontaneousGcmListenerService extends GcmListenerService {
                     PendingIntent.FLAG_ONE_SHOT);
 
             notificationBuilder.setContentIntent(pendingIntent);
+        } else if (notificationType == NotificationType.ITEM_ASSIGNMENT) {
+
+            //If notification type is item assignment, then set the style to the big text style.
+            NotificationCompat.Style bigStyle = new NotificationCompat.BigTextStyle().bigText(title);
+
+            notificationBuilder.setStyle(bigStyle)
+                    .addAction(R.drawable.ic_close_black, "Dismiss", null)
+                    .addAction(R.drawable.ic_done_black, "Commit", null);
         }
 
         NotificationManager notificationManager =
@@ -98,6 +106,11 @@ public class SpontaneousGcmListenerService extends GcmListenerService {
          * Invitation to a created event.
          */
         INVITATION,
+
+        /**
+         * An assignment to bring an item to the event.
+         */
+        ITEM_ASSIGNMENT,
 
         /**
          * The event host can send a broadcast message to his guests.

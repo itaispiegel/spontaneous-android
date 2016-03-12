@@ -10,9 +10,10 @@ public class Item extends BaseEntity {
 
     private Guest bringer;
 
-    public Item(String title, boolean isBringing) {
+    public Item(String title, Guest bringer, boolean isBringing) {
         this.title = title;
         this.isBringing = isBringing;
+        this.bringer = bringer;
     }
 
     public String getTitle() {
