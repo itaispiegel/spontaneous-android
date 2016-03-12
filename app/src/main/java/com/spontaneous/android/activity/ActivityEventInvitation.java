@@ -181,6 +181,6 @@ public class ActivityEventInvitation extends BaseActivity {
             }
         };
 
-        UserInterfaceUtils.showAlertDialog(getApplicationContext(), "Write a status", "OK", "Cancel", onPositiveClick, statusEditText);
+        UserInterfaceUtils.showAlertDialog(this, "Write a status", "OK", "Cancel", onPositiveClick, statusEditText);
     }
 }

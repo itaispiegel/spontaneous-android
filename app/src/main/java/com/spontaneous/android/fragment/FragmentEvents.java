@@ -18,6 +18,8 @@ import com.spontaneous.android.adapter.EventListAdapter;
 import com.spontaneous.android.http.request.service.EventService;
 import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.Event;
+import com.spontaneous.android.model.Guest;
+import com.spontaneous.android.model.User;
 import com.spontaneous.android.util.AccountUtils;
 import com.spontaneous.android.util.Logger;
 import com.spontaneous.android.util.UserInterfaceUtils;
@@ -87,9 +89,41 @@ public class FragmentEvents extends Fragment {
             public boolean onItemLongClick(AdapterView parent, View view, final int position, long id) {
 
                 Event event = mEventListAdapter.getItem(position);
+                User authenticatedUser = AccountUtils.getAuthenticatedUser();
 
-                //Don't do anything if the authenticated user is not hosting the requested event.
-                if(!event.getHost().equals(AccountUtils.getAuthenticatedUser())) {
+                //If the authenticated is not the host, remove the authenticated user as the guest.
+                if (!event.getHost().equals(authenticatedUser)) {
+                    Guest self = event.getGuestByUser(authenticatedUser);
+
+                    if (self == null) {git
+                        return true;
+                    }
+
+                    ((BaseActivity) getActivity()).showWaitDialog();
+
+                    SpontaneousApplication.getInstance()
+                            .getService(EventService.class)
+                            .deleteGuest(self.getId(), new Callback<BaseResponse>() {
+                                @Override
+                                public void success(BaseResponse baseResponse, Response response) {
+                                    ((BaseActivity) getActivity()).dismissDialog();
+
+                                    Logger.info("You left the event.");
+                                    Toast.makeText(getContext(), "You left the event", Toast.LENGTH_SHORT)
+                                            .show();
+
+                                    mEventListAdapter.remove(position);
+                                }
+
+                                @Override
+                                public void failure(RetrofitError error) {
+                                    ((BaseActivity) getActivity()).dismissDialog();
+
+                                    Toast.makeText(getActivity(), "Error while trying to leave the event", Toast.LENGTH_SHORT)
+                                            .show();
+                                }
+                            });
+
                     return true;
                 }
 

@@ -94,4 +94,13 @@ public interface EventService {
      */
     @DELETE("/API/events/item")
     void deleteItem(@Query("id") long id, Callback<BaseResponse> cb);
+
+    /**
+     * Delete a guest given his id.
+     *
+     * @param id Id of the guest to delete.
+     * @param cb Callback of the request.
+     */
+    @DELETE("/API/events/guest")
+    void deleteGuest(@Query("id") long id, Callback<BaseResponse> cb);
 }

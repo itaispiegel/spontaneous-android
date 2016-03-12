@@ -186,6 +186,9 @@ public class EventCard extends FrameLayout {
                 "key=" + mContext.getString(R.string.google_api_key);
     }
 
+    /**
+     * @return OnItemClickListener for guests list.
+     */
     private AdapterView.OnItemClickListener guestItemClick() {
         return new AdapterView.OnItemClickListener() {
 
@@ -240,6 +243,9 @@ public class EventCard extends FrameLayout {
         };
     }
 
+    /**
+     * @return OnItemLongClickListener for items list.
+     */
     private AdapterView.OnItemLongClickListener itemsLongClick() {
         return new AdapterView.OnItemLongClickListener() {
             @Override

@@ -83,6 +83,16 @@ public class Event extends BaseEntity {
         return emails;
     }
 
+    public Guest getGuestByUser(User user) {
+        for(Guest guest : guests) {
+            if(guest.getUserProfile().equals(user)) {
+                return guest;
+            }
+        }
+
+        return null;
+    }
+
     /**
      * @return The list of required items for the event.
      */
