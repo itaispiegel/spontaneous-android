@@ -113,11 +113,12 @@ public class ActivityLogin extends BaseActivity {
                         ", app id = " + accessToken.getApplicationId() + ", permissions = " + permissions);
 
                 //Create and send a FacebookLoginRequest to the Heroku Server.
-                LoginService loginService = SpontaneousApplication.getInstance().getService(LoginService.class);
                 FacebookLoginRequest loginRequestModel = new FacebookLoginRequest(accessToken.getUserId(), accessToken.getToken());
 
                 //Send the login request.
-                loginService.login(loginRequestModel, getLoginRequestCallback());
+                SpontaneousApplication.getInstance()
+                        .getService(LoginService.class)
+                        .login(loginRequestModel, getLoginRequestCallback());
             }
 
             @Override

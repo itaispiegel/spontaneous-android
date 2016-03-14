@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.spontaneous.android.R;
 import com.spontaneous.android.SpontaneousApplication;
+import com.spontaneous.android.activity.BaseActivity;
 import com.spontaneous.android.http.request.model.UpdateGuestRequest;
 import com.spontaneous.android.http.request.service.EventService;
 import com.spontaneous.android.http.response.BaseResponse;
@@ -26,11 +27,14 @@ import retrofit.client.Response;
  */
 public class UpdateGuestDialog extends AlertDialog {
 
-    private final Guest guest;
+    private final Guest mGuest;
+    private final Context mContext;
 
     protected UpdateGuestDialog(Context context, Guest guest) {
         super(context);
-        this.guest = guest;
+
+        this.mGuest = guest;
+        this.mContext = context;
     }
 
     @Override
@@ -56,10 +60,10 @@ public class UpdateGuestDialog extends AlertDialog {
     }
 
     /**
-     * @return The guest being edited.
+     * @return The mGuest being edited.
      */
     public Guest getGuest() {
-        return this.guest;
+        return this.mGuest;
     }
 
     /**
@@ -69,25 +73,37 @@ public class UpdateGuestDialog extends AlertDialog {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //Show the wait dialog
+                ((BaseActivity) mContext).showWaitDialog();
+
                 String status = getInput();
                 boolean isAttending = v.getId() == R.id.event_confirmation;
 
                 UpdateGuestRequest updateRequest = new UpdateGuestRequest(status, isAttending);
-                guest.update(updateRequest);
+                mGuest.update(updateRequest);
 
                 dismiss();
 
                 SpontaneousApplication.getInstance()
                         .getService(EventService.class)
-                        .updateGuest(guest.getId(), updateRequest, new Callback<BaseResponse>() {
+                        .updateGuest(mGuest.getId(), updateRequest, new Callback<BaseResponse>() {
                             @Override
                             public void success(BaseResponse baseResponse, Response response) {
+
+                                //Dismiss the wait dialog and show a toast.
+                                ((BaseActivity) mContext).dismissDialog();
+
                                 Toast.makeText(getContext(), "Status updated", Toast.LENGTH_SHORT)
                                         .show();
                             }
 
                             @Override
                             public void failure(RetrofitError error) {
+
+                                //Dismiss the wait dialog and show a toast.
+                                ((BaseActivity) mContext).dismissDialog();
+
                                 Toast.makeText(getContext(), "Couldn't update status.", Toast.LENGTH_SHORT)
                                         .show();
                             }

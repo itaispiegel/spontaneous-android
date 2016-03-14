@@ -95,7 +95,7 @@ public class FragmentEvents extends Fragment {
                 if (!event.getHost().equals(authenticatedUser)) {
                     Guest self = event.getGuestByUser(authenticatedUser);
 
-                    if (self == null) {git
+                    if (self == null) {
                         return true;
                     }
 

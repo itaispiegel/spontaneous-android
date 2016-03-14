@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.android.volley.toolbox.NetworkImageView;
 import com.spontaneous.android.R;
 import com.spontaneous.android.SpontaneousApplication;
+import com.spontaneous.android.activity.BaseActivity;
 import com.spontaneous.android.adapter.GuestsListAdapter;
 import com.spontaneous.android.adapter.ItemsListAdapter;
 import com.spontaneous.android.http.request.service.EventService;
@@ -213,6 +214,7 @@ public class EventCard extends FrameLayout {
                     return;
                 }
 
+                //The method will reach this point if the user clicked on himself.
                 final String[] options = {"Update status", "Assign item"};
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -220,6 +222,8 @@ public class EventCard extends FrameLayout {
                 builder.setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+                        //If user clicked on the first option, update his status.
                         if (which == 0) {
                             final UpdateGuestDialog updateGuestDialog = new UpdateGuestDialog(getContext(), guest);
                             updateGuestDialog.show();
@@ -233,6 +237,8 @@ public class EventCard extends FrameLayout {
                                 }
                             });
 
+
+                            //If the user clicked on the second option, assign an item.
                         } else if (which == 1) {
                             assignItem(guest);
                         }
@@ -250,7 +256,10 @@ public class EventCard extends FrameLayout {
         return new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(final AdapterView parent, final View view, final int position, final long id) {
+
+                //Log a message and show the wait dialog.
                 Logger.info("Item was clicked: " + mItemsListAdapter.getItem(position));
+                ((BaseActivity) mContext).showWaitDialog();
 
                 final Item item = mItemsListAdapter.getItem(position);
                 SpontaneousApplication.getInstance()
@@ -258,15 +267,30 @@ public class EventCard extends FrameLayout {
                         .deleteItem(item.getId(), new Callback<BaseResponse>() {
                             @Override
                             public void success(BaseResponse baseResponse, Response response) {
+                                //Dismiss the dialog, show a toast and update the card.
+                                ((BaseActivity) mContext).dismissDialog();
+
                                 Logger.info("Item deleted successfully.");
                                 Toast.makeText(getContext(), "Item deleted successfully", Toast.LENGTH_SHORT)
                                         .show();
 
                                 mItemsListAdapter.removeItem(position);
+
+                                //If listview is empty, make the title textview gone.
+                                if (mItemsListAdapter.isEmpty()) {
+                                    mItemsTextView.setVisibility(GONE);
+                                }
+
+                                //Set listview height.
+                                UserInterfaceUtils.setListViewHeightBasedOnChildren(mItemsListView);
                             }
 
                             @Override
                             public void failure(RetrofitError error) {
+
+                                //Dismiss the dialog and show a toast.
+                                ((BaseActivity) mContext).dismissDialog();
+
                                 Logger.error("Item could not be deleted.");
                                 Toast.makeText(getContext(), "Item could not be deleted", Toast.LENGTH_SHORT)
                                         .show();
@@ -291,21 +315,39 @@ public class EventCard extends FrameLayout {
         Dialog.OnClickListener onPositiveClick = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                //Show the wait dialog.
+                ((BaseActivity) mContext).showWaitDialog();
+
                 SpontaneousApplication.getInstance()
                         .getService(EventService.class)
                         .assignItem(guest.getId(), userInput.getText().toString(), new Callback<BaseResponse>() {
                             @Override
                             public void success(BaseResponse baseResponse, Response response) {
+
+                                //Dismiss the dialog, show a toast and update the card.
+                                ((BaseActivity) mContext).dismissDialog();
+
                                 Toast.makeText(getContext(), "Item assigned successfully", Toast.LENGTH_SHORT)
                                         .show();
 
                                 //Add the created item to the adapter.
                                 Item item = new Item(userInput.getText().toString(), guest, false);
                                 mItemsListAdapter.addItem(item);
+
+                                //Make the listview title visible.
+                                mItemsTextView.setVisibility(VISIBLE);
+
+                                //Set listview height.
+                                UserInterfaceUtils.setListViewHeightBasedOnChildren(mItemsListView);
                             }
 
                             @Override
                             public void failure(RetrofitError error) {
+
+                                //Dismiss the dialog and show a toast.
+                                ((BaseActivity) mContext).dismissDialog();
+
                                 Toast.makeText(getContext(), "Item was not assigned successfully", Toast.LENGTH_SHORT)
                                         .show();
                             }
