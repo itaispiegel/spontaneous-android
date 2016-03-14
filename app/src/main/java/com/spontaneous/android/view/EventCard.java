@@ -60,9 +60,11 @@ public class EventCard extends FrameLayout {
     private TextView mEventLocationTextView;
     private NetworkImageView mEventMapImage;
 
+    //Guests list
     private GuestsListAdapter mGuestsListAdapter;
     private ListView mGuestsListView;
 
+    //Items list
     private ItemsListAdapter mItemsListAdapter;
     private ListView mItemsListView;
     private TextView mItemsTextView;

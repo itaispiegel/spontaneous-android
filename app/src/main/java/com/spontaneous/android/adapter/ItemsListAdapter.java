@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
@@ -23,7 +22,7 @@ import java.util.List;
  */
 public class ItemsListAdapter extends BaseAdapter {
 
-    private Context mContext;
+    private final Context mContext;
     private LayoutInflater mInflater;
 
     private List<Item> mItems;
@@ -63,13 +62,16 @@ public class ItemsListAdapter extends BaseAdapter {
         ImageView isBringing = (ImageView) convertView.findViewById(R.id.item_list_is_bringing);
         NetworkImageView bringerPhoto = (NetworkImageView) convertView.findViewById(R.id.items_list_bringer_photo);
 
+        //Get the item in the requested index.
         Item item = mItems.get(position);
 
+        //Set the item title and the drawable indicating whether the guest is bringing the item.
         title.setText(item.getTitle());
         isBringing.setImageDrawable(item.isBringing()
                 ? mContext.getDrawable(R.drawable.ic_done_black)
                 : mContext.getDrawable(R.drawable.ic_close_black));
 
+        //Set the profile picture of the user bringing the item.
         bringerPhoto.setImageUrl(item.getBringer()
                 .getUserProfile()
                 .getProfilePicture(), SpontaneousApplication.getInstance().getImageLoader());

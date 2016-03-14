@@ -101,7 +101,7 @@ public class UserInterfaceUtils {
                 .setNegativeButton(negativeButtonText, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //On cancel don't do anything
+                        //On cancel don't do anything.
                     }
                 }).show();
     }

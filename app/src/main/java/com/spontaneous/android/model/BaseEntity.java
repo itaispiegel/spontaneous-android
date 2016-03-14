@@ -13,7 +13,7 @@ import java.util.Objects;
 public abstract class BaseEntity implements Serializable {
 
     private long id;
-    private DateTime creationTime;
+    private final DateTime creationTime;
 
     BaseEntity() {
         this.creationTime = new DateTime();

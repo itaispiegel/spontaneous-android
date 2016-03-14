@@ -17,7 +17,7 @@ import com.spontaneous.android.util.AccountUtils;
 import com.spontaneous.android.util.UserInterfaceUtils;
 import com.spontaneous.android.view.UserProfileCard;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * A fragment that contains a user profile
@@ -27,7 +27,6 @@ public class FragmentUserProfile extends Fragment {
     private User mUser;
     private ArrayAdapter<String> mFriendsAdapter;
 
-    private ListView mFriendsListView;
     private TextView mFriendsTextView;
 
     @Override
@@ -47,11 +46,11 @@ public class FragmentUserProfile extends Fragment {
         mCardContainer.addView(mUserProfileCard);
         mScroll.smoothScrollTo(0, 0); //For some reason the card starts on the bottom of the activity
 
-        mFriendsListView = (ListView) layout.findViewById(R.id.friends_list);
-        mFriendsListView.setOnScrollListener(UserInterfaceUtils.listViewScrollListener(mFriendsListView));
+        ListView friendsListView = (ListView) layout.findViewById(R.id.friends_list);
+        friendsListView.setOnScrollListener(UserInterfaceUtils.listViewScrollListener(friendsListView));
         mFriendsAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1);
 
-        mFriendsListView.setAdapter(mFriendsAdapter);
+        friendsListView.setAdapter(mFriendsAdapter);
 
         mFriendsTextView = (TextView) layout.findViewById(R.id.friends_text);
 
@@ -62,11 +61,11 @@ public class FragmentUserProfile extends Fragment {
     }
 
     /**
-     * Add a list of friends to the friends listview.
+     * Add a collection of friends to the friends listview.
      *
-     * @param friendsList The list of friends to add.
+     * @param friendsList The collection of friends to add.
      */
-    public void addFriends(List<User> friendsList) {
+    public void addFriends(Collection<User> friendsList) {
 
         //Return void if friends list is empty.
         if (friendsList == null || friendsList.isEmpty()) {
