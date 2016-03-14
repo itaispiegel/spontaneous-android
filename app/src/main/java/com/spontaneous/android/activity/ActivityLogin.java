@@ -39,11 +39,11 @@ public class ActivityLogin extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Just in case the user is accidentally authenticated.
-        LoginManager.getInstance().logOut();
-
         //Initialize the Facebook SDK.
         mCallbackManager = CallbackManager.Factory.create();
+
+        //Just in case the user is accidentally authenticated.
+        LoginManager.getInstance().logOut();
 
         //Initialize login button and updateGuest its permissions, callback and click listener.
         LoginButton mLoginButton = (LoginButton) findViewById(R.id.login_button);
@@ -124,10 +124,17 @@ public class ActivityLogin extends BaseActivity {
             @Override
             public void onCancel() {
                 Logger.info("cancel!");
+                dismissDialog();
+
+                Toast.makeText(getApplicationContext(), "Facebook Connection Error.", Toast.LENGTH_SHORT)
+                        .show();
             }
 
             @Override
             public void onError(FacebookException error) {
+
+                //Dismiss the dialog
+                dismissDialog();
 
                 //If the Facebook authentication did not succeed, show an error.
                 Logger.error("Facebook authentication error: " + error.getMessage());

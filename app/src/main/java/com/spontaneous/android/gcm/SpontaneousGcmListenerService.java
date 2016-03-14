@@ -13,6 +13,7 @@ import android.support.v4.app.NotificationCompat;
 import com.google.android.gms.gcm.GcmListenerService;
 import com.spontaneous.android.R;
 import com.spontaneous.android.activity.ActivityEventInvitation;
+import com.spontaneous.android.activity.ActivityEventPage;
 import com.spontaneous.android.model.Event;
 import com.spontaneous.android.util.GsonFactory;
 import com.spontaneous.android.util.Logger;
@@ -64,6 +65,7 @@ public class SpontaneousGcmListenerService extends GcmListenerService {
                 .setSound(defaultSoundUri);
 
         //Build the notification based on the notification type.
+        //Notification that the user was invited to a new event.
         if (notificationType == NotificationType.INVITATION) {
 
             //Get event details.
@@ -81,14 +83,16 @@ public class SpontaneousGcmListenerService extends GcmListenerService {
                     PendingIntent.FLAG_ONE_SHOT);
 
             notificationBuilder.setContentIntent(pendingIntent);
-        } else if (notificationType == NotificationType.ITEM_ASSIGNMENT) {
+
+            //Notification that the user was assigned to bring an item to an event.
+        } else if (notificationType == NotificationType.ASSIGN_ITEM) {
 
             //If notification type is item assignment, then set the style to the big text style.
-            NotificationCompat.Style bigStyle = new NotificationCompat.BigTextStyle().bigText(title);
+            NotificationCompat.Style bigStyle = new NotificationCompat.BigTextStyle().bigText(content);
 
             notificationBuilder.setStyle(bigStyle)
-                    .addAction(R.drawable.ic_close_black, "Dismiss", null)
-                    .addAction(R.drawable.ic_done_black, "Commit", null);
+                    .addAction(R.drawable.ic_close_black, "No", null)
+                    .addAction(R.drawable.ic_done_black, "Yes", null);
         }
 
         NotificationManager notificationManager =
@@ -110,7 +114,7 @@ public class SpontaneousGcmListenerService extends GcmListenerService {
         /**
          * An assignment to bring an item to the event.
          */
-        ITEM_ASSIGNMENT,
+        ASSIGN_ITEM,
 
         /**
          * The event host can send a broadcast message to his guests.
