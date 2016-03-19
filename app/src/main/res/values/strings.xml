@@ -26,13 +26,10 @@
     <!--Intent extras-->
     <string name="created_event_intent_extra">com.spontaneous.android.CREATED_EVENT</string>
     <string name="event_card_intent_extras">com.spontaneous.android.EVENT_CARD</string>
-    <string name="who_is_coming">Who is coming?</string>
-    <string name="required_items">Required Items</string>
-    <string name="label_email">Email Address</string>
-    <string name="label_password">Password</string>
-    <string name="message_loading">Loading</string>
-    <string name="logout">Logout</string>
-    <string name="no_events">NO EVENTS</string>
+    <string name="update_item_bringing">com.spontaneous.android.UPDATE_ITEM_BRINGING</string>
+    <string name="update_item_not_bringing">com.spontaneous.android.UPDATE_ITEM_NOT_BRINGING</string>
+    <string name="is_bringing_item">com.spontaneous.android.IS_BRINGING_ITEM</string>
+    <string name="assigned_item_data">com.spontaneous.android.ITEM_DATA</string>
 
     <!--    Event Creation Wizard-->
     <string name="event_title">Event title</string>
@@ -68,4 +65,12 @@
     <string name="event_broadcast_message_string">Notify</string>
     <string name="item_list_example_title">Popcorn</string>
     <string name="list_of_friends_using_spontaneous">List of friends using Spontaneous</string>
+
+    <string name="who_is_coming">Who is coming?</string>
+    <string name="required_items">Required Items</string>
+    <string name="label_email">Email Address</string>
+    <string name="label_password">Password</string>
+    <string name="message_loading">Loading</string>
+    <string name="logout">Logout</string>
+    <string name="no_events">NO EVENTS</string>
 </resources>

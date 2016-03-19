@@ -31,4 +31,8 @@ public class Item extends BaseEntity {
     public void setBringer(Guest bringer) {
         this.bringer = bringer;
     }
+
+    public void setBringing(boolean bringing) {
+        this.isBringing = bringing;
+    }
 }

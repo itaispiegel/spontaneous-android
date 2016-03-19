@@ -96,6 +96,16 @@ public interface EventService {
     void deleteItem(@Query("id") long id, Callback<BaseResponse> cb);
 
     /**
+     * Update an item given its id.
+     *
+     * @param id         Given id of the item.
+     * @param isBringing Whether the guest is bringing the item.
+     * @param cb         Callback of the request.
+     */
+    @PUT("/API/events/item")
+    void updateItem(@Query("id") long id, @Query("bringing") boolean isBringing, Callback<BaseResponse> cb);
+
+    /**
      * Delete a guest given his id.
      *
      * @param id Id of the guest to delete.

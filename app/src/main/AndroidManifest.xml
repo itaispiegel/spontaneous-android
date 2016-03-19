@@ -17,6 +17,7 @@
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme">
 
+        <!--GCM Broadcast Receiver-->
         <receiver
             android:name="com.google.android.gms.gcm.GcmReceiver"
             android:exported="true"
@@ -28,6 +29,7 @@
             </intent-filter>
         </receiver>
 
+        <!--GCM Listener Service-->
         <service
             android:name=".gcm.SpontaneousGcmListenerService"
             android:exported="false">
@@ -35,6 +37,8 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
+
+        <!--Instance Id Listener Service-->
         <service
             android:name=".gcm.InstanceIdListenerService"
             android:exported="false">
@@ -42,14 +46,21 @@
                 <action android:name="com.google.android.gms.iid.InstanceID" />
             </intent-filter>
         </service>
+
+        <!--Registration Intent Service-->
         <service
             android:name="com.spontaneous.android.gcm.RegistrationIntentService"
             android:exported="false" />
 
+        <!--Facebook API-->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
+        <!--Custom broadcast receiver for handling input in notifications-->
+        <receiver android:name=".gcm.ItemAssignmentBroadcastReceiver"/>
+
+        <!--The default activity is the SplashActivity-->
         <activity
             android:name=".activity.ActivitySplash"
             android:theme="@style/AppTheme">
@@ -59,28 +70,37 @@
             </intent-filter>
         </activity>
 
+        <!--FacebookActivity for Facebook log in-->
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.NoTitleBar" />
 
+        <!--Activity for logging in-->
         <activity android:name=".activity.ActivityLogin" />
 
+        <!--The main activity of the application-->
         <activity
             android:name=".activity.ActivityMain"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" />
 
+        <!--Activity for creating new events-->
         <activity
             android:name=".activity.ActivityCreateEvent"
             android:parentActivityName=".activity.ActivityMain" />
 
+        <!--Activity for editing event details-->
         <activity
             android:name=".activity.ActivityEditEvent"
             android:parentActivityName=".activity.ActivityEventPage" />
+
+        <!--Activity for displaying event details-->
         <activity
             android:name=".activity.ActivityEventPage"
             android:parentActivityName=".activity.ActivityMain" />
+
+        <!--Activity for inviting guests to an event-->
         <activity
             android:name=".activity.ActivityEventInvitation"
             android:parentActivityName=".activity.ActivityMain" />

@@ -13,8 +13,8 @@ import android.support.v4.app.NotificationCompat;
 import com.google.android.gms.gcm.GcmListenerService;
 import com.spontaneous.android.R;
 import com.spontaneous.android.activity.ActivityEventInvitation;
-import com.spontaneous.android.activity.ActivityEventPage;
 import com.spontaneous.android.model.Event;
+import com.spontaneous.android.model.Item;
 import com.spontaneous.android.util.GsonFactory;
 import com.spontaneous.android.util.Logger;
 
@@ -35,7 +35,7 @@ public class SpontaneousGcmListenerService extends GcmListenerService {
 
         String message = data.getString("message");
 
-        Logger.info(String.format("Received GCM message from '%s'. The message is '%s'",
+        Logger.info(String.format("Received GCM message from '%s'. The message is '%s'.",
                 from, message));
 
         //Show a notification.
@@ -87,12 +87,29 @@ public class SpontaneousGcmListenerService extends GcmListenerService {
             //Notification that the user was assigned to bring an item to an event.
         } else if (notificationType == NotificationType.ASSIGN_ITEM) {
 
-            //If notification type is item assignment, then set the style to the big text style.
-            NotificationCompat.Style bigStyle = new NotificationCompat.BigTextStyle().bigText(content);
+            Item item = GsonFactory.getGson()
+                    .fromJson(data.getString("data"), Item.class);
 
-            notificationBuilder.setStyle(bigStyle)
-                    .addAction(R.drawable.ic_close_black, "No", null)
-                    .addAction(R.drawable.ic_done_black, "Yes", null);
+            //Initialize the call to the broadcast receiver.
+            //Intent for confirmation.
+            Intent confirm = new Intent(this, ItemAssignmentBroadcastReceiver.class);
+            confirm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            confirm.putExtra(getString(R.string.assigned_item_data), item);
+            confirm.putExtra(getString(R.string.is_bringing_item), true);
+
+            PendingIntent pConfirm = PendingIntent.getBroadcast(this, 1, confirm, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            //Intent for declining.
+            Intent decline = new Intent(this, ItemAssignmentBroadcastReceiver.class);
+            decline.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            decline.putExtra(getString(R.string.assigned_item_data), item);
+            decline.putExtra(getString(R.string.is_bringing_item), false);
+
+            PendingIntent pDecline = PendingIntent.getBroadcast(this, 2, decline, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            notificationBuilder
+                    .addAction(R.drawable.ic_done_black, "Yes", pConfirm)
+                    .addAction(R.drawable.ic_close_black, "No", pDecline);
         }
 
         NotificationManager notificationManager =
