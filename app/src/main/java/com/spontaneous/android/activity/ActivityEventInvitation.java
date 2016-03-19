@@ -49,29 +49,35 @@ public class ActivityEventInvitation extends BaseActivity {
         //Show back button on toolbar
         showBackButtonOnToolbar();
 
-        ScrollView mScroll = (ScrollView) findViewById(R.id.scroll);
+        ScrollView scrollView = (ScrollView) findViewById(R.id.scroll);
 
-        FrameLayout mCardContainer = (FrameLayout) findViewById(R.id.card);
+        FrameLayout cardContainer = (FrameLayout) findViewById(R.id.card);
         mEventCard = new EventCard(this, event);
 
-        mCardContainer.addView(mEventCard);
-        mScroll.smoothScrollTo(0, 0); //For some reason the card starts on the bottom of the activity
+        //Avoid NullPointerException
+        assert cardContainer != null && scrollView != null;
 
-        final ImageButton mDeclineEventButton = (ImageButton) findViewById(R.id.event_decline);
-        final ImageButton mConfirmEventButton = (ImageButton) findViewById(R.id.event_confirmation);
+        cardContainer.addView(mEventCard);
+        scrollView.smoothScrollTo(0, 0); //For some reason the card starts on the bottom of the activity
+
+        final ImageButton declineEventButton = (ImageButton) findViewById(R.id.event_decline);
+        final ImageButton confirmEventButton = (ImageButton) findViewById(R.id.event_confirmation);
+
+        //Avoid NullPointerException
+        assert declineEventButton != null && confirmEventButton != null;
 
         //Handle click on the footer button for confirmation or declination for the event.
-        mDeclineEventButton.setOnClickListener(new View.OnClickListener() {
+        declineEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onFooterButtonClick(mDeclineEventButton.getId());
+                onFooterButtonClick(declineEventButton.getId());
             }
         });
 
-        mConfirmEventButton.setOnClickListener(new View.OnClickListener() {
+        confirmEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onFooterButtonClick(mConfirmEventButton.getId());
+                onFooterButtonClick(confirmEventButton.getId());
             }
         });
     }

@@ -43,13 +43,16 @@ public class ActivityEventPage extends BaseActivity {
         //Show back button on toolbar
         showBackButtonOnToolbar();
 
-        ScrollView mScroll = (ScrollView) findViewById(R.id.scroll);
+        ScrollView scrollView = (ScrollView) findViewById(R.id.scroll);
 
-        FrameLayout mCardContainer = (FrameLayout) findViewById(R.id.card);
+        FrameLayout cardContainer = (FrameLayout) findViewById(R.id.card);
         EventCard eventCard = new EventCard(this, mEvent);
 
-        mCardContainer.addView(eventCard);
-        mScroll.smoothScrollTo(0, 0); //For some reason the card starts on the bottom of the activity
+        //Avoid NullPointerException
+        assert cardContainer!= null && scrollView != null;
+
+        cardContainer.addView(eventCard);
+        scrollView.smoothScrollTo(0, 0); //For some reason the card starts on the bottom of the activity
     }
 
     @Override

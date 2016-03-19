@@ -57,6 +57,10 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     private void setCustomToolbar() {
         mToolbar = (Toolbar) findViewById(R.id.custom_toolbar);
+
+        //Avoid NullPointerException.
+        assert mToolbar != null;
+
         mToolbar.setClickable(true);
 
         setSupportActionBar(mToolbar);

@@ -68,6 +68,10 @@ public class ActivityMain extends BaseActivity {
         ViewPagerAdapter mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), mEventsFragment, mUserProfileFragment);
 
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
+
+        //Avoid NullPointerException
+        assert mViewPager != null;
+
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -88,6 +92,10 @@ public class ActivityMain extends BaseActivity {
 
         //Initialize the loading image and the create event action button.
         mLoadingImage = (ImageView) findViewById(R.id.loading_image);
+
+        //Avoid NullPointerException
+        assert mLoadingImage != null;
+
         mLoadingAnimation = (AnimationDrawable) mLoadingImage.getBackground();
 
         mCreateEventButton = (FloatingActionButton) findViewById(R.id.create_event_button);

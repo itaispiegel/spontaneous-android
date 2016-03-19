@@ -83,9 +83,13 @@ public abstract class BaseSaveEventActivity extends BaseActivity implements OnDa
         mEventDate = (EditText) findViewById(R.id.create_event_date);
 
         //Initialize places autocompletion
-        PlacesAutoCompleteAdapter mPlacesAutoCompleteAdapter = new PlacesAutoCompleteAdapter(this);
+        PlacesAutoCompleteAdapter placesAutoCompleteAdapter = new PlacesAutoCompleteAdapter(this);
         mEventLocation = (AutoCompleteTextView) findViewById(R.id.create_event_location);
-        mEventLocation.setAdapter(mPlacesAutoCompleteAdapter);
+
+        //Avoid NullPointerException
+        assert mEventLocation != null;
+
+        mEventLocation.setAdapter(placesAutoCompleteAdapter);
 
         //Initialize contacts bubble autocompletion
         mGuests = (RecipientEditTextView) findViewById(R.id.create_event_guests);
@@ -117,6 +121,10 @@ public abstract class BaseSaveEventActivity extends BaseActivity implements OnDa
 
         //Initialize the view after it is created.
         final RelativeLayout layout = (RelativeLayout) findViewById(R.id.save_event_layout);
+
+        //Avoid NullPointerException
+        assert layout != null;
+
         layout.getViewTreeObserver()
                 .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override

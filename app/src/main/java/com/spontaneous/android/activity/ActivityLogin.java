@@ -49,6 +49,8 @@ public class ActivityLogin extends BaseActivity {
         LoginButton mLoginButton = (LoginButton) findViewById(R.id.login_button);
 
         //Set custom button image.
+        assert mLoginButton != null;
+
         mLoginButton.setBackgroundResource(R.drawable.btn_login_facebook);
         mLoginButton.setText("");
         mLoginButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
