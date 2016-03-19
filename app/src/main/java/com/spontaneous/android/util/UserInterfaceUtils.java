@@ -92,8 +92,8 @@ public class UserInterfaceUtils {
      * @param onPositiveClick    The action to perform when clicking the positive button.
      * @param userInput          EditText for user input.
      */
-    public static void showAlertDialog(Context context, String dialogTitle, String positiveButtonText, String negativeButtonText,
-                                       DialogInterface.OnClickListener onPositiveClick, EditText userInput) {
+    public static void showAlertDialog(Context context, String dialogTitle, String positiveButtonText, String negativeButtonText, EditText userInput,
+                                       DialogInterface.OnClickListener onPositiveClick) {
         new AlertDialog.Builder(context)
                 .setTitle(dialogTitle)
                 .setView(userInput)

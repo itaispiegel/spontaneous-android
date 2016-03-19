@@ -357,7 +357,7 @@ public class EventCard extends FrameLayout {
             }
         };
 
-        UserInterfaceUtils.showAlertDialog(getContext(), "Assign an item", "OK", "Cancel", onPositiveClick, userInput);
+        UserInterfaceUtils.showAlertDialog(getContext(), "Assign an item", "OK", "Cancel", userInput, onPositiveClick);
     }
 
     /**

@@ -1,6 +1,5 @@
 package com.spontaneous.android.activity;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +18,7 @@ import com.spontaneous.android.model.Event;
 import com.spontaneous.android.model.User;
 import com.spontaneous.android.util.AccountUtils;
 import com.spontaneous.android.util.Logger;
+import com.spontaneous.android.util.UserInterfaceUtils;
 import com.spontaneous.android.view.EventCard;
 
 import retrofit.Callback;
@@ -96,17 +96,17 @@ public class ActivityEventPage extends BaseActivity {
 
             case R.id.event_broadcast_message_button:
 
+                //Show the alert dialog asking the host to broadcast a message to his guests.
                 final EditText messageEditText = new EditText(ActivityEventPage.this);
                 messageEditText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
 
-                new AlertDialog.Builder(ActivityEventPage.this)
-                        .setTitle("Send a notification to your guests:")
-                        .setView(messageEditText)
-                        .setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                UserInterfaceUtils.showAlertDialog(this, "Send a notification to your guests:", "Send", "Cancel", messageEditText,
+                        new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 String messageContent = messageEditText.getText().toString();
 
+                                //On click, send the broadcast the guests.
                                 SpontaneousApplication.getInstance().getService(EventService.class)
                                         .notifyGuests(mEvent.getId(), messageContent, new Callback<Object>() {
                                             @Override
@@ -122,13 +122,7 @@ public class ActivityEventPage extends BaseActivity {
                                             }
                                         });
                             }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        })
-                        .show();
+                        });
         }
 
         return super.onOptionsItemSelected(item);
