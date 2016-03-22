@@ -98,36 +98,40 @@ public class ActivityEventPage extends BaseActivity {
                 break;
 
             case R.id.event_broadcast_message_button:
-
-                //Show the alert dialog asking the host to broadcast a message to his guests.
-                final EditText messageEditText = new EditText(ActivityEventPage.this);
-                messageEditText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-
-                UserInterfaceUtils.showAlertDialog(this, "Send a notification to your guests:", "Send", "Cancel", messageEditText,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                String messageContent = messageEditText.getText().toString();
-
-                                //On click, send the broadcast the guests.
-                                SpontaneousApplication.getInstance().getService(EventService.class)
-                                        .notifyGuests(mEvent.getId(), messageContent, new Callback<Object>() {
-                                            @Override
-                                            public void success(Object o, Response response) {
-                                                Toast.makeText(ActivityEventPage.this, "The message was sent successfully", Toast.LENGTH_SHORT)
-                                                        .show();
-                                            }
-
-                                            @Override
-                                            public void failure(RetrofitError error) {
-                                                Toast.makeText(ActivityEventPage.this, "The message was not sent successfully", Toast.LENGTH_SHORT)
-                                                        .show();
-                                            }
-                                        });
-                            }
-                        });
+                sendBroadcastMessage();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void sendBroadcastMessage() {
+        //Show the alert dialog asking the host to broadcast a message to his guests.
+        final EditText messageEditText = new EditText(ActivityEventPage.this);
+        messageEditText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+
+        UserInterfaceUtils.showAlertDialog(this, "Send a notification to your guests:", "Send", "Cancel", messageEditText,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String messageContent = messageEditText.getText().toString();
+
+                        //On click, send the broadcast the guests.
+                        SpontaneousApplication.getInstance().getService(EventService.class)
+                                .notifyGuests(mEvent.getId(), messageContent, new Callback<Object>() {
+                                    @Override
+                                    public void success(Object o, Response response) {
+                                        Toast.makeText(ActivityEventPage.this, "The message was sent successfully", Toast.LENGTH_SHORT)
+                                                .show();
+                                    }
+
+                                    @Override
+                                    public void failure(RetrofitError error) {
+                                        Toast.makeText(ActivityEventPage.this, "The message was not sent successfully", Toast.LENGTH_SHORT)
+                                                .show();
+                                    }
+                                });
+                    }
+                });
     }
 }

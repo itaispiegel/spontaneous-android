@@ -1,5 +1,6 @@
 package com.spontaneous.android.view;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -190,7 +191,7 @@ public class EventCard extends FrameLayout {
     }
 
     /**
-     * @return OnItemClickListener for guests list.
+     * @return OnItemClickListener for guests list - Show options menu: assign item, change status, set reminder.
      */
     private AdapterView.OnItemClickListener guestItemClick() {
         return new AdapterView.OnItemClickListener() {
@@ -217,32 +218,41 @@ public class EventCard extends FrameLayout {
                 }
 
                 //The method will reach this point if the user clicked on himself.
-                final String[] options = {"Update status", "Assign item"};
+                final String[] options = {"Update status", "Assign item", "Set reminder"};
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                 builder.setTitle("Choose option");
                 builder.setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
 
-                        //If user clicked on the first option, update his status.
-                        if (which == 0) {
-                            final UpdateGuestDialog updateGuestDialog = new UpdateGuestDialog(getContext(), guest);
-                            updateGuestDialog.show();
+                            //If user clicked on the first option, update his status.
+                            case 0:
+                                final UpdateGuestDialog updateGuestDialog = new UpdateGuestDialog(getContext(), guest);
+                                updateGuestDialog.show();
 
-                            //Update the listview.
-                            updateGuestDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                                @Override
-                                public void onDismiss(DialogInterface dialog) {
-                                    Guest updated = ((UpdateGuestDialog) dialog).getGuest();
-                                    mGuestsListAdapter.updateGuest(position, updated);
-                                }
-                            });
+                                //Update the listview.
+                                updateGuestDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                    @Override
+                                    public void onDismiss(DialogInterface dialog) {
+                                        Guest updated = ((UpdateGuestDialog) dialog).getGuest();
+                                        mGuestsListAdapter.updateGuest(position, updated);
+                                    }
+                                });
 
+                                break;
 
-                            //If the user clicked on the second option, assign an item.
-                        } else if (which == 1) {
-                            assignItem(guest);
+                            case 1:
+                                //If the user clicked on the second option, assign an item.
+                                assignItem(guest);
+                                break;
+
+                            case 2:
+                                Toast.makeText(getContext(), "Setting reminder..", Toast.LENGTH_SHORT)
+                                        .show();
+
+                                break;
                         }
                     }
                 });
@@ -252,7 +262,7 @@ public class EventCard extends FrameLayout {
     }
 
     /**
-     * @return OnItemLongClickListener for items list.
+     * @return On long click - delete the item if is your's or if you are the event host.
      */
     private AdapterView.OnItemLongClickListener itemsLongClick() {
         return new AdapterView.OnItemLongClickListener() {

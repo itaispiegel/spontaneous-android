@@ -55,7 +55,9 @@ public class ActivityLogin extends BaseActivity {
         mLoginButton.setText("");
         mLoginButton.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
 
-        mLoginButton.setReadPermissions("public_profile", "user_friends", "email", "user_birthday");
+        final String[] readPermissions = {"public_profile", "user_friends", "email", "user_birthday"};
+
+        mLoginButton.setReadPermissions(readPermissions);
         mLoginButton.registerCallback(mCallbackManager, getFacebookCallback());
         mLoginButton.setOnClickListener(getLoginButtonOnClickListener());
     }

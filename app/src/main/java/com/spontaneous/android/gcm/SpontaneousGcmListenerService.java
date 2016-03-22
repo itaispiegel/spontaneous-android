@@ -65,57 +65,83 @@ public class SpontaneousGcmListenerService extends GcmListenerService {
                 .setSound(defaultSoundUri);
 
         //Build the notification based on the notification type.
-        //Notification that the user was invited to a new event.
-        if (notificationType == NotificationType.INVITATION) {
 
-            //Get event details.
-            Event event = GsonFactory.getGson()
-                    .fromJson(data.getString("data"), Event.class);
+        switch (notificationType) {
 
-            //Set the intent.
-            Intent intent = new Intent(this, ActivityEventInvitation.class);
-
-            //The action to perform when clicking the notification.
-            intent.putExtra(getString(R.string.event_invitation), event);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                    PendingIntent.FLAG_ONE_SHOT);
-
-            notificationBuilder.setContentIntent(pendingIntent);
+            //Notification that the user was invited to a new event.
+            case INVITATION:
+                notificationBuilder = notificationForInvitation(notificationBuilder, data);
+                break;
 
             //Notification that the user was assigned to bring an item to an event.
-        } else if (notificationType == NotificationType.ASSIGN_ITEM) {
-
-            Item item = GsonFactory.getGson()
-                    .fromJson(data.getString("data"), Item.class);
-
-            //Initialize the call to the broadcast receiver.
-            //Intent for confirmation.
-            Intent confirm = new Intent(this, ItemAssignmentBroadcastReceiver.class);
-            confirm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            confirm.putExtra(getString(R.string.assigned_item_data), item);
-            confirm.putExtra(getString(R.string.is_bringing_item), true);
-
-            PendingIntent pConfirm = PendingIntent.getBroadcast(this, 1, confirm, PendingIntent.FLAG_UPDATE_CURRENT);
-
-            //Intent for declining.
-            Intent decline = new Intent(this, ItemAssignmentBroadcastReceiver.class);
-            decline.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            decline.putExtra(getString(R.string.assigned_item_data), item);
-            decline.putExtra(getString(R.string.is_bringing_item), false);
-
-            PendingIntent pDecline = PendingIntent.getBroadcast(this, 2, decline, PendingIntent.FLAG_UPDATE_CURRENT);
-
-            notificationBuilder
-                    .addAction(R.drawable.ic_done_black, "Yes", pConfirm)
-                    .addAction(R.drawable.ic_close_black, "No", pDecline);
+            case ASSIGN_ITEM:
+                notificationBuilder = notificationForItemAssignment(notificationBuilder, data);
+                break;
         }
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0, notificationBuilder.build());
+    }
+
+    /**
+     * Notify the user that he was invited to a new event.
+     *
+     * @param notificationBuilder The notification builder object.
+     * @param data                The data bundled with the GCM request.
+     * @return The updated notification builder object.
+     */
+    private NotificationCompat.Builder notificationForInvitation(NotificationCompat.Builder notificationBuilder, Bundle data) {
+        //Get event details.
+        Event event = GsonFactory.getGson()
+                .fromJson(data.getString("data"), Event.class);
+
+        //Set the intent for opening the event invitation activity.
+        Intent intent = new Intent(this, ActivityEventInvitation.class);
+
+        //The action to perform when clicking the notification.
+        intent.putExtra(getString(R.string.event_invitation), event);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        return notificationBuilder.setContentIntent(pendingIntent);
+    }
+
+    /**
+     * Notify the user that he was assigned to bring an item to an event.
+     *
+     * @param notificationBuilder The notification builder object.
+     * @param data                The data bundled with the GCM request.
+     * @return The updated notification builder object.
+     */
+    private NotificationCompat.Builder notificationForItemAssignment(NotificationCompat.Builder notificationBuilder, Bundle data) {
+
+        Item item = GsonFactory.getGson()
+                .fromJson(data.getString("data"), Item.class);
+
+        //Initialize the call to the broadcast receiver.
+        //Intent for confirmation.
+        Intent confirm = new Intent(this, ItemAssignmentBroadcastReceiver.class);
+        confirm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        confirm.putExtra(getString(R.string.assigned_item_data), item);
+        confirm.putExtra(getString(R.string.is_bringing_item), true);
+
+        PendingIntent pConfirm = PendingIntent.getBroadcast(this, 1, confirm, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        //Intent for declining.
+        Intent decline = new Intent(this, ItemAssignmentBroadcastReceiver.class);
+        decline.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        decline.putExtra(getString(R.string.assigned_item_data), item);
+        decline.putExtra(getString(R.string.is_bringing_item), false);
+
+        PendingIntent pDecline = PendingIntent.getBroadcast(this, 2, decline, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        return notificationBuilder
+                .addAction(R.drawable.ic_done_black, "Yes", pConfirm)
+                .addAction(R.drawable.ic_close_black, "No", pDecline);
     }
 
     /**
