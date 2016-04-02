@@ -22,11 +22,6 @@ public class SpontaneousApplication extends Application {
     private static SpontaneousApplication sInstance;
 
     /**
-     * Base URL of the server.
-     */
-    private static final String BASE_URL = "https://spontaneous-server.herokuapp.com";
-
-    /**
      * Rest adapter for HTTP requests.
      */
     private RestAdapter restAdapter;
@@ -73,8 +68,9 @@ public class SpontaneousApplication extends Application {
             }
         };
 
+        final String baseUrl = "https://spontaneous-server.herokuapp.com";
         restAdapter = new RestAdapter.Builder()
-                .setEndpoint(BASE_URL)
+                .setEndpoint(baseUrl)
                 .setErrorHandler(new CustomErrorHandler())
                 .setRequestInterceptor(requestInterceptor)
                 .setConverter(new GsonConverter(GsonFactory.getGson()))
