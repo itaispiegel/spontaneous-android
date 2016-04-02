@@ -1,13 +1,17 @@
 package com.spontaneous.android.view;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.InputType;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -22,6 +26,7 @@ import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.activity.BaseActivity;
 import com.spontaneous.android.adapter.GuestsListAdapter;
 import com.spontaneous.android.adapter.ItemsListAdapter;
+import com.spontaneous.android.gcm.AlarmReceiver;
 import com.spontaneous.android.http.request.service.EventService;
 import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.Event;
@@ -32,13 +37,19 @@ import com.spontaneous.android.util.AccountUtils;
 import com.spontaneous.android.util.DateTimeFormatter;
 import com.spontaneous.android.util.Logger;
 import com.spontaneous.android.util.UserInterfaceUtils;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Calendar;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+
+import static com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance;
 
 /**
  * This is a representational view for an event.
@@ -250,6 +261,16 @@ public class EventCard extends FrameLayout {
                             case 2:
                                 Toast.makeText(getContext(), "Setting reminder..", Toast.LENGTH_SHORT)
                                         .show();
+
+                                AlarmManager alarmMgr = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+                                Intent intent = new Intent(AlarmReceiver.REMINDER_ACTION);
+
+                                intent.putExtra(AlarmReceiver.EVENT_TITLE, mEvent.getTitle());
+                                intent.putExtra(AlarmReceiver.EVENT_DATE, mEvent.getDate());
+
+                                PendingIntent alarmIntent = PendingIntent.getBroadcast(mContext, 0, intent, 0);
+
+                                alarmMgr.set(AlarmManager.RTC, Calendar.getInstance().getTimeInMillis() + 7000, alarmIntent);
 
                                 break;
                         }

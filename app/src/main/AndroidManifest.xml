@@ -58,7 +58,14 @@
             android:value="@string/facebook_app_id" />
 
         <!--Custom broadcast receiver for handling input in notifications-->
-        <receiver android:name=".gcm.ItemAssignmentBroadcastReceiver"/>
+        <receiver android:name=".gcm.ItemAssignmentBroadcastReceiver" />
+
+        <!--Alarm Receiver-->
+        <receiver android:name=".gcm.AlarmReceiver">
+            <intent-filter>
+                <action android:name="com.spontaneous.android.reminder" />
+            </intent-filter>
+        </receiver>
 
         <!--The default activity is the SplashActivity-->
         <activity
