@@ -1,9 +1,10 @@
 package com.spontaneous.android.view;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -11,7 +12,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.text.InputType;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -26,7 +26,7 @@ import com.spontaneous.android.SpontaneousApplication;
 import com.spontaneous.android.activity.BaseActivity;
 import com.spontaneous.android.adapter.GuestsListAdapter;
 import com.spontaneous.android.adapter.ItemsListAdapter;
-import com.spontaneous.android.gcm.AlarmReceiver;
+import com.spontaneous.android.gcm.ReminderReceiver;
 import com.spontaneous.android.http.request.service.EventService;
 import com.spontaneous.android.http.response.BaseResponse;
 import com.spontaneous.android.model.Event;
@@ -41,6 +41,8 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
+import org.joda.time.DateTime;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Calendar;
@@ -49,15 +51,22 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+import static com.wdullaer.materialdatetimepicker.date.DatePickerDialog.OnDateSetListener;
 import static com.wdullaer.materialdatetimepicker.date.DatePickerDialog.newInstance;
+import static com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener;
 
 /**
  * This is a representational view for an event.
  */
-public class EventCard extends FrameLayout {
+public class EventCard extends FrameLayout implements OnDateSetListener, OnTimeSetListener {
 
     private Context mContext;
     private Event mEvent;
+
+    /**
+     * This is for setting reminders.
+     */
+    private Calendar mCalendar;
 
     //Google maps API constants.
     @SuppressWarnings("FieldCanBeLocal")
@@ -102,6 +111,8 @@ public class EventCard extends FrameLayout {
         //Inflate the card.
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.view_event_card, this);
+
+        mCalendar = Calendar.getInstance();
 
         //Initialize views in card.
         mEventTitleTextView = (TextView) layout.findViewById(R.id.event_card_title);
@@ -259,18 +270,10 @@ public class EventCard extends FrameLayout {
                                 break;
 
                             case 2:
-                                Toast.makeText(getContext(), "Setting reminder..", Toast.LENGTH_SHORT)
-                                        .show();
 
-                                AlarmManager alarmMgr = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
-                                Intent intent = new Intent(AlarmReceiver.REMINDER_ACTION);
-
-                                intent.putExtra(AlarmReceiver.EVENT_TITLE, mEvent.getTitle());
-                                intent.putExtra(AlarmReceiver.EVENT_DATE, mEvent.getDate());
-
-                                PendingIntent alarmIntent = PendingIntent.getBroadcast(mContext, 0, intent, 0);
-
-                                alarmMgr.set(AlarmManager.RTC, Calendar.getInstance().getTimeInMillis() + 7000, alarmIntent);
+                                //Show the date picker dialog.
+                                newInstance(EventCard.this, mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH), mCalendar.get(Calendar.DAY_OF_MONTH))
+                                        .show(getFragmentManager(), Logger.getTag());
 
                                 break;
                         }
@@ -279,6 +282,10 @@ public class EventCard extends FrameLayout {
                 builder.show();
             }
         };
+    }
+
+    private FragmentManager getFragmentManager() {
+        return ((Activity) mContext).getFragmentManager();
     }
 
     /**
@@ -395,5 +402,45 @@ public class EventCard extends FrameLayout {
      */
     public GuestsListAdapter getGuestsListAdapter() {
         return mGuestsListAdapter;
+    }
+
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        mCalendar.set(year, monthOfYear, dayOfMonth);
+
+        //Show the time picker dialog.
+        TimePickerDialog.newInstance(EventCard.this, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE), true)
+                .show(getFragmentManager(), Logger.getTag());
+    }
+
+    @Override
+    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute, int second) {
+        mCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        mCalendar.set(Calendar.MINUTE, minute);
+        mCalendar.set(Calendar.SECOND, second);
+
+        //Validate the date.
+        if(mCalendar.getTime().before(DateTime.now().toDate())) {
+            Toast.makeText(getContext(), "You can only set a reminder to a time in the future.", Toast.LENGTH_SHORT)
+                    .show();
+
+            return;
+        }
+
+        //Set the alarm manager
+        AlarmManager alarmMgr = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(ReminderReceiver.REMINDER_ACTION);
+
+        //Initialize the notification data.
+        intent.putExtra(ReminderReceiver.EVENT_TITLE, mEvent.getTitle());
+        intent.putExtra(ReminderReceiver.EVENT_DATE, mEvent.getDate());
+
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(mContext, 0, intent, 0);
+
+        alarmMgr.set(AlarmManager.RTC, mCalendar.getTimeInMillis(), alarmIntent);
+
+        //Show a toast saying that the reminder was created
+        Toast.makeText(getContext(), "Reminder set to " + DateTimeFormatter.format(mCalendar.getTime()), Toast.LENGTH_SHORT)
+                .show();
     }
 }

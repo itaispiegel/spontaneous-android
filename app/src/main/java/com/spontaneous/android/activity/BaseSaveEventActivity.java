@@ -98,23 +98,21 @@ public abstract class BaseSaveEventActivity extends BaseActivity implements OnDa
 
         //Initialize date dialog
         mCalendar = Calendar.getInstance();
-        mEventDate.setOnTouchListener(showDateTimePickerDialog(
-                newInstance(
-                        BaseSaveEventActivity.this,
-                        mCalendar.get(Calendar.YEAR),
-                        mCalendar.get(Calendar.MONTH),
-                        mCalendar.get(Calendar.DAY_OF_MONTH)
-                )));
+        mEventDate.setOnTouchListener(showDateTimePickerDialog(newInstance(
+                BaseSaveEventActivity.this,
+                mCalendar.get(Calendar.YEAR),
+                mCalendar.get(Calendar.MONTH),
+                mCalendar.get(Calendar.DAY_OF_MONTH)))
+        );
 
         //Initialize time dialog
         mEventTime = (EditText) findViewById(R.id.create_event_time);
-        mEventTime.setOnTouchListener(showDateTimePickerDialog(
-                newInstance(
-                        BaseSaveEventActivity.this,
-                        mCalendar.get(Calendar.HOUR_OF_DAY),
-                        mCalendar.get(Calendar.MINUTE),
-                        true
-                )));
+        mEventTime.setOnTouchListener(showDateTimePickerDialog(newInstance(
+                BaseSaveEventActivity.this,
+                mCalendar.get(Calendar.HOUR_OF_DAY),
+                mCalendar.get(Calendar.MINUTE),
+                true))
+        );
 
         validator = new Validator(this);
         validator.setValidationListener(this);

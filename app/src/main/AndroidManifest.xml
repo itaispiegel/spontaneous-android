@@ -60,8 +60,8 @@
         <!--Custom broadcast receiver for handling input in notifications-->
         <receiver android:name=".gcm.ItemAssignmentBroadcastReceiver" />
 
-        <!--Alarm Receiver-->
-        <receiver android:name=".gcm.AlarmReceiver">
+        <!--Reminder Receiver-->
+        <receiver android:name=".gcm.ReminderReceiver">
             <intent-filter>
                 <action android:name="com.spontaneous.android.reminder" />
             </intent-filter>

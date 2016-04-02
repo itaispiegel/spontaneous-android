@@ -21,7 +21,7 @@ import java.util.Locale;
 /**
  * This class is a receiver for receiving reminders of events.
  */
-public class AlarmReceiver extends BroadcastReceiver {
+public class ReminderReceiver extends BroadcastReceiver {
 
     //The action of the notification
     public static final String REMINDER_ACTION = "com.spontaneous.android.reminder";
@@ -42,7 +42,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         final String eventTitle = intent.getExtras().getString(EVENT_TITLE);
         final DateTime eventDate = (DateTime) intent.getExtras().get(EVENT_DATE);
 
-        final String message = String.format(Locale.getDefault(), "Remember that are invited to the event at %s!", DateTimeFormatter.format(eventDate));
+        final String message = String.format(Locale.getDefault(), "Remember that you are invited to the event at %s!", DateTimeFormatter.format(eventDate));
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
