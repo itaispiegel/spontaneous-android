@@ -8,8 +8,8 @@ android {
         applicationId "com.spontaneous.android"
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 6
-        versionName "0.06"
+        versionCode 8
+        versionName "0.08"
 
         multiDexEnabled true
     }
